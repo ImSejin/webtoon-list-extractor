@@ -1,5 +1,7 @@
 package io.github.imsejin.base.action;
 
+import java.io.IOException;
+
 import io.github.imsejin.excel.action.ExcelAction;
 import io.github.imsejin.excel.service.ExcelService;
 import io.github.imsejin.file.action.FileAction;
@@ -22,11 +24,15 @@ public class BaseAction {
 		this.excelAction = new ExcelAction(new ExcelService());
 	}
 
-	public void execute() throws Exception {
+	public void execute() {
 		String currentPath = fileAction.getCurrentPath();
 		Object webtoonsList = fileAction.getWebtoonsList();
 
-		excelAction.write(webtoonsList, currentPath, Webtoon.class);
+		try {
+			excelAction.write(webtoonsList, currentPath);
+		} catch (ClassCastException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

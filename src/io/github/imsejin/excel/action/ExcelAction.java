@@ -17,8 +17,8 @@ public class ExcelAction {
 		this.excelService = excelService;
 	}
 
-	public <T> void write(Object list, String path, Class<T> clazz) throws ClassCastException, IOException {
-		excelService.writeWebtoonsList(list, path, clazz);
+	public void write(Object list, String path) throws ClassCastException, IOException {
+		excelService.writeWebtoonsList(list, path);
 	}
 
 }
