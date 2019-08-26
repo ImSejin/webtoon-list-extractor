@@ -15,8 +15,15 @@ public class FileAction {
 
 	private final FileService fileService;
 
+	private final String currentPath;
+
 	public FileAction(FileService fileService) {
 		this.fileService = fileService;
+		this.currentPath = "D:\\Cartoons\\Webtoons"; // this.fileService.getCurrentAbsolutePath();
+	}
+
+	public String getCurrentPath() {
+		return this.currentPath;
 	}
 
 	/**
@@ -25,7 +32,6 @@ public class FileAction {
 	 * @return List of webtoons
 	 */
 	public List<Webtoon> getWebtoonsList() {
-		String currentPath = "D:\\Cartoons\\Webtoons"; // fileService.getCurrentAbsolutePath();
 		List<File> filesList = fileService.getFilesList(currentPath);
 		List<Webtoon> webtoonsList = fileService.convertFilesListToWebtoonsList(filesList);
 

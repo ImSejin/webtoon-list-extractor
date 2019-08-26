@@ -16,16 +16,19 @@
 
 package io.github.imsejin;
 
-import java.io.IOException;
-
-import io.github.imsejin.file.action.FileAction;
-import io.github.imsejin.file.service.FileService;
+import io.github.imsejin.base.action.BaseAction;
 
 public class WebtoonListExtractorApplication {
 
-	public static void main(String[] args) throws IOException {
-		FileAction fileAction = new FileAction(new FileService());
-		Object webtoonsList = fileAction.getWebtoonsList();
+	private final BaseAction baseAction;
+
+	public WebtoonListExtractorApplication() {
+		this.baseAction = new BaseAction();
+		baseAction.execute();
+	}
+
+	public static void main(String[] args) {
+		new WebtoonListExtractorApplication();
 	}
 
 }

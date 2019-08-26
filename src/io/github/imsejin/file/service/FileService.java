@@ -35,7 +35,7 @@ public class FileService {
 	
 	private static final String DELIMITER_AUTHOR = ", ";
 	
-	private static final String DELIMITER_COMPLETED = " [èÇ]";
+	private static final String DELIMITER_COMPLETED = " [\u5B8C]"; // " [å®Œ]"
 
 	/**
 	 * Returns current working absolute directory
@@ -174,17 +174,16 @@ public class FileService {
 		boolean completed = fileName.contains(DELIMITER_COMPLETED);
 		
 		// Author
-		int k;
 		List<String> author;
 		if (completed) {
-			k = sb.indexOf(DELIMITER_COMPLETED);
+			int k = sb.indexOf(DELIMITER_COMPLETED);
 			author = Arrays.asList(sb.substring(0, k).split(DELIMITER_AUTHOR));
 			sb.delete(0, k + DELIMITER_COMPLETED.length());
 		} else {
 			author = Arrays.asList(sb.toString().split(DELIMITER_AUTHOR));
 		}
 		
-		System.out.println("platform=" + platform + ", title=" + title + ", author=" + author + ", completed=" + (completed ? "Y" : "N"));
+		System.out.println("Webtoon {platform=" + platform + ", title=" + title + ", author=" + author + ", completed=" + (completed ? "Y" : "N") + "}");
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("title", title);
