@@ -7,13 +7,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -41,18 +34,33 @@ public class ExcelService {
 
 		try (FileOutputStream fos = new FileOutputStream(file); XSSFWorkbook workbook = new XSSFWorkbook()) {
 			// Constitutes excel file
-			CellStyle style = workbook.createCellStyle();
+			CellStyle style;
+			CellStyle style2;
 			XSSFSheet sheet = workbook.createSheet("Webtoons");
 			XSSFRow row = sheet.createRow(0);
 
 			// Constitutes header
 			ExcelHeader[] headers = ExcelHeader.values();
+			ExcelStyleService.fitContent(sheet, headers.length);
+			style = workbook.createCellStyle();
+			ExcelStyleService.align(style);
+			ExcelStyleService.applyFont(workbook, style, "NanumGothic");
+			ExcelStyleService.drawBorder(style);
+			ExcelStyleService.dyeForegroundColor(style);
+			ExcelStyleService.increaseRowHeight(sheet, row, 1.5);
 			for (int i = 0; i < headers.length; i++) {
-				dyeCell(workbook, alignCell(workbook, row.createCell(i), style), style).setCellValue(headers[i].name());
+				ExcelStyleService.decorateCell(row.createCell(i), style).setCellValue(headers[i].name());
 			}
 
 			// Creates rows of webtoons information
 			Webtoon webtoon;
+			style = workbook.createCellStyle();
+			ExcelStyleService.applyFont(workbook, style, "NanumGothic Light");
+			ExcelStyleService.drawBorder(style);
+			style2 = workbook.createCellStyle();
+			ExcelStyleService.align(style2);
+			ExcelStyleService.applyFont(workbook, style2, "NanumGothic Light");
+			ExcelStyleService.drawBorder(style2);
 			for (int i = 0; i < webtoonsList.size(); i++) {
 				webtoon = webtoonsList.get(i);
 				row = sheet.createRow(i + 1);
@@ -69,11 +77,11 @@ public class ExcelService {
 				}
 
 				// Sets the data of webtoon into cell
-				row.createCell(0).setCellValue(webtoon.getPlatform());
-				row.createCell(1).setCellValue(webtoon.getTitle());
-				row.createCell(2).setCellValue(author.toString());
-				row.createCell(3).setCellValue(webtoon.isCompleted());
-				row.createCell(4).setCellValue(webtoon.getCreationTime());
+				ExcelStyleService.decorateCell(row.createCell(0), style).setCellValue(webtoon.getPlatform());
+				ExcelStyleService.decorateCell(row.createCell(1), style).setCellValue(webtoon.getTitle());
+				ExcelStyleService.decorateCell(row.createCell(2), style).setCellValue(author.toString());
+				ExcelStyleService.decorateCell(row.createCell(3), style).setCellValue(webtoon.isCompleted());
+				ExcelStyleService.decorateCell(row.createCell(4), style2).setCellValue(webtoon.getCreationTime());
 			}
 
 			// Writes excel file
@@ -82,22 +90,6 @@ public class ExcelService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private XSSFCell alignCell(XSSFWorkbook workbook, XSSFCell cell, CellStyle style) {
-		style.setAlignment(HorizontalAlignment.CENTER);
-		style.setVerticalAlignment(VerticalAlignment.CENTER);
-		cell.setCellStyle(style);
-
-		return cell;
-	}
-
-	private XSSFCell dyeCell(XSSFWorkbook workbook, XSSFCell cell, CellStyle style) {
-		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		cell.setCellStyle(style);
-
-		return cell;
 	}
 
 }
