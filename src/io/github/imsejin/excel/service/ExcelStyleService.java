@@ -65,14 +65,24 @@ public final class ExcelStyleService {
 	}
 
 	static void hideExtraneousRows(SXSSFSheet sheet, int rowsCount) {
+		ConsoleService console = new ConsoleService("Hiding row...", NEW_MAX_COUNT_OF_ROWS);
+		Thread t = new Thread(console);
+		t.start();
+		
 		for (int i = rowsCount; i < NEW_MAX_COUNT_OF_ROWS; i++) {
+			console.setCurrent(i);
 			Row row = sheet.createRow(i);
 			row.setZeroHeight(true);
 		}
 	}
 
 	static void hideExtraneousColumns(SXSSFSheet sheet, int columnsCount) {
+		ConsoleService console = new ConsoleService("Hiding columns...", NEW_MAX_COUNT_OF_COLUMNS);
+		Thread t = new Thread(console);
+		t.start();
+		
 		for (Integer i = columnsCount; i < NEW_MAX_COUNT_OF_COLUMNS; i++) {
+			console.setCurrent(i);
 			sheet.setColumnHidden(i, true);
 		}
 	}
