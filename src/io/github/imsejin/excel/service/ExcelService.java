@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import io.github.imsejin.excel.model.ExcelHeader;
 import io.github.imsejin.file.model.Webtoon;
@@ -32,35 +32,25 @@ public class ExcelService {
 		List<Webtoon> webtoonsList = (List<Webtoon>) list;
 		File file = new File(path + File.separator + EXCEL_FILE_NAME + "." + NEW_EXCEL_FILE_EXTENSION);
 
-		try (FileOutputStream fos = new FileOutputStream(file); XSSFWorkbook workbook = new XSSFWorkbook()) {
+		try (FileOutputStream fos = new FileOutputStream(file); SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 			// Constitutes excel file
 			CellStyle style;
-			CellStyle style2;
-			XSSFSheet sheet = workbook.createSheet("Webtoons");
-			XSSFRow row = sheet.createRow(0);
-
-			// Constitutes header
+			CellStyle styleOfImportationDate;
+			SXSSFSheet sheet = workbook.createSheet("Webtoons");
+			SXSSFRow row = sheet.createRow(0);
 			ExcelHeader[] headers = ExcelHeader.values();
-			ExcelStyleService.fitContent(sheet, headers.length);
-			style = workbook.createCellStyle();
-			ExcelStyleService.align(style);
-			ExcelStyleService.applyFont(workbook, style, "NanumGothic");
-			ExcelStyleService.drawBorder(style);
-			ExcelStyleService.dyeForegroundColor(style);
+
+			// Creates decorated head row
 			ExcelStyleService.increaseRowHeight(sheet, row, 1.5);
+			style = ExcelStyleService.getHeaderCellStyle(workbook);
 			for (int i = 0; i < headers.length; i++) {
 				ExcelStyleService.decorateCell(row.createCell(i), style).setCellValue(headers[i].name());
 			}
 
-			// Creates rows of webtoons information
+			// Creates decorated rows of content
 			Webtoon webtoon;
-			style = workbook.createCellStyle();
-			ExcelStyleService.applyFont(workbook, style, "NanumGothic Light");
-			ExcelStyleService.drawBorder(style);
-			style2 = workbook.createCellStyle();
-			ExcelStyleService.align(style2);
-			ExcelStyleService.applyFont(workbook, style2, "NanumGothic Light");
-			ExcelStyleService.drawBorder(style2);
+			style = ExcelStyleService.getContentCellStyle(workbook);
+			styleOfImportationDate = ExcelStyleService.getImportationDateCellStyle(workbook);
 			for (int i = 0; i < webtoonsList.size(); i++) {
 				webtoon = webtoonsList.get(i);
 				row = sheet.createRow(i + 1);
@@ -81,9 +71,12 @@ public class ExcelService {
 				ExcelStyleService.decorateCell(row.createCell(1), style).setCellValue(webtoon.getTitle());
 				ExcelStyleService.decorateCell(row.createCell(2), style).setCellValue(author.toString());
 				ExcelStyleService.decorateCell(row.createCell(3), style).setCellValue(webtoon.isCompleted());
-				ExcelStyleService.decorateCell(row.createCell(4), style2).setCellValue(webtoon.getCreationTime());
+				ExcelStyleService.decorateCell(row.createCell(4), styleOfImportationDate).setCellValue(webtoon.getCreationTime());
 			}
-
+			
+			ExcelStyleService.makeColumnsFitContent(workbook);
+			ExcelStyleService.hideExtraneousCells(workbook);
+			
 			// Writes excel file
 			workbook.write(fos);
 

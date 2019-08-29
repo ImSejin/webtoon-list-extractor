@@ -33,6 +33,8 @@ public class BaseAction {
 		} catch (ClassCastException | IOException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("WebtoonListExtractorApplication is successfully done.");
 	}
 
 }
