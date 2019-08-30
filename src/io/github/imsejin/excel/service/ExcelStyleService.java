@@ -1,8 +1,5 @@
 package io.github.imsejin.excel.service;
 
-import java.io.IOException;
-import java.util.Iterator;
-
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -16,6 +13,9 @@ import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
+import io.github.imsejin.console.action.ConsoleAction;
+import io.github.imsejin.console.model.WorkingProcess;
 
 /**
  * ExcelStyleService
@@ -63,26 +63,30 @@ public final class ExcelStyleService {
 			hideExtraneousColumns(sheet, columnsCount);
 		}
 	}
-
+	
 	static void hideExtraneousRows(SXSSFSheet sheet, int rowsCount) {
-		ConsoleService console = new ConsoleService("Hiding row...", NEW_MAX_COUNT_OF_ROWS);
-		Thread t = new Thread(console);
-		t.start();
-		
+		WorkingProcess process = new WorkingProcess();
+		process.setMessage("Hiding rows");
+		process.setTotalProcess(NEW_MAX_COUNT_OF_ROWS);
+		ConsoleAction.print(process);
+
 		for (int i = rowsCount; i < NEW_MAX_COUNT_OF_ROWS; i++) {
-			console.setCurrent(i);
+			process.setCurrentProcess(i);
+			
 			Row row = sheet.createRow(i);
 			row.setZeroHeight(true);
 		}
 	}
-
+	
 	static void hideExtraneousColumns(SXSSFSheet sheet, int columnsCount) {
-		ConsoleService console = new ConsoleService("Hiding columns...", NEW_MAX_COUNT_OF_COLUMNS);
-		Thread t = new Thread(console);
-		t.start();
-		
-		for (Integer i = columnsCount; i < NEW_MAX_COUNT_OF_COLUMNS; i++) {
-			console.setCurrent(i);
+		WorkingProcess process = new WorkingProcess();
+		process.setMessage("Hiding columns");
+		process.setTotalProcess(NEW_MAX_COUNT_OF_COLUMNS);
+		ConsoleAction.print(process);
+
+		for (int i = columnsCount; i < NEW_MAX_COUNT_OF_COLUMNS; i++) {
+			process.setCurrentProcess(i);
+			
 			sheet.setColumnHidden(i, true);
 		}
 	}
@@ -92,10 +96,10 @@ public final class ExcelStyleService {
 	 * 
 	 * @param sheet
 	 * @param row
-	 * @param multiple
+	 * @param multiples
 	 */
-	static void increaseRowHeight(SXSSFSheet sheet, SXSSFRow row, double multiple) {
-		row.setHeightInPoints((float) (sheet.getDefaultRowHeightInPoints() * multiple));
+	static void increaseRowHeight(SXSSFSheet sheet, SXSSFRow row, double multiples) {
+		row.setHeightInPoints((float) (sheet.getDefaultRowHeightInPoints() * multiples));
 	}
 
 	/**
