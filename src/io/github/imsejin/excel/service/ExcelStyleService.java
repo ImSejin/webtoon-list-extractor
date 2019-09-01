@@ -40,11 +40,11 @@ public final class ExcelStyleService {
 	 * @param workbook
 	 * @param Count of columns
 	 */
-	static void makeColumnsFitContent(SXSSFWorkbook workbook) {
+	static void makeColumnsFitContent(SXSSFWorkbook workbook, int columnsCount) {
 		SXSSFSheet sheet;
 		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
 			sheet = workbook.getSheetAt(i);
-			int columnsCount = sheet.getRow(0).getLastCellNum();
+			// int columnsCount = sheet.getRow(0).getLastCellNum();
 			for (int j = 0; j < columnsCount; j++) {
 				sheet.trackColumnForAutoSizing(j);
 				sheet.autoSizeColumn(j);
@@ -52,13 +52,13 @@ public final class ExcelStyleService {
 		}
 	}
 
-	static void hideExtraneousCells(SXSSFWorkbook workbook) {
+	static void hideExtraneousCells(SXSSFWorkbook workbook, int columnsCount) {
 		SXSSFSheet sheet;
 		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
 			sheet = workbook.getSheetAt(i);
 			int rowsCount = sheet.getPhysicalNumberOfRows();
-			int columnsCount = sheet.getRow(0).getLastCellNum();
-			
+			// int columnsCount = sheet.getRow(0).getLastCellNum();
+
 			hideExtraneousRows(sheet, rowsCount);
 			hideExtraneousColumns(sheet, columnsCount);
 		}

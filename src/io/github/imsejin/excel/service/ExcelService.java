@@ -100,8 +100,8 @@ public class ExcelService {
 				ExcelStyleService.decorateCell(row.createCell(4), styleOfImportationDate).setCellValue(webtoon.getCreationTime());
 			}
 			
-			ExcelStyleService.makeColumnsFitContent(workbook);
-			ExcelStyleService.hideExtraneousCells(workbook);
+			ExcelStyleService.makeColumnsFitContent(workbook, headers.length);
+			ExcelStyleService.hideExtraneousCells(workbook, headers.length);
 			
 			// Writes excel file
 			workbook.write(fos);
