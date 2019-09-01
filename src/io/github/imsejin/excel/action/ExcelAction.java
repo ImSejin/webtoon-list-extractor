@@ -1,5 +1,6 @@
 package io.github.imsejin.excel.action;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import io.github.imsejin.excel.service.ExcelService;
@@ -17,8 +18,12 @@ public class ExcelAction {
 		this.excelService = excelService;
 	}
 
-	public void write(Object list, String path) throws ClassCastException, IOException {
-		excelService.writeWebtoonsList(list, path);
+	public String getVersionOfWebtoonsList(String path) throws IOException, FileNotFoundException {
+		return excelService.read(path);
+	}
+
+	public void writeWebtoonsList(Object list, String path, String version) throws ClassCastException, IOException, FileNotFoundException {
+		excelService.write(list, path, version);
 	}
 
 }

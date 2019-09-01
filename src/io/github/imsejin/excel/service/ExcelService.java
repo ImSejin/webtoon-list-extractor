@@ -1,16 +1,24 @@
 package io.github.imsejin.excel.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.math3.analysis.solvers.IllinoisSolver;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
+import io.github.imsejin.console.action.ConsoleAction;
+import io.github.imsejin.console.model.WorkingProcess;
 import io.github.imsejin.excel.model.ExcelHeader;
 import io.github.imsejin.file.model.Webtoon;
 
@@ -26,9 +34,27 @@ public class ExcelService {
 	private static final String OLD_EXCEL_FILE_EXTENSION = "xls";
 
 	private static final String NEW_EXCEL_FILE_EXTENSION = "xlsx";
-
+	
+	public String read(String path) throws IOException, FileNotFoundException {
+		File file = new File(path + File.separator + EXCEL_FILE_NAME + "." + NEW_EXCEL_FILE_EXTENSION);
+		String version = "";
+		
+		try (FileInputStream fis = new FileInputStream(file); Workbook workbook = new SXSSFWorkbook()) {
+			Sheet sheet = workbook.getSheetAt(0);
+			Row row = sheet.getRow(0);
+			Cell cell = row.getCell(1);
+			
+			version = cell.getStringCellValue();
+		} catch (NullPointerException | IllegalArgumentException e) {
+			System.out.println("Metadata is corrupted.");
+			e.printStackTrace();
+		}
+		
+		return version;
+	}
+	
 	@SuppressWarnings("unchecked")
-	public void writeWebtoonsList(Object list, String path) throws ClassCastException, IOException, FileNotFoundException {
+	public void write(Object list, String path, String version) throws ClassCastException, IOException, FileNotFoundException {
 		List<Webtoon> webtoonsList = (List<Webtoon>) list;
 		File file = new File(path + File.separator + EXCEL_FILE_NAME + "." + NEW_EXCEL_FILE_EXTENSION);
 
