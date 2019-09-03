@@ -70,18 +70,12 @@ public class ConsoleService implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		// Separates upper console logs
-		System.out.println();
-
+	public synchronized void run() {
 		try {
 			printProcessing();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		// Seperates other progress or finish sentence
-		System.out.println();
 	}
 
 }

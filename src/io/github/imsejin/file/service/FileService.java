@@ -91,8 +91,14 @@ public class FileService {
 				
 				Webtoon webtoon = createWebtoon(title, author, platform, completed, creationTime, fileExtension, size);
 				webtoonsList.add(webtoon);
+				
+				// Prints console logs
+				System.out.println(webtoon.toString());
 			}
 		});
+		
+		// Prints console logs
+		System.out.println("\r\nTotal " + webtoonsList.size() + " webtoon" + (webtoonsList.size() > 1 ? "s" : ""));
 		
 		// Sorts list of webtoons
 		webtoonsList.sort(Comparator.comparing(Webtoon::getPlatform).thenComparing(Webtoon::getTitle));
@@ -147,7 +153,7 @@ public class FileService {
 		webtoon.setCreationTime((String) attributes[4]);
 		webtoon.setFileExtension((String) attributes[5]);
 		webtoon.setSize((long) attributes[6]);
-
+		
 		return webtoon;
 	}
 	
@@ -182,8 +188,6 @@ public class FileService {
 		} else {
 			author = Arrays.asList(sb.toString().split(DELIMITER_AUTHOR));
 		}
-		
-		System.out.println("Webtoon {platform=" + platform + ", title=" + title + ", author=" + author + ", completed=" + (completed ? "Y" : "N") + "}");
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("title", title);

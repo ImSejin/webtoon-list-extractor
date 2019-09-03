@@ -1,9 +1,7 @@
 package io.github.imsejin.base.action;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import io.github.imsejin.console.action.ConsoleAction;
+import io.github.imsejin.console.serivce.ConsoleService;
 import io.github.imsejin.excel.action.ExcelAction;
 import io.github.imsejin.excel.service.ExcelService;
 import io.github.imsejin.file.action.FileAction;
@@ -28,19 +26,18 @@ public class BaseAction {
 		this.consoleAction = new ConsoleAction();
 	}
 
-	public void execute() {
+	public void execute() throws Exception {
 		String currentPath = fileAction.getCurrentPath();
 		Object webtoonsList = fileAction.getWebtoonsList();
 
-		try {
-			String previousVersion = ""; // excelAction.getVersionOfWebtoonsList(currentPath);
-			excelAction.writeWebtoonsList(webtoonsList, currentPath, previousVersion);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ClassCastException | IOException e) {
-			e.printStackTrace();
+		if (excelAction.doesWebtoonListExist(currentPath)) {
+			Object[] data = excelAction.readWebtoonsList(currentPath);
+			excelAction.writeWebtoonsList(data, webtoonsList, currentPath);
+		} else {
+			excelAction.writeWebtoonsList(webtoonsList, currentPath);
 		}
 
+		ConsoleService.clear();
 		System.out.println("WebtoonListExtractorApplication is successfully done.");
 	}
 

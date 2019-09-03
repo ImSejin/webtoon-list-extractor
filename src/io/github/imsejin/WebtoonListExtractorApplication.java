@@ -22,13 +22,12 @@ public class WebtoonListExtractorApplication {
 
 	private final BaseAction baseAction;
 
-	public WebtoonListExtractorApplication() {
+	public WebtoonListExtractorApplication() throws Exception {
 		this.baseAction = new BaseAction();
-		baseAction.execute();
 	}
 
-	public static void main(String[] args) {
-		new WebtoonListExtractorApplication();
+	public static void main(String[] args) throws Exception {
+		new WebtoonListExtractorApplication().baseAction.execute();
 	}
 
 }

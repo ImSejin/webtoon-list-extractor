@@ -19,10 +19,12 @@ public class ConsoleAction {
 	}
 
 	public synchronized static void print(WorkingProcess workingProcess) {
-		// ConsoleService.clear();
-
 		ConsoleService consoleService = new ConsoleService();
 		consoleService.setWorkingProcess(workingProcess);
+
+		// Separates upper console logs
+		System.out.println();
+		System.out.println();
 
 		Thread t = new Thread(consoleService);
 		t.start();

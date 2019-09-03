@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import io.github.imsejin.console.action.ConsoleAction;
 import io.github.imsejin.console.model.WorkingProcess;
@@ -31,66 +30,58 @@ public final class ExcelStyleService {
 	private final static int OLD_MAX_COUNT_OF_COLUMNS = 256;
 	private final static int NEW_MAX_COUNT_OF_ROWS = 1048576;
 	private final static int NEW_MAX_COUNT_OF_COLUMNS = 16384;
-	
+
 	private ExcelStyleService() {}
 
 	/**
 	 * Adjusts column width to fit the content
 	 * 
-	 * @param workbook
+	 * @param sheet
 	 * @param Count of columns
 	 */
-	static void makeColumnsFitContent(SXSSFWorkbook workbook, int columnsCount) {
-		SXSSFSheet sheet;
-		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-			sheet = workbook.getSheetAt(i);
-			// int columnsCount = sheet.getRow(0).getLastCellNum();
-			for (int j = 0; j < columnsCount; j++) {
-				sheet.trackColumnForAutoSizing(j);
-				sheet.autoSizeColumn(j);
-			}
+	static void makeColumnsFitContent(SXSSFSheet sheet, int columnsCount) {
+		// int columnsCount = sheet.getRow(0).getLastCellNum();
+		for (int i = 0; i < columnsCount; i++) {
+			sheet.trackColumnForAutoSizing(i);
+			sheet.autoSizeColumn(i);
 		}
 	}
 
-	static void hideExtraneousCells(SXSSFWorkbook workbook, int columnsCount) {
-		SXSSFSheet sheet;
-		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-			sheet = workbook.getSheetAt(i);
-			int rowsCount = sheet.getPhysicalNumberOfRows();
-			// int columnsCount = sheet.getRow(0).getLastCellNum();
+	static void hideExtraneousCells(SXSSFSheet sheet, int columnsCount) {
+		int rowsCount = sheet.getPhysicalNumberOfRows();
+		// int columnsCount = sheet.getRow(0).getLastCellNum();
 
-			hideExtraneousRows(sheet, rowsCount);
-			hideExtraneousColumns(sheet, columnsCount);
-		}
+		hideExtraneousRows(sheet, rowsCount);
+		hideExtraneousColumns(sheet, columnsCount);
 	}
-	
+
 	static void hideExtraneousRows(SXSSFSheet sheet, int rowsCount) {
 		WorkingProcess process = new WorkingProcess();
 		process.setMessage("Hiding rows");
-		process.setTotalProcess(NEW_MAX_COUNT_OF_ROWS);
+		process.setTotalProcess(NEW_MAX_COUNT_OF_ROWS - rowsCount);
 		ConsoleAction.print(process);
 
 		for (int i = rowsCount; i < NEW_MAX_COUNT_OF_ROWS; i++) {
 			process.setCurrentProcess(i);
-			
+
 			Row row = sheet.createRow(i);
 			row.setZeroHeight(true);
 		}
 	}
-	
+
 	static void hideExtraneousColumns(SXSSFSheet sheet, int columnsCount) {
 		WorkingProcess process = new WorkingProcess();
 		process.setMessage("Hiding columns");
-		process.setTotalProcess(NEW_MAX_COUNT_OF_COLUMNS);
+		process.setTotalProcess(NEW_MAX_COUNT_OF_COLUMNS - columnsCount);
 		ConsoleAction.print(process);
 
 		for (int i = columnsCount; i < NEW_MAX_COUNT_OF_COLUMNS; i++) {
 			process.setCurrentProcess(i);
-			
+
 			sheet.setColumnHidden(i, true);
 		}
 	}
-	
+
 	/**
 	 * Increases row height to accommodate one and a half line of text
 	 * 
@@ -173,7 +164,7 @@ public final class ExcelStyleService {
 		return style;
 	}
 
-	static CellStyle getImportationDateCellStyle(Workbook workbook) {
+	static CellStyle getContentCellStyleWithAlignment(Workbook workbook) {
 		CellStyle style = workbook.createCellStyle();
 		align(style);
 		applyFont(workbook, style, CONTENT_FONT_NAME);
