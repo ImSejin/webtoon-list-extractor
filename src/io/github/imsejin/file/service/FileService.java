@@ -117,10 +117,12 @@ public class FileService {
 
 			return !(file.isFile() && fileName.startsWith(EXCEL_FILE_NAME) && fileExtension.equals(NEW_EXCEL_FILE_EXTENSION));
 		});
-		
+
 		// Sorts out the latest file
-		dummy.sort(Comparator.comparing(File::getName));
-		recentFileName = FilenameUtils.getBaseName(dummy.get(dummy.size() - 1).getName());
+		if (!dummy.isEmpty()) {
+			dummy.sort(Comparator.comparing(File::getName));
+			recentFileName = FilenameUtils.getBaseName(dummy.get(dummy.size() - 1).getName());
+		}
 
 		return recentFileName;
 	}
