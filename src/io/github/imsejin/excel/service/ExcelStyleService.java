@@ -23,8 +23,8 @@ import io.github.imsejin.console.model.WorkingProcess;
  */
 public final class ExcelStyleService {
 
-	private final static String HEADER_FONT_NAME = "NanumGothic";
-	private final static String CONTENT_FONT_NAME = "NanumGothic Light";
+	private final static String HEADER_FONT_NAME = "NanumBarunGothic";
+	private final static String CONTENT_FONT_NAME = "NanumBarunGothic Light";
 
 	private final static int OLD_MAX_COUNT_OF_ROWS = 65536;
 	private final static int OLD_MAX_COUNT_OF_COLUMNS = 256;
