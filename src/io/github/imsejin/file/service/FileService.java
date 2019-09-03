@@ -30,12 +30,13 @@ import io.github.imsejin.file.model.Webtoon;
 public class FileService {
 
 	private static final String DELIMITER_PLATFORM = "_";
-	
 	private static final String DELIMITER_TITLE = " - ";
-	
 	private static final String DELIMITER_AUTHOR = ", ";
-	
 	private static final String DELIMITER_COMPLETED = " [\u5B8C]"; // " [完]"
+
+	private static final String EXCEL_FILE_NAME = "webtoonList";
+	private static final String OLD_EXCEL_FILE_EXTENSION = "xls";
+	private static final String NEW_EXCEL_FILE_EXTENSION = "xlsx";
 
 	/**
 	 * Returns current working absolute directory
@@ -72,38 +73,56 @@ public class FileService {
 		if (filesList == null) {
 			return new ArrayList<>();
 		}
-		
+
 		List<Webtoon> webtoonsList = new ArrayList<>();
-		
+
 		filesList.forEach(file -> {
 			String fileName = FilenameUtils.getBaseName(file.getName());
 			String fileExtension = FilenameUtils.getExtension(file.getName());
-			
+
 			if (file.isFile() && isCompressedFile(fileExtension)) {
 				Map<String, Object> webtoonInfo = classifyWebtoonInfo(fileName);
-				
+
 				Object title = webtoonInfo.get("title");
 				Object author = webtoonInfo.get("author");
 				Object platform = webtoonInfo.get("platform");
 				Object completed = webtoonInfo.get("completed");
 				Object creationTime = getFileOfCreationTime(file);
 				Object size = file.length();
-				
+
 				Webtoon webtoon = createWebtoon(title, author, platform, completed, creationTime, fileExtension, size);
 				webtoonsList.add(webtoon);
-				
+
 				// Prints console logs
 				System.out.println(webtoon.toString());
 			}
 		});
-		
+
 		// Prints console logs
 		System.out.println("\r\nTotal " + webtoonsList.size() + " webtoon" + (webtoonsList.size() > 1 ? "s" : ""));
-		
+
 		// Sorts list of webtoons
 		webtoonsList.sort(Comparator.comparing(Webtoon::getPlatform).thenComparing(Webtoon::getTitle));
-		
+
 		return webtoonsList;
+	}
+
+	public String getFileName(List<File> filesList) {
+		String recentFileName = null;
+		List<File> dummy = new ArrayList<>(filesList);
+
+		dummy.removeIf(file -> {
+			String fileName = FilenameUtils.getBaseName(file.getName());
+			String fileExtension = FilenameUtils.getExtension(file.getName());
+
+			return !(file.isFile() && fileName.startsWith(EXCEL_FILE_NAME) && fileExtension.equals(NEW_EXCEL_FILE_EXTENSION));
+		});
+		
+		// Sorts out the latest file
+		dummy.sort(Comparator.comparing(File::getName));
+		recentFileName = FilenameUtils.getBaseName(dummy.get(dummy.size() - 1).getName());
+
+		return recentFileName;
 	}
 	
 	/**

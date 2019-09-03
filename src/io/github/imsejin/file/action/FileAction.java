@@ -19,7 +19,7 @@ public class FileAction {
 
 	public FileAction(FileService fileService) {
 		this.fileService = fileService;
-		this.currentPath = "D:\\Cartoons\\Webtoons"; // this.fileService.getCurrentAbsolutePath();
+		this.currentPath = "D:\\Cartoons\\Webtoons\\"; // this.fileService.getCurrentAbsolutePath();
 	}
 
 	public String getCurrentPath() {
@@ -36,6 +36,17 @@ public class FileAction {
 		List<Webtoon> webtoonsList = fileService.convertFilesListToWebtoonsList(filesList);
 
 		return webtoonsList;
+	}
+
+	/**
+	 * Returns recent file name
+	 * 
+	 * @return
+	 */
+	public String getRecentFileName() {
+		List<File> filesList = fileService.getFilesList(currentPath);
+
+		return fileService.getFileName(filesList);
 	}
 
 }

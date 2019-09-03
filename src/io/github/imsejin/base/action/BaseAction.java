@@ -29,12 +29,13 @@ public class BaseAction {
 	public void execute() throws Exception {
 		String currentPath = fileAction.getCurrentPath();
 		Object webtoonsList = fileAction.getWebtoonsList();
+		String recentFileName = fileAction.getRecentFileName();
 
-		if (excelAction.doesWebtoonListExist(currentPath)) {
-			Object[] data = excelAction.readWebtoonsList(currentPath);
-			excelAction.writeWebtoonsList(data, webtoonsList, currentPath);
-		} else {
+		if (recentFileName == null) {
 			excelAction.writeWebtoonsList(webtoonsList, currentPath);
+		} else {
+			Object[] data = excelAction.readWebtoonsList(currentPath, recentFileName);
+			excelAction.writeWebtoonsList(data, webtoonsList, currentPath);
 		}
 
 		ConsoleService.clear();

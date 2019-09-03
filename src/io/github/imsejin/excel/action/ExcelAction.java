@@ -23,12 +23,8 @@ public class ExcelAction {
 		this.excelService = excelService;
 	}
 
-	public boolean doesWebtoonListExist(String path) {
-		return excelService.doesExist(path);
-	}
-
-	public Object[] readWebtoonsList(String path) throws FileNotFoundException, IOException {
-		return excelService.read(path);
+	public Object[] readWebtoonsList(String path, String recentFileName) throws FileNotFoundException, IOException {
+		return excelService.read(path, recentFileName);
 	}
 
 	public void writeWebtoonsList(Object list, String path)

@@ -39,7 +39,7 @@ import io.github.imsejin.file.model.Webtoon;
 public class ExcelService {
 
 	private static final ExcelHeader[] headers = ExcelHeader.values();
-	private static final String[] metadataTitles = { "CURRENT_VERSION", "RECENT_UPDATE_DATE", "VERSION", "UPDATE_DATE" };
+	private static final String[] metadataTitles = { "CURRENT_VERSION", "RECENT_UPDATE_DATE" };
 
 	private static final String EXCEL_FILE_NAME = "webtoonList";
 	private static final String OLD_EXCEL_FILE_EXTENSION = "xls";
@@ -47,11 +47,6 @@ public class ExcelService {
 
 	private static final String DELIMITER_AUTHOR = ", ";
 
-	public boolean doesExist(String path) {
-		File file = new File(path + File.separator + EXCEL_FILE_NAME + "." + NEW_EXCEL_FILE_EXTENSION);
-		return file.exists() && file.isFile();
-	}
-	
 	/**
 	 * The `SXSSFWorkbook` constructor that takes the `XSSFWorkbook` as param
 	 * You cannot override or access the initial rows in the template file
@@ -62,18 +57,12 @@ public class ExcelService {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public Object[] read(String path) throws FileNotFoundException, IOException {
+	public Object[] read(String path, String recentFileName) throws FileNotFoundException, IOException {
 		Object[] results = new Object[4];
-		File file = new File(path + File.separator + EXCEL_FILE_NAME + "." + NEW_EXCEL_FILE_EXTENSION);
+		File file = new File(path + File.separator + recentFileName + "." + NEW_EXCEL_FILE_EXTENSION);
 
 		FileInputStream fis = new FileInputStream(file);
 		Workbook workbook = new XSSFWorkbook(fis);
-		
-		// Prints console logs
-//			WorkingProcess process = new WorkingProcess();
-//			process.setMessage("Reading rows");
-//			process.setTotalProcess(sheet.getLastRowNum());
-//			ConsoleAction.print(process);
 
 		results[0] = getData(workbook);
 		results[1] = getVersion(workbook);
@@ -503,9 +492,6 @@ public class ExcelService {
 
 			// Puts the webtoon into list
 			webtoonsList.add(webtoon);
-
-			// Prints console logs
-//			process.setCurrentProcess(i);
 		}
 
 		return webtoonsList;
