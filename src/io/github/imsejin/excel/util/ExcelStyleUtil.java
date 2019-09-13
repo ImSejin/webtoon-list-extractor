@@ -175,13 +175,15 @@ public final class ExcelStyleUtil {
 	 * @param sheet
 	 */
 	public static void removeAllRows(XSSFSheet sheet) {
+		int numberOfRows = sheet.getPhysicalNumberOfRows();
+		
 		// Sets up printing console logs.
 		WorkingProcess process = new WorkingProcess();
 		process.setMessage("Removing rows");
-		process.setTotalProcess(Constants.excel.NEW_MAX_COUNT_OF_ROWS - 1);
+		process.setTotalProcess(numberOfRows - 1);
 		ConsoleAction.print(process);
 
-		for (int i = 1; i < Constants.excel.NEW_MAX_COUNT_OF_ROWS; i++) {
+		for (int i = 1; i < numberOfRows; i++) {
 			process.setCurrentProcess(i);
 
 			XSSFRow row = sheet.getRow(i);
