@@ -1,12 +1,12 @@
 package io.github.imsejin.excel.model;
 
 /**
- * ExcelHeader
+ * ListHeader
  * 
  * @author SEJIN
  */
-public enum ExcelHeader {
-	
+public enum ListHeader {
+
 	PLATFORM, TITLE, AUTHOR, COMPLETED, IMPORTATION_DATE
 
 }
