@@ -19,6 +19,7 @@ public class ConsoleAction {
 	}
 
 	public synchronized static void print(WorkingProcess workingProcess) {
+		// ConsoleService will be multiply used in thread
 		ConsoleService consoleService = new ConsoleService();
 		consoleService.setWorkingProcess(workingProcess);
 

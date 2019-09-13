@@ -3,7 +3,7 @@ package io.github.imsejin.file.model;
 /**
  * CompressionFormat
  * 
- * Add _(underscore) at first character because of `7z`
+ * Add _(underscore) at first character because of `7z`.
  * 
  * @author SEJIN
  */

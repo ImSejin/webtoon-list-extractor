@@ -10,7 +10,7 @@ import com.diogonunes.jcdp.color.api.Ansi.FColor;
  * 
  * @author SEJIN
  */
-public class ApplicationMetadata {
+public final class ApplicationMetadata {
 
 	public static final String APPLICATION_NAME = "WebtoonList Extractor";
 
@@ -31,7 +31,8 @@ public class ApplicationMetadata {
 														"	   |_____|__/\\__\\__|_|  \\__,_|\\___|\\__|\\___/|_|",
 														"	   :: WebtoonList Extractor ::       (v1.0.0.RELEASE)" };
 
-	private static final ColoredPrinter cp = new ColoredPrinter.Builder(1, false).foreground(FColor.WHITE)
+	private static final ColoredPrinter cp = new ColoredPrinter.Builder(1, false)
+			.foreground(FColor.WHITE)
 			.background(BColor.BLACK).build();
 
 	private ApplicationMetadata() {}

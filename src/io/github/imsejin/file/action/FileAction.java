@@ -27,7 +27,7 @@ public class FileAction {
 	}
 
 	/**
-	 * Returns list of webtoons
+	 * Returns list of webtoons.
 	 * 
 	 * @return List of webtoons
 	 */
@@ -39,7 +39,7 @@ public class FileAction {
 	}
 
 	/**
-	 * Returns recent file name
+	 * Returns recent file name.
 	 * 
 	 * @return
 	 */

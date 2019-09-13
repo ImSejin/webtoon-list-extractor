@@ -18,16 +18,15 @@ package io.github.imsejin;
 
 import io.github.imsejin.base.action.BaseAction;
 
-public class WebtoonListExtractorApplication {
+public final class WebtoonListExtractorApplication {
 
-	private final BaseAction baseAction;
+	private static final BaseAction baseAction = new BaseAction();
 
-	public WebtoonListExtractorApplication() throws Exception {
-		this.baseAction = new BaseAction();
-	}
+	public static void main(String[] args) {
+		baseAction.execute();
 
-	public static void main(String[] args) throws Exception {
-		new WebtoonListExtractorApplication().baseAction.execute();
+		// Fix the bug that `ERROR: JDWP Unable to get JNI 1.2 environment`
+		System.exit(0);
 	}
 
 }

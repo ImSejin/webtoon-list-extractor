@@ -7,6 +7,7 @@ import com.diogonunes.jcdp.color.api.Ansi.Attribute;
 import com.diogonunes.jcdp.color.api.Ansi.BColor;
 import com.diogonunes.jcdp.color.api.Ansi.FColor;
 
+import io.github.imsejin.base.model.Constants;
 import io.github.imsejin.console.model.WorkingProcess;
 
 /**
@@ -16,9 +17,7 @@ import io.github.imsejin.console.model.WorkingProcess;
  */
 public class ConsoleService implements Runnable {
 
-	private static final int PERCENT_MULTIPLES = 100;
-	private static final int PROGRESS_BAR_LENGTH = 50;
-	private final int compensatoryMultiples = PERCENT_MULTIPLES / PROGRESS_BAR_LENGTH;
+	private final int compensatoryMultiples = Constants.console.PERCENT_MULTIPLES / Constants.console.PROGRESS_BAR_LENGTH;
 
 	private WorkingProcess workingProcess;
 
@@ -38,11 +37,11 @@ public class ConsoleService implements Runnable {
 		// Gets changing current process and prints progress states
 		while ((i = workingProcess.getCurrentProcess() + 1) < totalProcess) {
 			// Calculates the percentage of current progress
-			double percentage = ((double) i / totalProcess) * PERCENT_MULTIPLES;
+			double percentage = ((double) i / totalProcess) * Constants.console.PERCENT_MULTIPLES;
 
 			// Prints progress bar
 			System.out.print(" |");
-			for (int j = 0; j < PROGRESS_BAR_LENGTH; j++) {
+			for (int j = 0; j < Constants.console.PROGRESS_BAR_LENGTH; j++) {
 				if (percentage > j * compensatoryMultiples) {
 					cp.print(" ", Attribute.HIDDEN, FColor.GREEN, BColor.GREEN);
 				} else {

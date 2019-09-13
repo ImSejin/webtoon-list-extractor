@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 
+import io.github.imsejin.base.model.Constants;
 import io.github.imsejin.file.model.CompressionFormat;
 import io.github.imsejin.file.model.Platform;
 import io.github.imsejin.file.model.Webtoon;
@@ -29,17 +30,8 @@ import io.github.imsejin.file.model.Webtoon;
  */
 public class FileService {
 
-	private static final String DELIMITER_PLATFORM = "_";
-	private static final String DELIMITER_TITLE = " - ";
-	private static final String DELIMITER_AUTHOR = ", ";
-	private static final String DELIMITER_COMPLETED = " [\u5B8C]"; // " [完]"
-
-	private static final String EXCEL_FILE_NAME = "webtoonList";
-	private static final String OLD_EXCEL_FILE_EXTENSION = "xls";
-	private static final String NEW_EXCEL_FILE_EXTENSION = "xlsx";
-
 	/**
-	 * Returns current working absolute directory
+	 * Returns current working absolute directory.
 	 * 
 	 * @return Current working absolute directory
 	 */
@@ -49,9 +41,9 @@ public class FileService {
 
 		return currentAbsolutePath;
 	}
-	
+
 	/**
-	 * Returns list of files and directories in the path
+	 * Returns list of files and directories in the path.
 	 * 
 	 * @param Path
 	 * @return List of files and directories
@@ -62,9 +54,9 @@ public class FileService {
 
 		return filesList;
 	}
-	
+
 	/**
-	 * Converts list of files and directories to list of webtoons
+	 * Converts list of files and directories to list of webtoons.
 	 * 
 	 * @param List of files and directories
 	 * @return List of webtoons
@@ -93,15 +85,15 @@ public class FileService {
 				Webtoon webtoon = createWebtoon(title, author, platform, completed, creationTime, fileExtension, size);
 				webtoonsList.add(webtoon);
 
-				// Prints console logs
+				// Prints console logs.
 				System.out.println(webtoon.toString());
 			}
 		});
 
-		// Prints console logs
+		// Prints console logs.
 		System.out.println("\r\nTotal " + webtoonsList.size() + " webtoon" + (webtoonsList.size() > 1 ? "s" : ""));
 
-		// Sorts list of webtoons
+		// Sorts list of webtoons.
 		webtoonsList.sort(Comparator.comparing(Webtoon::getPlatform).thenComparing(Webtoon::getTitle));
 
 		return webtoonsList;
@@ -115,10 +107,10 @@ public class FileService {
 			String fileName = FilenameUtils.getBaseName(file.getName());
 			String fileExtension = FilenameUtils.getExtension(file.getName());
 
-			return !(file.isFile() && fileName.startsWith(EXCEL_FILE_NAME) && fileExtension.equals(NEW_EXCEL_FILE_EXTENSION));
+			return !(file.isFile() && fileName.startsWith(Constants.file.EXCEL_FILE_NAME) && fileExtension.equals(Constants.file.NEW_EXCEL_FILE_EXTENSION));
 		});
 
-		// Sorts out the latest file
+		// Sorts out the latest file.
 		if (!dummy.isEmpty()) {
 			dummy.sort(Comparator.comparing(File::getName));
 			recentFileName = FilenameUtils.getBaseName(dummy.get(dummy.size() - 1).getName());
@@ -128,7 +120,37 @@ public class FileService {
 	}
 	
 	/**
-	 * Checks that the file extension is compression format
+	 * Converts from list of author to string of author.
+	 * 
+	 * @param list of author
+	 * @return string of author
+	 */
+	public static String convertAuthor(List<String> author) {
+		StringBuffer result = new StringBuffer();
+
+		for (int i = 0; i < author.size(); i++) {
+			String person = author.get(i);
+			result.append(person);
+			if (i < author.size() - 1) {
+				result.append(Constants.file.DELIMITER_AUTHOR);
+			}
+		}
+
+		return result.toString();
+	}
+
+	/**
+	 * Converts from string of author to list of author.
+	 * 
+	 * @param string of author
+	 * @return list of author
+	 */
+	public static List<String> convertAuthor(String author) {
+		return Arrays.asList(author.split(Constants.file.DELIMITER_AUTHOR));
+	}
+
+	/**
+	 * Checks that the file extension is compression format.
 	 * 
 	 * @param File extension
 	 * @return Is the file extension compression format?
@@ -138,7 +160,7 @@ public class FileService {
 		boolean result = false;
 
 		for (CompressionFormat format : formatList) {
-			// Erase _(underscore)
+			// Erase _(underscore).
 			String converted = format.name().substring(1);
 
 			if (fileExtension.equalsIgnoreCase(converted)) {
@@ -149,9 +171,9 @@ public class FileService {
 
 		return result;
 	}
-	
+
 	/**
-	 * Creates webtoon instance
+	 * Creates webtoon instance.
 	 * 
 	 * @param Title, author, platform, completed, creation time, file extension, size
 	 * @return Webtoon instance
@@ -160,7 +182,7 @@ public class FileService {
 	private Webtoon createWebtoon(Object... attributes) {
 		Webtoon webtoon = new Webtoon();
 
-		// Not allow webtoon information to be null
+		// Not allow webtoon information to be null.
 		for (Object attr : attributes) {
 			if (attr == null) {
 				return webtoon;
@@ -174,12 +196,12 @@ public class FileService {
 		webtoon.setCreationTime((String) attributes[4]);
 		webtoon.setFileExtension((String) attributes[5]);
 		webtoon.setSize((long) attributes[6]);
-		
+
 		return webtoon;
 	}
-	
+
 	/**
-	 * Analyzes the file name and classifies it as platform, title, author and completed
+	 * Analyzes the file name and classifies it as platform, title, author and completed.
 	 * 
 	 * @param File name
 	 * @return Classified webtoon information
@@ -188,26 +210,26 @@ public class FileService {
 		StringBuffer sb = new StringBuffer(fileName);
 
 		// Platform
-		int i = sb.indexOf(DELIMITER_PLATFORM);
+		int i = sb.indexOf(Constants.file.DELIMITER_PLATFORM);
 		String platform = convertAcronymToFullText(sb.substring(0, i));
-		sb.delete(0, i + DELIMITER_PLATFORM.length());
+		sb.delete(0, i + Constants.file.DELIMITER_PLATFORM.length());
 
 		// Title
-		int j = sb.indexOf(DELIMITER_TITLE);
+		int j = sb.indexOf(Constants.file.DELIMITER_TITLE);
 		String title = sb.substring(0, j);
-		sb.delete(0, j + DELIMITER_TITLE.length());
+		sb.delete(0, j + Constants.file.DELIMITER_TITLE.length());
 
 		// Completed or uncompleted
-		boolean completed = fileName.contains(DELIMITER_COMPLETED);
+		boolean completed = fileName.contains(Constants.file.DELIMITER_COMPLETED);
 		
 		// Author
 		List<String> author;
 		if (completed) {
-			int k = sb.indexOf(DELIMITER_COMPLETED);
-			author = Arrays.asList(sb.substring(0, k).split(DELIMITER_AUTHOR));
-			sb.delete(0, k + DELIMITER_COMPLETED.length());
+			int k = sb.indexOf(Constants.file.DELIMITER_COMPLETED);
+			author = Arrays.asList(sb.substring(0, k).split(Constants.file.DELIMITER_AUTHOR));
+			sb.delete(0, k + Constants.file.DELIMITER_COMPLETED.length());
 		} else {
-			author = Arrays.asList(sb.toString().split(DELIMITER_AUTHOR));
+			author = Arrays.asList(sb.toString().split(Constants.file.DELIMITER_AUTHOR));
 		}
 
 		Map<String, Object> map = new HashMap<>();
@@ -218,9 +240,9 @@ public class FileService {
 
 		return map;
 	}
-	
+
 	/**
-	 * Returns creation time of the file
+	 * Returns creation time of the file.
 	 * (yyyy-MM-dd HH:mm:ss)
 	 * 
 	 * @param File
@@ -242,9 +264,9 @@ public class FileService {
 
 		return creationTime;
 	}
-	
+
 	/**
-	 * Converts acronym of platform to full text
+	 * Converts acronym of platform to full text.
 	 * 
 	 * @param Acronym of platform
 	 * @return Full text of platform

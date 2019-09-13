@@ -1,7 +1,7 @@
 package io.github.imsejin.file.model;
 
 /**
- * Website that serves webtoon to subscribers
+ * Website that serves webtoon to subscribers.
  * 
  * @author SEJIN
  */
