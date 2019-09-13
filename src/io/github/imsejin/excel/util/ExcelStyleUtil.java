@@ -120,12 +120,15 @@ public final class ExcelStyleUtil {
 	}
 
 	/*
-	 * /// DISCOVERED BUG THAT IT DOES NOT ADJUST WIDTH OF COLUMNS ENOUGH. ///
-	 * public static void makeColumnsFitContent(SXSSFSheet sheet, int columnsCount)
-	 * { for (int i = 0; i < columnsCount; i++) { sheet.trackColumnForAutoSizing(i);
-	 * sheet.autoSizeColumn(i); } }
-	 */
-	
+	/// DISCOVERED BUG THAT IT DOES NOT ADJUST WIDTH OF COLUMNS ENOUGH. ///
+	public static void makeColumnsFitContent(SXSSFSheet sheet, int columnsCount) {
+		for (int i = 0; i < columnsCount; i++) {
+			sheet.trackColumnForAutoSizing(i);
+			sheet.autoSizeColumn(i);
+		}
+	}
+	*/
+
 	/**
 	 * Hides extraneous rows and columns in the sheet.
 	 * 
