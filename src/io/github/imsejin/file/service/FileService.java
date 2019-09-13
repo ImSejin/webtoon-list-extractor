@@ -215,7 +215,7 @@ public class FileService {
 		sb.delete(0, i + Constants.file.DELIMITER_PLATFORM.length());
 
 		// Title
-		int j = sb.indexOf(Constants.file.DELIMITER_TITLE);
+		int j = sb.lastIndexOf(Constants.file.DELIMITER_TITLE);
 		String title = sb.substring(0, j);
 		sb.delete(0, j + Constants.file.DELIMITER_TITLE.length());
 
