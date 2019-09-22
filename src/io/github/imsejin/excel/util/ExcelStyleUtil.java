@@ -17,13 +17,13 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import io.github.imsejin.base.model.Constants;
+import io.github.imsejin.common.Constants;
+import io.github.imsejin.common.GeneralUtil;
 import io.github.imsejin.console.action.ConsoleAction;
 import io.github.imsejin.console.model.WorkingProcess;
 import io.github.imsejin.excel.model.ListHeader;
 import io.github.imsejin.excel.model.MetadataHeader;
 import io.github.imsejin.file.model.Webtoon;
-import io.github.imsejin.file.service.FileService;
 
 /**
  * ExcelStyleUtil
@@ -66,7 +66,7 @@ public final class ExcelStyleUtil {
 				maxLengthInSecondColumn = temp2;
 			}
 
-			int temp3 = FileService.convertAuthor(webtoon.getAuthor()).getBytes().length;
+			int temp3 = GeneralUtil.convertAuthor(webtoon.getAuthor()).getBytes().length;
 			if (maxLengthInThirdColumn < temp3) {
 				maxLengthInThirdColumn = temp3;
 			}
@@ -89,10 +89,10 @@ public final class ExcelStyleUtil {
 		// Sets the width of columns.
 		// One character needs 256 bytes.
 		final int padding = 256 * 6;
-		final double compensatory = 0.7;
+		// final double compensatory = 0.7;
 		sheet.setColumnWidth(0, (int) (maxLengthsInContent.get(0) * 256 + padding));
-		sheet.setColumnWidth(1, (int) (maxLengthsInContent.get(1) * 256 * compensatory));
-		sheet.setColumnWidth(2, (int) (maxLengthsInContent.get(2) * 256 * compensatory));
+		sheet.setColumnWidth(1, (int) (maxLengthsInContent.get(1) * 256 + padding)); // compensatory
+		sheet.setColumnWidth(2, (int) (maxLengthsInContent.get(2) * 256 + padding)); // compensatory
 		sheet.setColumnWidth(3, (int) (maxLengthsInContent.get(3) * 256 + padding));
 		sheet.setColumnWidth(4, (int) (maxLengthsInContent.get(4) * 256 + padding));
 	}

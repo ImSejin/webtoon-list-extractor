@@ -1,6 +1,6 @@
 package io.github.imsejin.console.action;
 
-import io.github.imsejin.base.model.ApplicationMetadata;
+import io.github.imsejin.common.ApplicationMetadata;
 import io.github.imsejin.console.model.WorkingProcess;
 import io.github.imsejin.console.serivce.ConsoleService;
 

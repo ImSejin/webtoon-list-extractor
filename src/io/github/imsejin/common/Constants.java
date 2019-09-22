@@ -1,4 +1,4 @@
-package io.github.imsejin.base.model;
+package io.github.imsejin.common;
 
 /**
  * Constants

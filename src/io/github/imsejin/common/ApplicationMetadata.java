@@ -1,4 +1,4 @@
-package io.github.imsejin.base.model;
+package io.github.imsejin.common;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi.Attribute;

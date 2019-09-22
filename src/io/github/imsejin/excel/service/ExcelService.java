@@ -25,12 +25,12 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import io.github.imsejin.base.model.Constants;
+import io.github.imsejin.common.Constants;
+import io.github.imsejin.common.GeneralUtil;
 import io.github.imsejin.excel.model.ListHeader;
 import io.github.imsejin.excel.model.MetadataHeader;
 import io.github.imsejin.excel.util.ExcelStyleUtil;
 import io.github.imsejin.file.model.Webtoon;
-import io.github.imsejin.file.service.FileService;
 
 /**
  * ExcelService
@@ -94,7 +94,7 @@ public class ExcelService {
 				// Reads value of the cells.
 				String platform = row.getCell(0).getStringCellValue();
 				String title = row.getCell(1).getStringCellValue();
-				List<String> author = FileService.convertAuthor(row.getCell(2).getStringCellValue());
+				List<String> author = GeneralUtil.convertAuthor(row.getCell(2).getStringCellValue());
 				boolean completed = row.getCell(3).getBooleanCellValue();
 				String creationTime = row.getCell(4).getStringCellValue();
 
@@ -176,7 +176,7 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				ExcelStyleUtil.decorateCell(row.createCell(0), styleOfContent).setCellValue(webtoon.getPlatform());
 				ExcelStyleUtil.decorateCell(row.createCell(1), styleOfContent).setCellValue(webtoon.getTitle());
-				ExcelStyleUtil.decorateCell(row.createCell(2), styleOfContent).setCellValue(FileService.convertAuthor(webtoon.getAuthor()));
+				ExcelStyleUtil.decorateCell(row.createCell(2), styleOfContent).setCellValue(GeneralUtil.convertAuthor(webtoon.getAuthor()));
 				ExcelStyleUtil.decorateCell(row.createCell(3), styleOfContent).setCellValue(webtoon.isCompleted());
 				ExcelStyleUtil.decorateCell(row.createCell(4), styleOfImportationDate).setCellValue(webtoon.getCreationTime());
 			}
@@ -225,7 +225,7 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				row.createCell(0).setCellValue(webtoon.getPlatform());
 				row.createCell(1).setCellValue(webtoon.getTitle());
-				row.createCell(2).setCellValue(FileService.convertAuthor(webtoon.getAuthor()));
+				row.createCell(2).setCellValue(GeneralUtil.convertAuthor(webtoon.getAuthor()));
 				row.createCell(3).setCellValue(webtoon.isCompleted());
 				row.createCell(4).setCellValue(webtoon.getCreationTime());
 			}
@@ -264,7 +264,7 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				ExcelStyleUtil.decorateCell(row.createCell(0), styleOfContent).setCellValue(webtoon.getPlatform());
 				ExcelStyleUtil.decorateCell(row.createCell(1), styleOfContent).setCellValue(webtoon.getTitle());
-				ExcelStyleUtil.decorateCell(row.createCell(2), styleOfContent).setCellValue(FileService.convertAuthor(webtoon.getAuthor()));
+				ExcelStyleUtil.decorateCell(row.createCell(2), styleOfContent).setCellValue(GeneralUtil.convertAuthor(webtoon.getAuthor()));
 				ExcelStyleUtil.decorateCell(row.createCell(3), styleOfContent).setCellValue(webtoon.isCompleted());
 				ExcelStyleUtil.decorateCell(row.createCell(4), styleOfImportationDate).setCellValue(webtoon.getCreationTime());
 			}
@@ -298,7 +298,7 @@ public class ExcelService {
 			previousList.forEach(previous -> {
 				dummy.removeIf(present -> {
 					boolean isTitleEqual = previous.getTitle().equals(present.getTitle());
-					boolean isAuthorEqual = FileService.convertAuthor(previous.getAuthor()).equals(FileService.convertAuthor(present.getAuthor()));
+					boolean isAuthorEqual = GeneralUtil.convertAuthor(previous.getAuthor()).equals(GeneralUtil.convertAuthor(present.getAuthor()));
 					boolean isPlatformEqual = previous.getPlatform().equals(present.getPlatform());
 					boolean isCompletionEqual = previous.isCompleted() == present.isCompleted();
 					
@@ -321,7 +321,7 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				row.createCell(0).setCellValue(webtoon.getPlatform());
 				row.createCell(1).setCellValue(webtoon.getTitle());
-				row.createCell(2).setCellValue(FileService.convertAuthor(webtoon.getAuthor()));
+				row.createCell(2).setCellValue(GeneralUtil.convertAuthor(webtoon.getAuthor()));
 				row.createCell(3).setCellValue(webtoon.isCompleted());
 				row.createCell(4).setCellValue(webtoon.getCreationTime());
 			}
@@ -333,7 +333,7 @@ public class ExcelService {
 
 				toList.forEach(to -> {
 					boolean isTitleEqual = from.getTitle().equals(to.getTitle());
-					boolean isAuthorEqual = FileService.convertAuthor(from.getAuthor()).equals(FileService.convertAuthor(to.getAuthor()));
+					boolean isAuthorEqual = GeneralUtil.convertAuthor(from.getAuthor()).equals(GeneralUtil.convertAuthor(to.getAuthor()));
 					boolean isPlatformEqual = from.getPlatform().equals(to.getPlatform());
 					boolean isCompletionEqual = from.isCompleted() == to.isCompleted();
 

@@ -7,7 +7,7 @@ import com.diogonunes.jcdp.color.api.Ansi.Attribute;
 import com.diogonunes.jcdp.color.api.Ansi.BColor;
 import com.diogonunes.jcdp.color.api.Ansi.FColor;
 
-import io.github.imsejin.base.model.Constants;
+import io.github.imsejin.common.Constants;
 import io.github.imsejin.console.model.WorkingProcess;
 
 /**
