@@ -26,7 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import io.github.imsejin.common.Constants;
-import io.github.imsejin.common.GeneralUtil;
+import io.github.imsejin.common.util.GeneralUtil;
 import io.github.imsejin.excel.model.ListHeader;
 import io.github.imsejin.excel.model.MetadataHeader;
 import io.github.imsejin.excel.util.ExcelStyleUtil;

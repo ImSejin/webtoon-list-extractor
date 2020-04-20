@@ -1,7 +1,10 @@
-package io.github.imsejin.common;
+package io.github.imsejin.common.util;
 
 import java.util.Arrays;
 import java.util.List;
+
+import io.github.imsejin.common.Constants;
+import io.github.imsejin.common.Constants.file;
 
 /**
  * GeneralUtil

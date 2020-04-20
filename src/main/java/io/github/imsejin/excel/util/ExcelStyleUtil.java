@@ -18,7 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import io.github.imsejin.common.Constants;
-import io.github.imsejin.common.GeneralUtil;
+import io.github.imsejin.common.util.GeneralUtil;
 import io.github.imsejin.console.action.ConsoleAction;
 import io.github.imsejin.console.model.WorkingProcess;
 import io.github.imsejin.excel.model.ListHeader;
