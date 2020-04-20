@@ -24,27 +24,27 @@ public enum Platform {
 	T("Toptoon", "https://toptoon.com"),
 	TM("Toomics", "http://www.toomics.com"),
 	TS("Tstore", "https://www.tstore.co.kr");
-	
-	private String fullText;
-	
-	private String url;
-	
-	Platform(String fullText, String url) {
-		this.fullText = fullText;
-		this.url = url;
-	}
-	
-	public String getFullText() {
-		return fullText;
-	}
-	
-	public String getUrl() {
-		return url;
-	}
-	
-	@Override
-	public String toString() {
-		return "[fullText=" + this.fullText + ", url=" + this.url + "]";
-	}
+
+    private String fullText;
+
+    private String url;
+
+    Platform(String fullText, String url) {
+        this.fullText = fullText;
+        this.url = url;
+    }
+
+    public String getFullText() {
+        return fullText;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
+    public String toString() {
+        return "[fullText=" + this.fullText + ", url=" + this.url + "]";
+    }
 
 }

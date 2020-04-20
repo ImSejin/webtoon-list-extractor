@@ -1,5 +1,5 @@
 /**
- * Copyright 2018-2019 the original author or authors.
+ * Copyright 2018-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ import io.github.imsejin.base.action.BaseAction;
 
 public final class WebtoonListExtractorApplication {
 
-	public static void main(String[] args) {
-	    BaseAction baseAction = new BaseAction(args);
-		baseAction.execute();
+    public static void main(String[] args) {
+        BaseAction baseAction = new BaseAction(args);
+        baseAction.execute();
 
-		// Fix the bug that `ERROR: JDWP Unable to get JNI 1.2 environment`
-		System.exit(0);
-	}
+        // Fix the bug that `ERROR: JDWP Unable to get JNI 1.2 environment`
+        System.exit(0);
+    }
 
 }

@@ -13,45 +13,45 @@ import io.github.imsejin.file.service.FileService;
  */
 public class FileAction {
 
-	private final FileService fileService;
+    private final FileService fileService;
 
-	private final String currentPath;
+    private final String currentPath;
 
-	public FileAction(FileService fileService) {
-	    this.fileService = fileService;
-	    this.currentPath = this.fileService.getCurrentAbsolutePath(); // "D:\\Cartoons\\Webtoons\\";
-	}
+    public FileAction(FileService fileService) {
+        this.fileService = fileService;
+        this.currentPath = this.fileService.getCurrentAbsolutePath(); // "D:\\Cartoons\\Webtoons\\";
+    }
 
-	public FileAction(FileService fileService, String path) {
-		this.fileService = fileService;
-		this.currentPath = path;
-	}
+    public FileAction(FileService fileService, String path) {
+        this.fileService = fileService;
+        this.currentPath = path;
+    }
 
-	public String getCurrentPath() {
-		return this.currentPath;
-	}
+    public String getCurrentPath() {
+        return this.currentPath;
+    }
 
-	/**
-	 * Returns list of webtoons.
-	 * 
-	 * @return List of webtoons
-	 */
-	public List<Webtoon> getWebtoonsList() {
-		List<File> filesList = fileService.getFilesList(currentPath);
-		List<Webtoon> webtoonsList = fileService.convertFilesListToWebtoonsList(filesList);
+    /**
+     * Returns list of webtoons.
+     * 
+     * @return List of webtoons
+     */
+    public List<Webtoon> getWebtoonsList() {
+        List<File> filesList = fileService.getFilesList(currentPath);
+        List<Webtoon> webtoonsList = fileService.convertFilesListToWebtoonsList(filesList);
 
-		return webtoonsList;
-	}
+        return webtoonsList;
+    }
 
-	/**
-	 * Returns recent file name.
-	 * 
-	 * @return
-	 */
-	public String getRecentFileName() {
-		List<File> filesList = fileService.getFilesList(currentPath);
+    /**
+     * Returns recent file name.
+     * 
+     * @return
+     */
+    public String getRecentFileName() {
+        List<File> filesList = fileService.getFilesList(currentPath);
 
-		return fileService.getFileName(filesList);
-	}
+        return fileService.getFileName(filesList);
+    }
 
 }

@@ -2,38 +2,44 @@ package io.github.imsejin.file.model;
 
 import java.util.List;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Webtoon
  * 
  * @author SEJIN
  */
-@Data
+@Getter
+@Setter
+@ToString
+@Builder
 public class Webtoon {
 
-	/** Title in webtoon */
-	private String title;
+    /** Title in webtoon */
+    private String title;
 
-	/** Author of webtoon */
-	private List<String> author;
+    /** Author of webtoon */
+    private List<String> author;
 
-	/** Website that serves webtoon to subscribers */
-	private String platform;
-	
-	/** URL of the website */
-	private String platformUrl;
+    /** Website that serves webtoon to subscribers */
+    private String platform;
 
-	/** Completed or uncompleted */
-	private boolean isCompleted;
+    /** URL of the website */
+    private String platformUrl;
 
-	/** Creation time */
-	private String creationTime;
+    /** Completed or uncompleted */
+    private boolean isCompleted;
 
-	/** Compression format */
-	private String fileExtension;
+    /** Creation time */
+    private String creationTime;
 
-	/** Compressed file size */
-	private long size;
+    /** Compression format */
+    private String fileExtension;
+
+    /** Compressed file size */
+    private long size;
 
 }

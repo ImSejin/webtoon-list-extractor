@@ -99,12 +99,13 @@ public class ExcelService {
 				String creationTime = row.getCell(4).getStringCellValue();
 
 				// Sets the value into webtoon.
-				Webtoon webtoon = new Webtoon();
-				webtoon.setPlatform(platform);
-				webtoon.setTitle(title);
-				webtoon.setAuthor(author);
-				webtoon.setCompleted(completed);
-				webtoon.setCreationTime(creationTime);
+				Webtoon webtoon = Webtoon.builder()
+				        .platform(platform)
+				        .title(title)
+				        .author(author)
+				        .isCompleted(completed)
+				        .creationTime(creationTime)
+				        .build();
 
 				// Puts the webtoon into list.
 				webtoonsList.add(webtoon);

@@ -143,10 +143,11 @@ public final class ExcelStyleUtil {
 		int numberOfRows = sheet.getPhysicalNumberOfRows();
 
 		// Sets up printing console logs.
-		WorkingProcess process = new WorkingProcess();
-		process.setMessage("Hiding rows");
-		process.setTotalProcess(Constants.excel.NEW_MAX_COUNT_OF_ROWS - numberOfRows);
-		ConsoleAction.print(process);
+        WorkingProcess process = WorkingProcess.builder()
+                .message("Hiding rows")
+                .totalProcess(Constants.excel.NEW_MAX_COUNT_OF_ROWS - numberOfRows)
+                .build();
+        ConsoleAction.print(process);
 
 		for (int i = numberOfRows; i < Constants.excel.NEW_MAX_COUNT_OF_ROWS; i++) {
 			process.setCurrentProcess(i);
@@ -160,9 +161,10 @@ public final class ExcelStyleUtil {
 		int numberOfColumns = sheet.getRow(0).getLastCellNum();
 
 		// Sets up printing console logs.
-		WorkingProcess process = new WorkingProcess();
-		process.setMessage("Hiding columns");
-		process.setTotalProcess(Constants.excel.NEW_MAX_COUNT_OF_COLUMNS - numberOfColumns);
+		WorkingProcess process = WorkingProcess.builder()
+                .message("Hiding columns")
+                .totalProcess(Constants.excel.NEW_MAX_COUNT_OF_COLUMNS - numberOfColumns)
+                .build();
 		ConsoleAction.print(process);
 
 		for (int i = numberOfColumns; i < Constants.excel.NEW_MAX_COUNT_OF_COLUMNS; i++) {
@@ -181,9 +183,10 @@ public final class ExcelStyleUtil {
 		int numberOfRows = sheet.getPhysicalNumberOfRows();
 		
 		// Sets up printing console logs.
-		WorkingProcess process = new WorkingProcess();
-		process.setMessage("Removing rows");
-		process.setTotalProcess(numberOfRows - 1);
+		WorkingProcess process = WorkingProcess.builder()
+                .message("Removing rows")
+                .totalProcess(numberOfRows - 1)
+                .build();
 		ConsoleAction.print(process);
 
 		for (int i = 1; i < numberOfRows; i++) {

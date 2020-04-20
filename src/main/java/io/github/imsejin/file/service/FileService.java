@@ -148,26 +148,26 @@ public class FileService {
 	 * @param Title, author, platform, completed, creation time, file extension, size
 	 * @return Webtoon instance
 	 */
-	@SuppressWarnings("unchecked")
-	private Webtoon createWebtoon(Object... attributes) {
-		Webtoon webtoon = new Webtoon();
+    @SuppressWarnings("unchecked")
+    private Webtoon createWebtoon(Object... attributes) {
+        // Not allow webtoon information to be null.
+        for (Object attr : attributes) {
+            if (attr == null) {
+                return null;
+            }
+        }
 
-		// Not allow webtoon information to be null.
-		for (Object attr : attributes) {
-			if (attr == null) {
-				return webtoon;
-			}
-		}
+        Webtoon webtoon = Webtoon.builder()
+		        .title((String) attributes[0])
+		        .author((List<String>) attributes[1])
+		        .platform((String) attributes[2])
+		        .isCompleted((boolean) attributes[3])
+		        .creationTime((String) attributes[4])
+		        .fileExtension((String) attributes[5])
+		        .size((long) attributes[6])
+		        .build();
 
-		webtoon.setTitle((String) attributes[0]);
-		webtoon.setAuthor((List<String>) attributes[1]);
-		webtoon.setPlatform((String) attributes[2]);
-		webtoon.setCompleted((boolean) attributes[3]);
-		webtoon.setCreationTime((String) attributes[4]);
-		webtoon.setFileExtension((String) attributes[5]);
-		webtoon.setSize((long) attributes[6]);
-
-		return webtoon;
+        return webtoon;
 	}
 
 	/**
