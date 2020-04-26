@@ -11,12 +11,13 @@ import io.github.imsejin.console.serivce.ConsoleService;
  */
 public class ConsoleAction {
 
-	public ConsoleAction() {
-		// Initially clear console
-		ConsoleService.clear();
+    static {
+        // Initially clear console
+        ConsoleService.clear();
 
-		ApplicationMetadata.printMetadata();
-	}
+        // Prints the information of this application
+        ApplicationMetadata.printMetadata();
+    }
 
 	public synchronized static void print(WorkingProcess workingProcess) {
 		// ConsoleService will be multiply used in thread

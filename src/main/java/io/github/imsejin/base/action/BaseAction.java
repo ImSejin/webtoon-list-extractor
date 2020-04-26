@@ -3,7 +3,6 @@ package io.github.imsejin.base.action;
 import java.util.List;
 
 import io.github.imsejin.common.util.StringUtil;
-import io.github.imsejin.console.action.ConsoleAction;
 import io.github.imsejin.console.serivce.ConsoleService;
 import io.github.imsejin.excel.action.ExcelAction;
 import io.github.imsejin.excel.service.ExcelService;
@@ -22,14 +21,12 @@ public class BaseAction {
 
     private final ExcelAction excelAction;
 
-    private final ConsoleAction consoleAction;
 
     public BaseAction(String[] args) {
         this.fileAction = args == null || args.length == 0
                 ? new FileAction(new FileService())
                 : new FileAction(new FileService(), args[0]);
         this.excelAction = new ExcelAction(new ExcelService());
-        this.consoleAction = new ConsoleAction();
     }
 
     public void execute() {
