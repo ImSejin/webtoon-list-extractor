@@ -36,8 +36,6 @@ public final class ExcelStyleUtil {
 
 	/**
 	 * Adjusts width of columns in sheet for list to fit the content.
-	 * 
-	 * @param sheet, webtoonList
 	 */
 	public static void makeColumnsFitContent(Sheet sheet, List<Webtoon> webtoonList) {
 		// Gets lengths of the header string in sheet for list.
@@ -56,29 +54,21 @@ public final class ExcelStyleUtil {
 		int maxLengthInFourthColumn = lengthsOfListHeader.get(3); // Fourth column type is boolean.
 		int maxLengthInFifthColumn = lengthsOfListHeader.get(4);
 		for (Webtoon webtoon : webtoonList) {
-			int temp1 = webtoon.getPlatform().getBytes().length;
-			if (maxLengthInFirstColumn < temp1) {
-				maxLengthInFirstColumn = temp1;
-			}
+            int temp1 = webtoon.getPlatform().getBytes().length;
+            if (maxLengthInFirstColumn < temp1) maxLengthInFirstColumn = temp1;
 
-			int temp2 = webtoon.getTitle().getBytes().length;
-			if (maxLengthInSecondColumn < temp2) {
-				maxLengthInSecondColumn = temp2;
-			}
+            int temp2 = webtoon.getTitle().getBytes().length;
+            if (maxLengthInSecondColumn < temp2) maxLengthInSecondColumn = temp2;
 
-			int temp3 = GeneralUtil.convertAuthor(webtoon.getAuthor()).getBytes().length;
-			if (maxLengthInThirdColumn < temp3) {
-				maxLengthInThirdColumn = temp3;
-			}
+            int temp3 = GeneralUtil.convertAuthors(webtoon.getAuthor()).getBytes().length;
+            if (maxLengthInThirdColumn < temp3) maxLengthInThirdColumn = temp3;
 
 			// The content in fourth column is fixed.
 			maxLengthInFourthColumn = maxLengthInFourthColumn < 5 ? 5 : maxLengthInFourthColumn;
 
-			int temp5 = webtoon.getCreationTime().getBytes().length;
-			if (maxLengthInFifthColumn < temp5) {
-				maxLengthInFifthColumn = temp5;
-			}
-		}
+            int temp5 = webtoon.getCreationTime().getBytes().length;
+            if (maxLengthInFifthColumn < temp5) maxLengthInFifthColumn = temp5;
+        }
 
 		maxLengthsInContent.add(maxLengthInFirstColumn);
 		maxLengthsInContent.add(maxLengthInSecondColumn);
@@ -99,8 +89,6 @@ public final class ExcelStyleUtil {
 
 	/**
 	 * Adjusts width of columns in sheet for metadata to fit the content.
-	 * 
-	 * @param sheet
 	 */
 	public static void makeColumnsFitContent(Sheet sheet) {
 		// Gets lengths of the header string in sheet for metadata.
@@ -131,8 +119,6 @@ public final class ExcelStyleUtil {
 
 	/**
 	 * Hides extraneous rows and columns in the sheet.
-	 * 
-	 * @param sheet
 	 */
 	public static void hideExtraneousCells(Sheet sheet) {
 		hideExtraneousRows(sheet);
@@ -176,8 +162,6 @@ public final class ExcelStyleUtil {
 	
 	/**
 	 * Removes all rows in the sheet except for header before updating the sheet for list.
-	 * 
-	 * @param sheet
 	 */
 	public static void removeAllRows(XSSFSheet sheet) {
 		int numberOfRows = sheet.getPhysicalNumberOfRows();
@@ -199,8 +183,6 @@ public final class ExcelStyleUtil {
 
 	/**
 	 * Increases row height to accommodate one and a half line of text
-	 * 
-	 * @param sheet, row, multiples
 	 */
 	public static void increaseRowHeight(XSSFSheet sheet, XSSFRow row, double multiples) {
 		row.setHeightInPoints((float) (sheet.getDefaultRowHeightInPoints() * multiples));
@@ -208,8 +190,6 @@ public final class ExcelStyleUtil {
 
 	/**
 	 * Resets row height to default value
-	 * 
-	 * @param sheet
 	 */
 	public static void initializeRowHeight(XSSFSheet sheet) {
 		XSSFRow row;
@@ -221,9 +201,6 @@ public final class ExcelStyleUtil {
 
 	/**
 	 * Returns the decorated cell.
-	 * 
-	 * @param cell, style
-	 * @return the decorated cell
 	 */
 	public static XSSFCell decorateCell(XSSFCell cell, CellStyle style) {
 		cell.setCellStyle(style);

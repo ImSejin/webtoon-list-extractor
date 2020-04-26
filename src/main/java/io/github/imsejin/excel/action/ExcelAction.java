@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -20,20 +19,15 @@ import io.github.imsejin.file.model.Webtoon;
  */
 public class ExcelAction {
 
-	private final ExcelService excelService;
+	private final ExcelService excelService = new ExcelService();
 
-	public ExcelAction(ExcelService excelService) {
-		this.excelService = excelService;
-	}
-
-	public void createWebtoonList(String path, List<Webtoon> webtoonList)
-			throws FileNotFoundException, IOException, ParseException {
-		File file = null;
+    public void createWebtoonList(String pathName, List<Webtoon> webtoonList) throws FileNotFoundException, IOException {
+        File file = null;
 		XSSFWorkbook workbook = null;
 
 		try {
 			// Constitutes data in the excel file and returns instances to interact with next method.
-			Object[] interactions = excelService.writer.create(path, webtoonList);
+			Object[] interactions = excelService.writer.create(pathName, webtoonList);
 			file = (File) interactions[0];
 			workbook = (XSSFWorkbook) interactions[1];
 
@@ -45,9 +39,9 @@ public class ExcelAction {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void updateWebtoonList(String path, String recentFileName, List<Webtoon> webtoonList)
-			throws FileNotFoundException, IOException, InvalidFormatException, ParseException {
+    @SuppressWarnings("unchecked")
+    public void updateWebtoonList(String pathName, String latestFileName, List<Webtoon> webtoonList)
+            throws FileNotFoundException, IOException, InvalidFormatException {
 		FileInputStream fis = null;
 		XSSFWorkbook workbook = null;
 		List<Webtoon> previousList = null;
@@ -56,14 +50,14 @@ public class ExcelAction {
 
 		try {
 			// Reads data in the excel file and returns instances to interact with next method.
-			Object[] interactions = excelService.reader.read(path, recentFileName);
+			Object[] interactions = excelService.reader.read(pathName, latestFileName);
 			fis = (FileInputStream) interactions[0];
 			workbook = (XSSFWorkbook) interactions[1];
 			previousList = (List<Webtoon>) interactions[2];
 			previousVersion = (String) interactions[3];
 
 			// Receives instances from previous method, updates data in the excel file and returns instance to interact with next method.
-			file = excelService.writer.update(path, previousList, webtoonList, previousVersion, fis, workbook);
+			file = excelService.writer.update(pathName, previousList, webtoonList, previousVersion, fis, workbook);
 
 			// Receives instances from previous method, decorates each sheets and saves it.
 			excelService.decorateWhenUpdate(workbook, webtoonList);

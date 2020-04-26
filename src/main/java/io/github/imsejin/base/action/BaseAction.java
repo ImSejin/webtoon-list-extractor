@@ -5,7 +5,6 @@ import java.util.List;
 import io.github.imsejin.common.util.StringUtil;
 import io.github.imsejin.console.serivce.ConsoleService;
 import io.github.imsejin.excel.action.ExcelAction;
-import io.github.imsejin.excel.service.ExcelService;
 import io.github.imsejin.file.action.FileAction;
 import io.github.imsejin.file.model.Webtoon;
 import io.github.imsejin.file.service.FileService;
@@ -19,14 +18,12 @@ public class BaseAction {
 
     private final FileAction fileAction;
 
-    private final ExcelAction excelAction;
-
+    private final ExcelAction excelAction = new ExcelAction();
 
     public BaseAction(String[] args) {
         this.fileAction = args == null || args.length == 0
                 ? new FileAction(new FileService())
                 : new FileAction(new FileService(), args[0]);
-        this.excelAction = new ExcelAction(new ExcelService());
     }
 
     public void execute() {
