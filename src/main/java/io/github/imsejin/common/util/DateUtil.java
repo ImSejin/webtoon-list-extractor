@@ -37,31 +37,15 @@ public final class DateUtil {
      * 날짜 유형을 문자열로 변환한다.
      */
     private static final String convertTypeToPattern(DateType type) {
-        String pattern = null;
+        String pattern;
 
-        switch (type) {
-        case YEAR:
-            pattern = "yyyy";
-            break;
-        case MONTH:
-            pattern = "MM";
-            break;
-        case DAY:
-            pattern = "dd";
-            break;
-        case HOUR:
-            pattern = "HH";
-            break;
-        case MINUTE:
-            pattern = "mm";
-            break;
-        case SECOND:
-            pattern = "ss";
-            break;
-        default:
-            pattern = "yyyyMMdd";
-            break;
-        }
+        if (type == DateType.YEAR) pattern = "yyyy";
+        else if (type == DateType.MONTH) pattern = "MM";
+        else if (type == DateType.DAY) pattern = "dd";
+        else if (type == DateType.HOUR) pattern = "HH";
+        else if (type == DateType.MINUTE) pattern = "mm";
+        else if (type == DateType.SECOND) pattern = "ss";
+        else pattern = "yyyyMMdd";
 
         return pattern;
     }
@@ -97,8 +81,7 @@ public final class DateUtil {
 	 * @throws IllegalArgumentException
 	 *             날짜 포맷이 정해진 바와 다를 경우. 입력 값이 <code>null</code>인 경우.
 	 */
-	public static String addYearMonthDay(String sDate, int year, int month,
-			int day) {
+    public static String addYearMonthDay(String sDate, int year, int month, int day) {
 
 		String dateStr = validChkDate(sDate);
 

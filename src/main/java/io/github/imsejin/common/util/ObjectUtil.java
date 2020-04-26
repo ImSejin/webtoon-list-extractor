@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 객체의 로딩을 지원하는 유틸 클래스
  */
-public class ObjectUtil {
+public final class ObjectUtil {
 
     private ObjectUtil() {}
 

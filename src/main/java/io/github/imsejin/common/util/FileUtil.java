@@ -7,9 +7,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -26,7 +33,9 @@ import io.github.imsejin.common.util.DateUtil.DateType;
  */
 public final class FileUtil {
 
-    private static final String ZIP_FILE_EXTENSION = ".zip";
+    private static final List<String> extensions = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
+
+    private static final String ZIP_EXTENSION = extensions.get(extensions.size() - 2); // zip
 
     private FileUtil() {}
 
@@ -115,16 +124,14 @@ public final class FileUtil {
 	}
 
 	/**
-	 * <p>
 	 * 파일의 확장자를 가져온다.
-	 * </p>
 	 * 
-	 * @param filename
-	 *            <code>String</code>
-	 * @return 파일확장자
+	 * <pre>
+	 * FileUtil.getFileExtension("D:/Program Files/Java/jdk1.8.0_202/README.html"): "html"
+	 * </pre>
 	 */
-	public static String getFileExtension(String filename) {
-		return FilenameUtils.getExtension(filename);
+	public static String getExtension(File file) {
+		return FilenameUtils.getExtension(file.getName());
 	}
 
 	/**
@@ -221,7 +228,7 @@ public final class FileUtil {
      */
     public static File compress(Path path, String zipFileName, boolean willDelete) {
         // 압축 파일을 제외한 파일 리스트
-        File[] fileArray = path.toFile().listFiles((file, fileNm) -> !fileNm.endsWith(ZIP_FILE_EXTENSION));
+        File[] fileArray = path.toFile().listFiles((file, fileNm) -> !fileNm.endsWith(ZIP_EXTENSION));
 
         // 존재하지 않은 경로면, 압축을 중단한다
         if (fileArray == null) return null;
@@ -233,7 +240,7 @@ public final class FileUtil {
         if (files == null || files.length == 0) return null;
 
         // 압축파일명에 `.zip` 확장자가 붙어 있지 않으면, 붙여준다
-        if (!zipFileName.endsWith(ZIP_FILE_EXTENSION)) zipFileName += ZIP_FILE_EXTENSION;
+        if (!zipFileName.endsWith(ZIP_EXTENSION)) zipFileName += ZIP_EXTENSION;
 
         // Create the ZIP file
         File zipFile = Paths.get(path.toString(), zipFileName).toFile();
@@ -268,6 +275,55 @@ public final class FileUtil {
         }
 
         return zipFile;
+    }
+
+    /**
+     * 파일의 생성시간을 반환한다.
+     * 
+     * <pre>
+     * File file = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
+     * 
+     * FileUtil.getCreationTime(file): "2020-02-29 23:06:34"
+     * </pre>
+     */
+    public static String getCreationTime(File file) {
+        BasicFileAttributes attributes;
+        FileTime time = null;
+
+        try {
+            attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+            time = attributes.creationTime();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        String creationTime = LocalDateTime.ofInstant(time.toInstant(), ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        return creationTime;
+    }
+    
+    /**
+     * 압축 파일인지 확인한다.
+     * 
+     * <pre>
+     * File file1 = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
+     * File file2 = new File("D:/Program Files/Java/jdk1.8.0_202/src.zip");
+     * 
+     * FileUtil.isZip(file1): false
+     * FileUtil.isZip(file2): true
+     * </pre>
+     */
+    public static boolean isZip(File file) {
+        if (file == null || !file.isFile()) return false;
+
+        for (String extension : extensions) {
+            if (extension.equalsIgnoreCase(getExtension(file))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
