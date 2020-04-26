@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.github.imsejin.file.model.Webtoon;
 import io.github.imsejin.file.service.FileService;
+import lombok.Getter;
 
 /**
  * FileAction
@@ -13,45 +14,36 @@ import io.github.imsejin.file.service.FileService;
  */
 public class FileAction {
 
-    private final FileService fileService;
+    private final FileService service = new FileService();
 
-    private final String currentPath;
+    @Getter
+    private final String currentPathName;
 
-    public FileAction(FileService fileService) {
-        this.fileService = fileService;
-        this.currentPath = this.fileService.getCurrentAbsolutePath(); // "D:\\Cartoons\\Webtoons\\";
+    public FileAction() {
+        this.currentPathName = this.service.getCurrentAbsolutePath(); // "D:\\Cartoons\\Webtoons\\";
     }
 
-    public FileAction(FileService fileService, String path) {
-        this.fileService = fileService;
-        this.currentPath = path;
-    }
-
-    public String getCurrentPath() {
-        return this.currentPath;
+    public FileAction(String path) {
+        this.currentPathName = path;
     }
 
     /**
      * Returns list of webtoons.
-     * 
-     * @return List of webtoons
      */
     public List<Webtoon> getWebtoonsList() {
-        List<File> filesList = fileService.getFilesList(currentPath);
-        List<Webtoon> webtoonsList = fileService.convertFilesListToWebtoonsList(filesList);
+        List<File> fileList = service.getFileList(currentPathName);
+        List<Webtoon> webtoonList = service.convertToWebtoonList(fileList);
 
-        return webtoonsList;
+        return webtoonList;
     }
 
     /**
-     * Returns recent file name.
-     * 
-     * @return
+     * Returns latest file name.
      */
-    public String getRecentFileName() {
-        List<File> filesList = fileService.getFilesList(currentPath);
+    public String getLatestWebtoonListName() {
+        List<File> fileList = service.getFileList(currentPathName);
 
-        return fileService.getFileName(filesList);
+        return service.getLatestFileName(fileList);
     }
 
 }

@@ -1,10 +1,15 @@
 package io.github.imsejin.file.model;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Website that serves webtoon to subscribers.
  * 
  * @author SEJIN
  */
+@Getter
+@RequiredArgsConstructor
 public enum Platform {
 
 	CA("Comica", "http://www.comica.com"),
@@ -25,22 +30,9 @@ public enum Platform {
 	TM("Toomics", "http://www.toomics.com"),
 	TS("Tstore", "https://www.tstore.co.kr");
 
-    private String fullText;
+    private final String fullText;
 
-    private String url;
-
-    Platform(String fullText, String url) {
-        this.fullText = fullText;
-        this.url = url;
-    }
-
-    public String getFullText() {
-        return fullText;
-    }
-
-    public String getUrl() {
-        return url;
-    }
+    private final String url;
 
     @Override
     public String toString() {
