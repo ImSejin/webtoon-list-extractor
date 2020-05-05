@@ -19,17 +19,18 @@ public class ConsoleAction {
         ApplicationMetadata.printMetadata();
     }
 
-	public synchronized static void print(WorkingProcess workingProcess) {
-		// ConsoleService will be multiply used in thread
-		ConsoleService consoleService = new ConsoleService();
-		consoleService.setWorkingProcess(workingProcess);
+    private ConsoleAction() {}
 
-		// Separates upper console logs
-		System.out.println();
-		System.out.println();
+    public synchronized static void print(WorkingProcess workingProcess) {
+        // ConsoleService will be multiply used in thread
+        ConsoleService consoleService = new ConsoleService();
+        consoleService.setWorkingProcess(workingProcess);
 
-		Thread t = new Thread(consoleService);
-		t.start();
-	}
+        // Separates upper console logs
+        System.out.println();
+        System.out.println();
+
+        new Thread(consoleService).start();
+    }
 
 }

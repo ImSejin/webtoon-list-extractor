@@ -7,7 +7,6 @@ import io.github.imsejin.console.serivce.ConsoleService;
 import io.github.imsejin.excel.action.ExcelAction;
 import io.github.imsejin.file.action.FileAction;
 import io.github.imsejin.file.model.Webtoon;
-import io.github.imsejin.file.service.FileService;
 
 /**
  * BaseAction
@@ -22,28 +21,28 @@ public class BaseAction {
 
     public BaseAction(String[] args) {
         this.fileAction = args == null || args.length == 0
-                ? new FileAction(new FileService())
-                : new FileAction(new FileService(), args[0]);
+                ? new FileAction()
+                : new FileAction(args[0]);
     }
 
     public void execute() {
-        String currentPath = fileAction.getCurrentPath();
+        String currentPathName = fileAction.getCurrentPathName();
         List<Webtoon> webtoonList = fileAction.getWebtoonsList();
-        String recentFileName = fileAction.getRecentFileName();
+        String latestFileName = fileAction.getLatestWebtoonListName();
 
         try {
-            if (StringUtil.isBlank(recentFileName)) {
-                excelAction.createWebtoonList(currentPath, webtoonList);
+            if (StringUtil.isBlank(latestFileName)) {
+                excelAction.createWebtoonList(currentPathName, webtoonList);
             } else {
-                excelAction.updateWebtoonList(currentPath, recentFileName, webtoonList);
+                excelAction.updateWebtoonList(currentPathName, latestFileName, webtoonList);
             }
 
             ConsoleService.clear();
             System.out.println("WebtoonListExtractor is successfully done.");
-        } catch (Exception e) {
+        } catch (Exception ex) {
             ConsoleService.clear();
             System.out.println("WebtoonListExtractor failed.");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 

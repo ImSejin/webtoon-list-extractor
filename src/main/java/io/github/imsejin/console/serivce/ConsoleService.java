@@ -1,5 +1,7 @@
 package io.github.imsejin.console.serivce;
 
+import static io.github.imsejin.common.Constants.console.*;
+
 import java.io.IOException;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
@@ -7,8 +9,8 @@ import com.diogonunes.jcdp.color.api.Ansi.Attribute;
 import com.diogonunes.jcdp.color.api.Ansi.BColor;
 import com.diogonunes.jcdp.color.api.Ansi.FColor;
 
-import io.github.imsejin.common.Constants;
 import io.github.imsejin.console.model.WorkingProcess;
+import lombok.Setter;
 
 /**
  * ConsoleService
@@ -17,17 +19,16 @@ import io.github.imsejin.console.model.WorkingProcess;
  */
 public class ConsoleService implements Runnable {
 
-	private final int compensatoryMultiples = Constants.console.PERCENT_MULTIPLES / Constants.console.PROGRESS_BAR_LENGTH;
+    private final int compensatoryMultiples = PERCENT_MULTIPLES / PROGRESS_BAR_LENGTH;
 
-	private WorkingProcess workingProcess;
+    @Setter
+    private WorkingProcess workingProcess;
 
-	private static final ProcessBuilder COMMAND = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
-	private static final ColoredPrinter cp = new ColoredPrinter.Builder(1, false).foreground(FColor.WHITE)
-			.background(BColor.BLACK).build();
-
-	public void setWorkingProcess(WorkingProcess workingProcess) {
-		this.workingProcess = workingProcess;
-	}
+    private static final ProcessBuilder COMMAND = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
+    private static final ColoredPrinter cp = new ColoredPrinter.Builder(1, false)
+	        .foreground(FColor.WHITE)
+			.background(BColor.BLACK)
+			.build();
 
 	public synchronized void printProcessing() throws InterruptedException {
 		String message = workingProcess.getMessage();
@@ -37,11 +38,11 @@ public class ConsoleService implements Runnable {
 		// Gets changing current process and prints progress states
 		while ((i = workingProcess.getCurrentProcess() + 1) < totalProcess) {
 			// Calculates the percentage of current progress
-			double percentage = ((double) i / totalProcess) * Constants.console.PERCENT_MULTIPLES;
+			double percentage = ((double) i / totalProcess) * PERCENT_MULTIPLES;
 
 			// Prints progress bar
 			System.out.print(" |");
-			for (int j = 0; j < Constants.console.PROGRESS_BAR_LENGTH; j++) {
+			for (int j = 0; j < PROGRESS_BAR_LENGTH; j++) {
 				if (percentage > j * compensatoryMultiples) {
 					cp.print(" ", Attribute.HIDDEN, FColor.GREEN, BColor.GREEN);
 				} else {
