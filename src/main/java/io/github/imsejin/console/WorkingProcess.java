@@ -1,4 +1,4 @@
-package io.github.imsejin.console.model;
+package io.github.imsejin.console;
 
 import lombok.Builder;
 import lombok.Getter;
