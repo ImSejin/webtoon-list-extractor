@@ -11,12 +11,15 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 
+import io.github.imsejin.common.util.FileUtil;
 import io.github.imsejin.common.util.ObjectUtil;
 import io.github.imsejin.file.model.Platform;
 import io.github.imsejin.file.model.Webtoon;
+import lombok.NonNull;
 
 /**
  * FileService
@@ -36,7 +39,7 @@ public class FileService {
 	/**
 	 * Returns list of files and directories in the path.
 	 */
-	public List<File> getFileList(String pathName) {
+	public List<File> getFileList(@NonNull String pathName) {
         File file = new File(pathName);
         return Arrays.asList(file.listFiles());
 	}
@@ -45,88 +48,75 @@ public class FileService {
 	 * Converts list of files and directories to list of webtoons.
 	 */
 	public List<Webtoon> convertToWebtoonList(List<File> fileList) {
-        if (fileList == null) return new ArrayList<>();
+        if (fileList == null) fileList = new ArrayList<>();
 
-        List<Webtoon> webtoonList = new ArrayList<>();
+        List<Webtoon> webtoonList = fileList.stream()
+                .filter(FileUtil::isZip)
+                .map(this::convertFileToWebtoon)
+                .sorted(Comparator.comparing(Webtoon::getPlatform)
+                        .thenComparing(Webtoon::getTitle)) // Sorts list of webtoons.
+                .peek(System.out::println) // Prints console logs.
+                .collect(Collectors.toList());
 
-        for (File file : fileList) {
-            if (!isZip(file)) continue;
-            
-            String fileName = FilenameUtils.getBaseName(file.getName());
-            String fileExtension = FilenameUtils.getExtension(file.getName());
+        // Prints console logs.
+        System.out.println("\r\nTotal " + webtoonList.size() + " webtoon" + (webtoonList.size() > 1 ? "s" : ""));
 
-            Map<String, Object> webtoonInfo = classifyWebtoonInfo(fileName);
-
-            Object title = webtoonInfo.get("title");
-            Object author = webtoonInfo.get("author");
-            Object platform = webtoonInfo.get("platform");
-            Object completed = webtoonInfo.get("completed");
-            Object creationTime = getCreationTime(file);
-            Object size = file.length();
-
-            Webtoon webtoon = createWebtoon(title, author, platform, completed, creationTime, fileExtension, size);
-            webtoonList.add(webtoon);
-
-            // Prints console logs.
-            System.out.println(webtoon.toString());
-        }
-
-		// Prints console logs.
-		System.out.println("\r\nTotal " + webtoonList.size() + " webtoon" + (webtoonList.size() > 1 ? "s" : ""));
-
-		// Sorts list of webtoons.
-		webtoonList.sort(Comparator.comparing(Webtoon::getPlatform).thenComparing(Webtoon::getTitle));
-
-		return webtoonList;
+        return webtoonList;
     }
 
     public String getLatestFileName(List<File> fileList) {
         String latestFileName = null;
+
+        // Shallow copy.
         List<File> dummy = new ArrayList<>(fileList);
 
+        // Removes non-webtoon-list from list.
         dummy.removeIf(file -> {
             String fileName = FilenameUtils.getBaseName(file.getName());
             String fileExtension = FilenameUtils.getExtension(file.getName());
 
-            return !(file.isFile() && fileName.startsWith(EXCEL_FILE_NAME) && fileExtension.equals(NEW_EXCEL_FILE_EXTENSION));
+            return !file.isFile() || !fileName.startsWith(EXCEL_FILE_NAME) || !fileExtension.equals(NEW_EXCEL_FILE_EXTENSION);
         });
 
         // Sorts out the latest file.
         if (ObjectUtil.isNotEmpty(dummy)) {
-            String fileName = dummy.stream().map(file -> file.getName()).sorted(Comparator.reverseOrder()).findFirst().get();
+            String fileName = dummy.stream().map(File::getName).sorted(Comparator.reverseOrder()).findFirst().get();
             latestFileName = FilenameUtils.getBaseName(fileName);
         }
 
         return latestFileName;
     }
-	
-	/**
-	 * Creates webtoon instance.
-	 */
-    @SuppressWarnings("unchecked")
-    private Webtoon createWebtoon(Object... attributes) {
-        // Not allow webtoon information to be null.
-        for (Object attr : attributes) {
-            if (attr == null) return null;
-        }
 
-        Webtoon webtoon = Webtoon.builder()
-		        .title((String) attributes[0])
-		        .author((List<String>) attributes[1])
-		        .platform((String) attributes[2])
-		        .isCompleted((boolean) attributes[3])
-		        .creationTime((String) attributes[4])
-		        .fileExtension((String) attributes[5])
-		        .size((long) attributes[6])
-		        .build();
+    /**
+     * converts file to webtoon.
+     */
+    private Webtoon convertFileToWebtoon(File file) {
+        String fileName = FilenameUtils.getBaseName(file.getName());
+        Map<String, String> webtoonInfo = classifyWebtoonInfo(fileName);
 
-        return webtoon;
-	}
+        String title = webtoonInfo.get("title");
+        String authors = webtoonInfo.get("authors");
+        String platform = webtoonInfo.get("platform");
+        String completed = webtoonInfo.get("completed");
+        String creationTime = getCreationTime(file);
+        String fileExtension = FilenameUtils.getExtension(file.getName());
+        long size = file.length();
 
-	/**
-	 * Analyzes the file name and classifies it as platform, title, author and completed.
-	 */
-	private Map<String, Object> classifyWebtoonInfo(String fileName) {
+        return Webtoon.builder()
+                .title(title)
+                .authors(authors)
+                .platform(platform)
+                .isCompleted(Boolean.valueOf(completed))
+                .creationTime(creationTime)
+                .fileExtension(fileExtension)
+                .size(size)
+                .build();
+    }
+
+    /**
+     * Analyzes the file name and classifies it as platform, title, author and completed.
+     */
+	private Map<String, String> classifyWebtoonInfo(String fileName) {
 		StringBuffer sb = new StringBuffer(fileName);
 
 		// Platform
@@ -140,23 +130,18 @@ public class FileService {
 		sb.delete(0, j + DELIMITER_TITLE.length());
 
 		// Completed or uncompleted
-		boolean completed = fileName.contains(DELIMITER_COMPLETED);
+		boolean completed = fileName.endsWith(DELIMITER_COMPLETED);
 		
-		// Author
-		List<String> author;
-		if (completed) {
-			int k = sb.indexOf(DELIMITER_COMPLETED);
-			author = Arrays.asList(sb.substring(0, k).split(DELIMITER_AUTHOR));
-			sb.delete(0, k + DELIMITER_COMPLETED.length());
-		} else {
-			author = Arrays.asList(sb.toString().split(DELIMITER_AUTHOR));
-		}
+		// Authors
+		String authors = completed
+		        ? sb.substring(0, sb.indexOf(DELIMITER_COMPLETED))
+		        : sb.toString();
 
-		Map<String, Object> map = new HashMap<>();
+		Map<String, String> map = new HashMap<>();
 		map.put("title", title);
-		map.put("author", author);
+		map.put("authors", authors);
 		map.put("platform", platform);
-		map.put("completed", completed);
+		map.put("completed", String.valueOf(completed));
 
 		return map;
 	}

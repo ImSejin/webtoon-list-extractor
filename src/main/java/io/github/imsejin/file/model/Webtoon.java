@@ -1,9 +1,8 @@
 package io.github.imsejin.file.model;
 
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,17 +13,20 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
+@ToString(of = { "title", "authors", "platform" })
 @Builder
 public class Webtoon {
 
     /** Title in webtoon */
+    @NonNull
     private String title;
 
-    /** Author of webtoon */
-    private List<String> author;
+    /** Authors of webtoon */
+    @NonNull
+    private String authors;
 
     /** Website that serves webtoon to subscribers */
+    @NonNull
     private String platform;
 
     /** URL of the website */
@@ -34,6 +36,7 @@ public class Webtoon {
     private boolean isCompleted;
 
     /** Creation time */
+    @NonNull
     private String creationTime;
 
     /** Compression format */

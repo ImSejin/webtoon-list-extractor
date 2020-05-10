@@ -6,6 +6,7 @@ import java.util.List;
 import io.github.imsejin.file.model.Webtoon;
 import io.github.imsejin.file.service.FileService;
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * FileAction
@@ -17,14 +18,21 @@ public class FileAction {
     private final FileService service = new FileService();
 
     @Getter
+    @NonNull
     private final String currentPathName;
 
+    /**
+     * 경로를 지정하지 않았을 경우
+     */
     public FileAction() {
-        this.currentPathName = this.service.getCurrentAbsolutePath(); // "D:\\Cartoons\\Webtoons\\";
+        this.currentPathName = this.service.getCurrentAbsolutePath(); // "D:/Cartoons/Webtoons";
     }
 
-    public FileAction(String path) {
-        this.currentPathName = path;
+    /**
+     * 경로를 지정한 경우
+     */
+    public FileAction(@NonNull String pathName) {
+        this.currentPathName = pathName;
     }
 
     /**
