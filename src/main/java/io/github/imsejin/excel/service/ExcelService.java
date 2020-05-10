@@ -5,6 +5,7 @@ import static io.github.imsejin.common.Constants.file.*;
 import static io.github.imsejin.common.util.GeneralUtil.*;
 import static io.github.imsejin.excel.util.ExcelStyleUtil.*;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -29,6 +29,7 @@ import io.github.imsejin.common.util.DateUtil;
 import io.github.imsejin.excel.model.ListHeader;
 import io.github.imsejin.excel.model.MetadataHeader;
 import io.github.imsejin.file.model.Webtoon;
+import lombok.SneakyThrows;
 
 /**
  * ExcelService
@@ -54,7 +55,8 @@ public class ExcelService {
 		 * You cannot override or access the initial rows in the template file.
 		 * You must not use `new SXSSFWorkbook(new XSSFWorkbook(FileInputStream))`.
 		 */
-		public Object[] read(String pathName, String latestFileName) throws FileNotFoundException, IOException {
+        @SneakyThrows({ FileNotFoundException.class, IOException.class })
+		public Object[] read(String pathName, String latestFileName) {
 			Object[] interactions = new Object[4];
 			File file = new File(pathName, latestFileName + "." + NEW_EXCEL_FILE_EXTENSION);
 			
@@ -82,7 +84,7 @@ public class ExcelService {
 				// Reads value of the cells.
 				String platform = row.getCell(0).getStringCellValue();
 				String title = row.getCell(1).getStringCellValue();
-				List<String> author = convertAuthors(row.getCell(2).getStringCellValue());
+				String authors = row.getCell(2).getStringCellValue();
 				boolean completed = row.getCell(3).getBooleanCellValue();
 				String creationTime = row.getCell(4).getStringCellValue();
 
@@ -90,7 +92,7 @@ public class ExcelService {
 				Webtoon webtoon = Webtoon.builder()
 				        .platform(platform)
 				        .title(title)
-				        .author(author)
+				        .authors(authors)
 				        .isCompleted(completed)
 				        .creationTime(creationTime)
 				        .build();
@@ -102,7 +104,7 @@ public class ExcelService {
 			return webtoonsList;
 		}
 
-		private String getVersion(Workbook workbook) throws FileNotFoundException, IOException {
+		private String getVersion(Workbook workbook) {
 			String version = "";
 
 			try {
@@ -115,7 +117,6 @@ public class ExcelService {
 				System.out.println();
 				ex.printStackTrace();
 				System.out.println(": Metadata is corrupted.");
-				System.out.println(ex.getMessage());
 			}
 
 			return version;
@@ -127,7 +128,7 @@ public class ExcelService {
 
 		private writer() {}
 
-		public Object[] create(String pathName, List<Webtoon> webtoonList) throws FileNotFoundException, IOException {
+		public Object[] create(String pathName, List<Webtoon> webtoonList) {
 			Object[] interactions = new Object[2];
 			File file = new File(pathName, EXCEL_FILE_NAME + "." + NEW_EXCEL_FILE_EXTENSION);
 			XSSFWorkbook workbook = new XSSFWorkbook();
@@ -165,7 +166,7 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				decorateCell(row.createCell(0), styleOfContent).setCellValue(webtoon.getPlatform());
 				decorateCell(row.createCell(1), styleOfContent).setCellValue(webtoon.getTitle());
-				decorateCell(row.createCell(2), styleOfContent).setCellValue(convertAuthors(webtoon.getAuthor()));
+				decorateCell(row.createCell(2), styleOfContent).setCellValue(webtoon.getAuthors());
 				decorateCell(row.createCell(3), styleOfContent).setCellValue(webtoon.isCompleted());
 				decorateCell(row.createCell(4), styleOfImportationDate).setCellValue(webtoon.getCreationTime());
 			}
@@ -210,14 +211,14 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				row.createCell(0).setCellValue(webtoon.getPlatform());
 				row.createCell(1).setCellValue(webtoon.getTitle());
-				row.createCell(2).setCellValue(convertAuthors(webtoon.getAuthor()));
+				row.createCell(2).setCellValue(webtoon.getAuthors());
 				row.createCell(3).setCellValue(webtoon.isCompleted());
 				row.createCell(4).setCellValue(webtoon.getCreationTime());
 			}
 		}
 		
         public File update(String pathName, List<Webtoon> previousList, List<Webtoon> presentList, String version, FileInputStream fis,
-                XSSFWorkbook workbook) throws IOException, FileNotFoundException, InvalidFormatException {
+                XSSFWorkbook workbook) {
             File file = new File(pathName, EXCEL_FILE_NAME + suffix + "." + NEW_EXCEL_FILE_EXTENSION);
 
             updateListSheet(workbook, previousList, presentList);
@@ -248,7 +249,7 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				decorateCell(row.createCell(0), styleOfContent).setCellValue(webtoon.getPlatform());
 				decorateCell(row.createCell(1), styleOfContent).setCellValue(webtoon.getTitle());
-				decorateCell(row.createCell(2), styleOfContent).setCellValue(convertAuthors(webtoon.getAuthor()));
+				decorateCell(row.createCell(2), styleOfContent).setCellValue(webtoon.getAuthors());
 				decorateCell(row.createCell(3), styleOfContent).setCellValue(webtoon.isCompleted());
 				decorateCell(row.createCell(4), styleOfImportationDate).setCellValue(webtoon.getCreationTime());
 			}
@@ -282,7 +283,7 @@ public class ExcelService {
 			previousList.forEach(previous -> {
 				dummy.removeIf(present -> {
 					boolean isTitleEqual = previous.getTitle().equals(present.getTitle());
-					boolean isAuthorEqual = convertAuthors(previous.getAuthor()).equals(convertAuthors(present.getAuthor()));
+					boolean isAuthorEqual = previous.getAuthors().equals(present.getAuthors());
 					boolean isPlatformEqual = previous.getPlatform().equals(present.getPlatform());
 					boolean isCompletionEqual = previous.isCompleted() == present.isCompleted();
 					
@@ -305,7 +306,7 @@ public class ExcelService {
 				// Sets the data of webtoon into cell.
 				row.createCell(0).setCellValue(webtoon.getPlatform());
 				row.createCell(1).setCellValue(webtoon.getTitle());
-				row.createCell(2).setCellValue(convertAuthors(webtoon.getAuthor()));
+				row.createCell(2).setCellValue(webtoon.getAuthors());
 				row.createCell(3).setCellValue(webtoon.isCompleted());
 				row.createCell(4).setCellValue(webtoon.getCreationTime());
 			}
@@ -317,7 +318,7 @@ public class ExcelService {
 
                 for (Webtoon to : toList) {
                     boolean isTitleEqual = from.getTitle().equals(to.getTitle());
-                    boolean isAuthorEqual = convertAuthors(from.getAuthor()).equals(convertAuthors(to.getAuthor()));
+                    boolean isAuthorEqual = from.getAuthors().equals(to.getAuthors());
                     boolean isPlatformEqual = from.getPlatform().equals(to.getPlatform());
                     boolean isCompletionEqual = from.isCompleted() == to.isCompleted();
 
@@ -354,9 +355,13 @@ public class ExcelService {
 		hideExtraneousRows(metadataSheet);
 	}
 
-    public void save(File file, XSSFWorkbook workbook) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(file); XSSFWorkbook wb = workbook) {
-            wb.write(fos);
+    @SneakyThrows(IOException.class)
+    public void save(File file, XSSFWorkbook workbook) {
+        try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(file)); XSSFWorkbook wb = workbook) {
+            workbook.write(fos);
+            workbook.close();
+        } finally {
+            if (workbook != null) workbook.close();
         }
     }
 

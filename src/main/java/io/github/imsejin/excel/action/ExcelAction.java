@@ -2,11 +2,9 @@ package io.github.imsejin.excel.action;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import io.github.imsejin.excel.service.ExcelService;
@@ -21,7 +19,7 @@ public class ExcelAction {
 
 	private final ExcelService excelService = new ExcelService();
 
-    public void createWebtoonList(String pathName, List<Webtoon> webtoonList) throws FileNotFoundException, IOException {
+    public void createWebtoonList(String pathName, List<Webtoon> webtoonList) throws IOException {
         File file = null;
 		XSSFWorkbook workbook = null;
 
@@ -40,9 +38,8 @@ public class ExcelAction {
 	}
 
     @SuppressWarnings("unchecked")
-    public void updateWebtoonList(String pathName, String latestFileName, List<Webtoon> webtoonList)
-            throws FileNotFoundException, IOException, InvalidFormatException {
-		FileInputStream fis = null;
+    public void updateWebtoonList(String pathName, String latestFileName, List<Webtoon> webtoonList) throws IOException {
+        FileInputStream fis = null;
 		XSSFWorkbook workbook = null;
 		List<Webtoon> previousList = null;
 		String previousVersion = null;
