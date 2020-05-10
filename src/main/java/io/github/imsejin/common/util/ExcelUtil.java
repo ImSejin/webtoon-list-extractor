@@ -24,6 +24,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Excel utilities
  * 
@@ -31,9 +33,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 엑셀 파일을 읽어 리스트를 반환하거나, 리스트를 엑셀 파일로 출력해주는 엑셀 유틸리티.
  * </pre>
  */
-public final class ExcelUtil {
-
-    private ExcelUtil() {}
+@UtilityClass
+public class ExcelUtil {
 
     /**
      * ExcelUtil.reader
@@ -45,35 +46,34 @@ public final class ExcelUtil {
      * 2. 상속받은 필드는 제외된다, 즉 해당 VO에서 정의된 필드만 계산한다.
      * </pre>
      */
-    public static final class reader {
-
-        private reader() {}
+    @UtilityClass
+    public class reader {
 
         /**
          * 헤더를 제외한 모든 로우를 읽어 VO를 반환한다.
          */
-        public static <T> List<T> read(Class<T> clazz, File file) {
+        public <T> List<T> read(Class<T> clazz, File file) {
             return read(clazz, file, null, null);
         }
 
         /**
          * 헤더는 제외되며, 지정된 로우부터 읽어 VO를 반환한다.
          */
-        public static <T> List<T> readFromIndex(Class<T> clazz, File file, Integer startIndex) {
+        public <T> List<T> readFromIndex(Class<T> clazz, File file, Integer startIndex) {
             return read(clazz, file, startIndex, null);
         }
 
         /**
          * 헤더는 제외되며, 지정된 로우까지 읽어 VO를 반환한다.
          */
-        public static <T> List<T> readToIndex(Class<T> clazz, File file, Integer endIndex) {
+        public <T> List<T> readToIndex(Class<T> clazz, File file, Integer endIndex) {
             return read(clazz, file, null, endIndex);
         }
 
         /**
          * 헤더는 제외되며, 지정된 로우부터 또 달리 지정된 로우까지 읽어 VO를 반환한다.
          */
-        public static <T> List<T> read(Class<T> clazz, File file, Integer startIndex, Integer endIndex) {
+        public <T> List<T> read(Class<T> clazz, File file, Integer startIndex, Integer endIndex) {
             List<T> result = new ArrayList<>();
 
             try (FileInputStream fis = new FileInputStream(file); Workbook workbook = new XSSFWorkbook(fis)) {
@@ -118,7 +118,7 @@ public final class ExcelUtil {
         /**
          * 상속받은 필드는 포함하지 않으나, 필드의 순서가 일정하다.
          */
-        private static <T> void setDataByFields(List<T> result, T vo, Class<T> clazz, Row row) {
+        private <T> void setDataByFields(List<T> result, T vo, Class<T> clazz, Row row) {
             Cell cell = null;
 
             int i = 0;
@@ -148,7 +148,7 @@ public final class ExcelUtil {
         /**
          * VO에 정의된 자료형으로 변환한다.
          */
-        private static Object convertToOwnDataType(Field field, String val) {
+        private Object convertToOwnDataType(Field field, String val) {
             Class<?> type = field.getType();
             Object result = null;
 
@@ -190,21 +190,20 @@ public final class ExcelUtil {
      * 3. `headerNames`와 VO의 필드 순서가 일치해야 한다.
      * </pre>
      */
-    public static final class writer {
-
-        private writer() {}
+    @UtilityClass
+    public class writer {
 
         /**
          * 엑셀 파일을 생성한다, 값이 null이거나 empty string인 경우 empty string으로 치환한다.
          */
-        public static <T> void write(List<T> list, File file, String[] headerNames) {
+        public <T> void write(List<T> list, File file, String[] headerNames) {
             write(list, file, headerNames, "");
         }
 
         /**
          * 엑셀 파일을 생성한다, 값이 null이거나 empty string인 경우 지정된 문자열로 치환한다.
          */
-        public static <T> void write(List<T> list, File file, String[] headerNames, final String defaultValue) {
+        public <T> void write(List<T> list, File file, String[] headerNames, final String defaultValue) {
             try (FileOutputStream fos = new FileOutputStream(file); Workbook workbook = new XSSFWorkbook()) {
                 Sheet sheet = workbook.createSheet("PRD");
                 Row row = sheet.createRow(0);
@@ -246,7 +245,7 @@ public final class ExcelUtil {
          * 상속받은 메서드까지 포함하나, 메서드의 순서가 일정하지 않다.
          */
         @Deprecated
-        private static <T> void setDataByMethods(List<T> list, Class<T> clazz, String defaultValue, Sheet sheet, Row row, Cell cell)
+        private <T> void setDataByMethods(List<T> list, Class<T> clazz, String defaultValue, Sheet sheet, Row row, Cell cell)
                 throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
             List<Method> methods = new ArrayList<>(Arrays.asList(clazz.getMethods()));
             methods.removeIf(method -> (!method.getName().startsWith("get") && method.getParameterCount() != 0)
@@ -271,7 +270,7 @@ public final class ExcelUtil {
          * 상속받은 필드는 포함하지 않으나, 필드의 순서가 일정하다.
          */
         @SuppressWarnings("unchecked")
-        private static <T> void setDataByFields(List<T> list, String defaultValue, Sheet sheet, Row row, Cell cell) {
+        private <T> void setDataByFields(List<T> list, String defaultValue, Sheet sheet, Row row, Cell cell) {
             Class<T> clazz = (Class<T>) list.get(0).getClass();
             List<Field> fields = Stream.of(clazz.getDeclaredFields()).filter(field -> isStringClass(field) || isPrimitive(field) || isWrapperClass(field))
                     .collect(Collectors.toList());
@@ -297,7 +296,7 @@ public final class ExcelUtil {
             }
         }
 
-        private static <T> String convertToString(Field field, T vo) {
+        private <T> String convertToString(Field field, T vo) {
             // private 접근자라도 접근하게 한다
             field.setAccessible(true);
 
@@ -325,7 +324,7 @@ public final class ExcelUtil {
         /**
          * 자료형이 문자열(java.lang.String)인지 확인한다.
          */
-        private static boolean isStringClass(Field field) {
+        private boolean isStringClass(Field field) {
             Class<?> type = field.getType();
             return type.equals(String.class);
         }
@@ -333,7 +332,7 @@ public final class ExcelUtil {
         /**
          * 자료형이 기초형인지 확인한다.
          */
-        private static boolean isPrimitive(Field field) {
+        private boolean isPrimitive(Field field) {
             Class<?> type = field.getType();
             return type.equals(byte.class) || type.equals(short.class) || type.equals(int.class) || type.equals(long.class) || type.equals(float.class)
                     || type.equals(double.class) || type.equals(char.class) || type.equals(boolean.class);
@@ -342,7 +341,7 @@ public final class ExcelUtil {
         /**
          * 자료형이 래퍼클래스인지 확인한다.
          */
-        private static boolean isWrapperClass(Field field) {
+        private boolean isWrapperClass(Field field) {
             Class<?> type = field.getType();
             return type.equals(Byte.class) || type.equals(Short.class) || type.equals(Integer.class) || type.equals(Long.class) || type.equals(Float.class)
                     || type.equals(Double.class) || type.equals(Character.class) || type.equals(Boolean.class);

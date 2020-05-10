@@ -1,5 +1,7 @@
 package io.github.imsejin.common.util;
 
+import static java.time.format.DateTimeFormatter.*;
+
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,7 +9,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -19,24 +20,23 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * Date utilities
- * 
- * @author eGov F/W
  */
-public final class DateUtil {
+@UtilityClass
+public class DateUtil {
 
     /** 날짜 유형 */
     public enum DateType {
         YEAR, MONTH, DAY, HOUR, MINUTE, SECOND
     }
 
-    private DateUtil() {}
-
     /**
      * 날짜 유형을 문자열로 변환한다.
      */
-    private static final String convertTypeToPattern(DateType type) {
+    private String convertTypeToPattern(DateType type) {
         String pattern;
 
         if (type == DateType.YEAR) pattern = "yyyy";
@@ -81,7 +81,7 @@ public final class DateUtil {
 	 * @throws IllegalArgumentException
 	 *             날짜 포맷이 정해진 바와 다를 경우. 입력 값이 <code>null</code>인 경우.
 	 */
-    public static String addYearMonthDay(String sDate, int year, int month, int day) {
+    public String addYearMonthDay(String sDate, int year, int month, int day) {
 
 		String dateStr = validChkDate(sDate);
 
@@ -126,7 +126,7 @@ public final class DateUtil {
 	 * @throws IllegalArgumentException
 	 *             날짜 포맷이 정해진 바와 다를 경우. 입력 값이 <code>null</code>인 경우.
 	 */
-	public static String addYear(String dateStr, int year) {
+	public String addYear(String dateStr, int year) {
 		return addYearMonthDay(dateStr, year, 0, 0);
 	}
 
@@ -153,7 +153,7 @@ public final class DateUtil {
 	 * @throws IllegalArgumentException
 	 *             날짜 포맷이 정해진 바와 다를 경우. 입력 값이 <code>null</code>인 경우.
 	 */
-	public static String addMonth(String dateStr, int month) {
+	public String addMonth(String dateStr, int month) {
 		return addYearMonthDay(dateStr, 0, month, 0);
 	}
 
@@ -183,7 +183,7 @@ public final class DateUtil {
 	 * @throws IllegalArgumentException
 	 *             날짜 포맷이 정해진 바와 다를 경우. 입력 값이 <code>null</code>인 경우.
 	 */
-	public static String addDay(String dateStr, int day) {
+	public String addDay(String dateStr, int day) {
 		return addYearMonthDay(dateStr, 0, 0, day);
 	}
 
@@ -211,7 +211,7 @@ public final class DateUtil {
 	 * @throws IllegalArgumentException
 	 *             날짜 포맷이 정해진 바와 다를 경우. 입력 값이 <code>null</code>인 경우.
 	 */
-	public static int getDaysDiff(String sDate1, String sDate2) {
+	public int getDaysDiff(String sDate1, String sDate2) {
 		String dateStr1 = validChkDate(sDate1);
 		String dateStr2 = validChkDate(sDate2);
 
@@ -256,7 +256,7 @@ public final class DateUtil {
 	 *            날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
 	 * @return 유효한 날짜인지 여부
 	 */
-	public static boolean checkDate(String sDate) {
+	public boolean checkDate(String sDate) {
 		String dateStr = validChkDate(sDate);
 
 		String year = dateStr.substring(0, 4);
@@ -279,7 +279,7 @@ public final class DateUtil {
 	 *            일
 	 * @return 유효한 날짜인지 여부
 	 */
-	public static boolean checkDate(String year, String month, String day) {
+	public boolean checkDate(String year, String month, String day) {
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd",
 					Locale.getDefault());
@@ -308,7 +308,7 @@ public final class DateUtil {
 	 *            변경할 TimeZone(""이면 변경 안함)
 	 * @return 소스 String의 날짜 포맷을 변경한 String
 	 */
-	public static String convertDate(String strSource, String fromDateFormat,
+	public String convertDate(String strSource, String fromDateFormat,
 			String toDateFormat, String strTimeZone) {
 		SimpleDateFormat simpledateformat = null;
 		Date date = null;
@@ -354,7 +354,7 @@ public final class DateUtil {
 	 *            구분자
 	 * @return 변환된 문자열
 	 */
-	public static String formatDate(String sDate, String ch) {
+	public String formatDate(String sDate, String ch) {
 		String dateStr = validChkDate(sDate);
 
 		String str = dateStr.trim();
@@ -409,7 +409,7 @@ public final class DateUtil {
 	 *            구분자
 	 * @return 변환된 문자열
 	 */
-	public static String formatTime(String sTime, String ch) {
+	public String formatTime(String sTime, String ch) {
 		String timeStr = validChkTime(sTime);
 		return timeStr.substring(0, 2) + ch + timeStr.substring(2, 4) + ch
 				+ timeStr.substring(4, 6);
@@ -418,7 +418,7 @@ public final class DateUtil {
     /**
      * 입력받은 연도가 윤년인지 아닌지 검사한다.
      */
-    public static boolean isLeapYear(int year) {
+    public boolean isLeapYear(int year) {
         return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? true : false;
     }
 
@@ -428,7 +428,7 @@ public final class DateUtil {
 	 * 
 	 * @return String yyyymmdd형태의 현재 한국시간. <BR>
 	 */
-	public static String getCurrentDate(String dateType) {
+	public String getCurrentDate(String dateType) {
 		Calendar aCalendar = Calendar.getInstance();
 
 		int year = aCalendar.get(Calendar.YEAR);
@@ -477,7 +477,7 @@ public final class DateUtil {
 	 *      "EEE, d MMM yyyy HH:mm:ss Z" Wed, 4 Jul 2001 12:08:56 -0700
 	 *      "yyMMddHHmmssZ" 010704120856-0700
 	 */
-	public static String convertDate(String sDate, String sTime,
+	public String convertDate(String sDate, String sTime,
 			String sFormatStr) {
 		String dateStr = validChkDate(sDate);
 		String timeStr = validChkTime(sTime);
@@ -506,7 +506,7 @@ public final class DateUtil {
 	 *            종료일자
 	 * @return 임의일자
 	 */
-	public static String getRandomDate(String sDate1, String sDate2) {
+	public String getRandomDate(String sDate1, String sDate2) {
 		String dateStr1 = validChkDate(sDate1);
 		String dateStr2 = validChkDate(sDate2);
 
@@ -557,7 +557,7 @@ public final class DateUtil {
 	 *            영문 요일명
 	 * @return 국문 요일명
 	 */
-	public static String convertWeek(String sWeek) {
+	public String convertWeek(String sWeek) {
 		String retStr = null;
 
 		if (sWeek.equals("SUN")) {
@@ -586,7 +586,7 @@ public final class DateUtil {
 	 *            일자
 	 * @return 유효 여부
 	 */
-	public static boolean validDate(String sDate) {
+	public boolean validDate(String sDate) {
 		String dateStr = validChkDate(sDate);
 
 		Calendar cal;
@@ -628,7 +628,7 @@ public final class DateUtil {
 	 *            요일 (DAY_OF_WEEK)
 	 * @return 유효 여부
 	 */
-	public static boolean validDate(String sDate, int sWeek) {
+	public boolean validDate(String sDate, int sWeek) {
 		String dateStr = validChkDate(sDate);
 
 		Calendar cal;
@@ -659,7 +659,7 @@ public final class DateUtil {
 	 *            입력시간
 	 * @return 유효 여부
 	 */
-	public static boolean validTime(String sTime) {
+	public boolean validTime(String sTime) {
 		String timeStr = validChkTime(sTime);
 
 		Calendar cal;
@@ -700,7 +700,7 @@ public final class DateUtil {
 	 *            일
 	 * @return 계산된 일자의 요일(DAY_OF_WEEK)
 	 */
-	public static String addYMDtoWeek(String sDate, int year, int month, int day) {
+	public String addYMDtoWeek(String sDate, int year, int month, int day) {
 		String dateStr = validChkDate(sDate);
 
 		dateStr = addYearMonthDay(dateStr, year, month, day);
@@ -740,7 +740,7 @@ public final class DateUtil {
 	 *            포멧스트링
 	 * @return
 	 */
-	public static String addYMDtoDayTime(String sDate, String sTime, int year,
+	public String addYMDtoDayTime(String sDate, String sTime, int year,
 			int month, int day, int hour, int minute, String formatStr) {
 		String dateStr = validChkDate(sDate);
 		String timeStr = validChkTime(sTime);
@@ -780,7 +780,7 @@ public final class DateUtil {
 	 *            일자
 	 * @return int(일자)
 	 */
-	public static int datetoInt(String sDate) {
+	public int datetoInt(String sDate) {
 		return Integer.parseInt(convertDate(sDate, "0000", "yyyyMMdd"));
 	}
 
@@ -791,7 +791,7 @@ public final class DateUtil {
 	 *            시간
 	 * @return int(시간)
 	 */
-	public static int timetoInt(String sTime) {
+	public int timetoInt(String sTime) {
 		return Integer.parseInt(convertDate("00000101", sTime, "HHmm"));
 	}
 
@@ -801,7 +801,7 @@ public final class DateUtil {
 	 * @param dateStr dateStr
 	 * @return
 	 */
-	public static String validChkDate(String dateStr) {
+	public String validChkDate(String dateStr) {
 		String _dateStr = dateStr;
 
 		if (dateStr == null
@@ -821,7 +821,7 @@ public final class DateUtil {
 	 * @param timeStr timeStr
 	 * @return
 	 */
-	public static String validChkTime(String timeStr) {
+	public String validChkTime(String timeStr) {
 		String _timeStr = timeStr;
 
 		if (_timeStr.length() == 5) {
@@ -845,7 +845,7 @@ public final class DateUtil {
      * @return String The Date string. Type, yyyyMMdd
      * HH:mm:ss.
      */
-    public static String toString(Date date, String format, Locale locale) {
+    public String toString(Date date, String format, Locale locale) {
 
         if (StringUtil.isBlank(format)) {
             format = "yyyy-MM-dd HH:mm:ss";
@@ -862,7 +862,7 @@ public final class DateUtil {
         return tmp;
     }
     
-    public static String getDateFromToday(String format, int fromDay){
+    public String getDateFromToday(String format, int fromDay){
         Calendar calendar = new GregorianCalendar();
         calendar.add(Calendar.DATE, fromDay);
         SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -905,7 +905,7 @@ public final class DateUtil {
      * }
      *</pre>
      */
-    public static Map<String, Object> convertCompoundedDate(String date) throws Exception {
+    public Map<String, Object> convertCompoundedDate(String date) throws Exception {
         Map<String, Object> result = new HashMap<>();
         List<String> simpleDates = new ArrayList<>();
         List<Object> complexDates = new ArrayList<>();
@@ -967,8 +967,8 @@ public final class DateUtil {
      * DateUtil.getToday(): "20191231"
      * </pre>
      */
-    public static String getToday() {
-        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    public String getToday() {
+        return LocalDate.now().format(ofPattern("yyyyMMdd"));
     }
 
     /**
@@ -982,8 +982,8 @@ public final class DateUtil {
      * DateUtil.getToday(DateType.DAY): "31"
      * </pre>
      */
-    public static String getToday(DateType type) {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(convertTypeToPattern(type)));
+    public String getToday(DateType type) {
+        return LocalDateTime.now().format(ofPattern(convertTypeToPattern(type)));
     }
 
     /**
@@ -994,8 +994,8 @@ public final class DateUtil {
      * DateUtil.getYesterday(): "20191230"
      * </pre>
      */
-    public static String getYesterday() {
-        return LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    public String getYesterday() {
+        return LocalDate.now().minusDays(1).format(ofPattern("yyyyMMdd"));
     }
 
     /**
@@ -1009,8 +1009,8 @@ public final class DateUtil {
      * DateUtil.getYesterday(DateType.DAY): "30"
      * </pre>
      */
-    public static String getYesterday(DateType type) {
-        return LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern(convertTypeToPattern(type)));
+    public String getYesterday(DateType type) {
+        return LocalDateTime.now().minusDays(1).format(ofPattern(convertTypeToPattern(type)));
     }
 
     /**
@@ -1020,8 +1020,8 @@ public final class DateUtil {
      * DateUtil.getCurrentDateTime(): "20191231175959"
      * </pre>
      */
-    public static String getCurrentDateTime() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    public String getCurrentDateTime() {
+        return LocalDateTime.now().format(ofPattern("yyyyMMddHHmmss"));
     }
 
     /**
@@ -1031,8 +1031,8 @@ public final class DateUtil {
      * DateUtil.getConsoleTime(): "2019-12-31 17:59:59.311"
      * </pre>
      */
-    public static String getConsoleTime() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+    public String getConsoleTime() {
+        return LocalDateTime.now().format(ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
     }
 
     /**
@@ -1046,7 +1046,7 @@ public final class DateUtil {
      * DateUtil.isValidDate("2020-02-29"): true
      * </pre>
      */
-    public static boolean isValidDate(String date) {
+    public boolean isValidDate(String date) {
         try {
             // 날짜 형식을 통일한다
             date = StringUtil.removeMinusChar(date);
@@ -1072,11 +1072,9 @@ public final class DateUtil {
      * DateUtil.isValidDate("2020-02-29", DayOfWeek.SATURDAY): true
      * </pre>
      */
-    public static boolean isValidDate(String date, DayOfWeek dayOfWeek) {
+    public boolean isValidDate(String date, DayOfWeek dayOfWeek) {
         // 유효한 날짜인지 확인한다
-        if (!isValidDate(date)) {
-            return false;
-        }
+        if (!isValidDate(date)) return false;
 
         final int year = Integer.parseInt(date.substring(0, 4));
         final int month = Integer.parseInt(date.substring(4, 6));
@@ -1095,9 +1093,9 @@ public final class DateUtil {
      * DateUtil.getMonthlyLastDate(2020, 2): "20200229"
      * </pre>
      */
-    public static String getMonthlyLastDate(int year, int month) {
+    public String getMonthlyLastDate(int year, int month) {
         LocalDate lastDate = YearMonth.of(year, month).atEndOfMonth();
-        return lastDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return lastDate.format(ofPattern("yyyyMMdd"));
     }
 
     /**
@@ -1108,9 +1106,9 @@ public final class DateUtil {
      * DateUtil.getMonthlyLastDate("2020", "2"): "20200229"
      * </pre>
      */
-    public static String getMonthlyLastDate(String year, String month) {
+    public String getMonthlyLastDate(String year, String month) {
         LocalDate lastDate = YearMonth.of(Integer.valueOf(year), Integer.valueOf(month)).atEndOfMonth();
-        return lastDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return lastDate.format(ofPattern("yyyyMMdd"));
     }
 
 }

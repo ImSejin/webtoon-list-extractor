@@ -1,16 +1,24 @@
 package io.github.imsejin.common.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
+
 /**
  * 객체의 로딩을 지원하는 유틸 클래스
  */
-public final class ObjectUtil {
-
-    private ObjectUtil() {}
+@UtilityClass
+public class ObjectUtil {
 
     /**
      * 클래스명으로 객체를 로딩한다.
@@ -18,25 +26,14 @@ public final class ObjectUtil {
      * @param className the class name
      * @return the class
      * @throws ClassNotFoundException the class not found exception
-     * @throws Exception the exception
      */
-    public static Class<?> loadClass(String className) throws ClassNotFoundException, Exception {
+    @SneakyThrows(ClassNotFoundException.class)
+    public Class<?> loadClass(String className) {
+        Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
 
-        Class<?> clazz = null;
-        try {
-            clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
-        } catch (ClassNotFoundException e) {
-            throw new ClassNotFoundException();
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-
-        if (clazz == null) {
-            clazz = Class.forName(className);
-        }
+        if (clazz == null) clazz = Class.forName(className);
 
         return clazz;
-
     }
 
     /**
@@ -44,30 +41,12 @@ public final class ObjectUtil {
      *
      * @param className the class name
      * @return the object
-     * @throws ClassNotFoundException the class not found exception
      * @throws InstantiationException the instantiation exception
      * @throws IllegalAccessException the illegal access exception
-     * @throws Exception the exception
      */
-    public static Object instantiate(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException, Exception {
-        Class<?> clazz;
-
-        try {
-            clazz = loadClass(className);
-            return clazz.newInstance();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-            throw new ClassNotFoundException(className + ": Class is cannot instantialized.");
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-            throw new InstantiationException(className + ": Class is cannot instantialized.");
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
-            throw new IllegalAccessException(className + ": Class is not accessed.");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new Exception(className + ": Class is not accessed.");
-        }
+    @SneakyThrows({ InstantiationException.class, IllegalAccessException.class })
+    public Object instantiate(String className) {
+        return loadClass(className).newInstance();
     }
 
     /**
@@ -84,62 +63,42 @@ public final class ObjectUtil {
      * @param types the types
      * @param values the values
      * @return the object
-     * @throws ClassNotFoundException the class not found exception
-     * @throws InstantiationException the instantiation exception
-     * @throws IllegalAccessException the illegal access exception
-     * @throws Exception the exception
+     * @throws InstantiationException the class not found exception
+     * @throws IllegalAccessException the instantiation exception
+     * @throws InvocationTargetException the illegal access exception
+     * @throws NoSuchMethodException the no such method exception
      */
-    public static Object instantiate(String className, String[] types, Object[] values) throws ClassNotFoundException, InstantiationException, IllegalAccessException, Exception {
-        Class<?> clazz;
+    @SneakyThrows({ InstantiationException.class, IllegalAccessException.class, InvocationTargetException.class, NoSuchMethodException.class })
+    public Object instantiate(String className, String[] types, Object[] values) {
+        Class<?> clazz = loadClass(className);
         Class<?>[] classParams = new Class[values.length];
         Object[] objectParams = new Object[values.length];
 
-        try {
-            clazz = loadClass(className);
-
-            for (int i = 0; i < values.length; i++) {
-                classParams[i] = loadClass(types[i]);
-                objectParams[i] = values[i];
-            }
-
-            Constructor<?> constructor = clazz.getConstructor(classParams);
-            return constructor.newInstance(values);
-
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-            throw new ClassNotFoundException(className + ": Class is cannot instantialized.");
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-            throw new InstantiationException(className + ": Class is cannot instantialized.");
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
-            throw new IllegalAccessException(className + ": Class is not accessed.");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new Exception(className + ": Class is not accessed.");
+        for (int i = 0; i < values.length; i++) {
+            classParams[i] = loadClass(types[i]);
+            objectParams[i] = values[i];
         }
-    }
 
+        Constructor<?> constructor = clazz.getConstructor(classParams);
+        return constructor.newInstance(values);
+    }
+    
     /**
      * 컬렉션이 null인지 또는 비어있는지 확인한다.
      */
-    public static boolean isNullOrEmpty(Collection<?> cl) {
+    public boolean isNullOrEmpty(Collection<?> cl) {
         return cl == null || cl.isEmpty();
     }
 
     /**
      * 컬렉션이 null인지 또는 비어있는지 확인한다.
      */
-    public static boolean isNullOrEmpty(Collection<?>... cls) {
+    public boolean isNullOrEmpty(Collection<?>... cls) {
         // `빈 컬렉션 배열`이 파라미터로 넘어 왔을 때
-        if (cls == null || cls.length == 0) {
-            return true;
-        }
+        if (cls == null || cls.length == 0) return true;
 
         for (Collection<?> cl : cls) {
-            if (cl == null || cl.isEmpty()) {
-                return true;
-            }
+            if (isNullOrEmpty(cl)) return true;
         }
         return false;
     }
@@ -147,14 +106,14 @@ public final class ObjectUtil {
     /**
      * 요소가 있는 컬렉션인지 확인한다.
      */
-    public static boolean isNotEmpty(Collection<?> cl) {
+    public boolean isNotEmpty(Collection<?> cl) {
         return !isNullOrEmpty(cl);
     }
 
     /**
      * 요소가 있는 컬렉션인지 확인한다.
      */
-    public static boolean isNotEmpty(Collection<?>... cls) {
+    public boolean isNotEmpty(Collection<?>... cls) {
         return !isNullOrEmpty(cls);
     }
 
@@ -171,7 +130,7 @@ public final class ObjectUtil {
      * ObjectUtil.splice(list, 3): [] / list: ["A", "B", "C"]
      * </pre>
      */
-    public static <T> List<T> splice(List<T> arr, int start) {
+    public <T> List<T> splice(List<T> arr, int start) {
         return splice(arr, start, arr.size());
     }
 
@@ -188,9 +147,10 @@ public final class ObjectUtil {
      * ObjectUtil.splice(list, 3, 1): [] / list: ["A", "B", "C"]
      * </pre>
      */
-    public static <T> List<T> splice(List<T> arr, int start, int deleteCount) {
+    public <T> List<T> splice(List<T> arr, int start, int deleteCount) {
         List<T> remained = arr; // new ArrayList<>(arr); 새로운 리스트로 래핑하면 파라미터로 받은 리스트에 영향이 가지 않는다
         List<T> deleted = new ArrayList<>();
+        if (deleteCount <= 0) return deleted;
 
         if (start > remained.size()) {
             start = remained.size();
@@ -200,22 +160,34 @@ public final class ObjectUtil {
             start = 0;
         }
 
-        if (deleteCount > 0) {
-            int size = remained.size();
-            for (int j = 1; start < size; j++) {
-                deleted.add(remained.get(start));
-                remained.remove(start);
+        int size = remained.size();
+        for (int j = 1; start < size; j++) {
+            deleted.add(remained.get(start));
+            remained.remove(start);
 
-                // 인덱스와 엘리먼트의 불일치 문제를 방지한다
-                size = remained.size();
+            // 인덱스와 엘리먼트의 불일치 문제를 방지한다
+            size = remained.size();
 
-                if (deleteCount == j) {
-                    break;
-                }
-            }
+            if (deleteCount == j) break;
         }
 
         return deleted;
+    }
+
+    @SneakyThrows({ IOException.class, ClassNotFoundException.class })
+    public Object deepCopy(Object o) {
+        Object clone = null;
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(o);
+
+        byte[] buff = baos.toByteArray();
+        ByteArrayInputStream bais = new ByteArrayInputStream(buff);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        clone = ois.readObject();
+
+        return clone;
     }
 
 }

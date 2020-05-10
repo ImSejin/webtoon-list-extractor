@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.github.imsejin.file.model.Webtoon;
+import lombok.experimental.UtilityClass;
 
 /**
  * GeneralUtil
  * 
  * @author SEJIN
  */
-public final class GeneralUtil {
-
-    private GeneralUtil() {}
+@UtilityClass
+public class GeneralUtil {
 
     /**
      * Converts from list of authors to string of authors.
@@ -24,7 +24,7 @@ public final class GeneralUtil {
      * @param list of authors
      * @return string of authors
      */
-    public static String convertAuthors(List<String> authors) {
+    public String convertAuthors(List<String> authors) {
         StringBuffer sb = new StringBuffer();
 
         int size = authors.size();
@@ -44,11 +44,11 @@ public final class GeneralUtil {
      * @param string of authors
      * @return list of authors
      */
-    public static List<String> convertAuthors(String authors) {
+    public List<String> convertAuthors(String authors) {
         return Arrays.asList(authors.split(DELIMITER_AUTHOR));
     }
 
-    public static String[] calculateMetadata(List<Webtoon> webtoonList) {
+    public String[] calculateMetadata(List<Webtoon> webtoonList) {
         String[] metadataContents = new String[2];
 
         // Converts data format from `yyyy-MM-dd HH:mm:ss` to `yyyy-MM-dd`
@@ -70,7 +70,7 @@ public final class GeneralUtil {
         return metadataContents;
     }
 
-    public static String calculateVersion(int updateCount) {
+    public String calculateVersion(int updateCount) {
         final int initialVersionCode = 100; // It means `1.0.0`.
         String version = "";
 

@@ -1,5 +1,7 @@
 package io.github.imsejin.excel.util;
 
+import static io.github.imsejin.common.Constants.excel.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,27 +19,25 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-import io.github.imsejin.common.Constants;
-import io.github.imsejin.common.util.GeneralUtil;
-import io.github.imsejin.console.action.ConsoleAction;
-import io.github.imsejin.console.model.WorkingProcess;
+import io.github.imsejin.console.ConsolePrinter;
+import io.github.imsejin.console.WorkingProcess;
 import io.github.imsejin.excel.model.ListHeader;
 import io.github.imsejin.excel.model.MetadataHeader;
 import io.github.imsejin.file.model.Webtoon;
+import lombok.experimental.UtilityClass;
 
 /**
  * ExcelStyleUtil
  * 
  * @author SEJIN
  */
-public final class ExcelStyleUtil {
-
-	private ExcelStyleUtil() {}
+@UtilityClass
+public class ExcelStyleUtil {
 
 	/**
 	 * Adjusts width of columns in sheet for list to fit the content.
 	 */
-	public static void makeColumnsFitContent(Sheet sheet, List<Webtoon> webtoonList) {
+	public void makeColumnsFitContent(Sheet sheet, List<Webtoon> webtoonList) {
 		// Gets lengths of the header string in sheet for list.
 		ListHeader[] listHeaders = ListHeader.values();
 		List<Integer> lengthsOfListHeader = new ArrayList<>();
@@ -60,7 +60,7 @@ public final class ExcelStyleUtil {
             int temp2 = webtoon.getTitle().getBytes().length;
             if (maxLengthInSecondColumn < temp2) maxLengthInSecondColumn = temp2;
 
-            int temp3 = GeneralUtil.convertAuthors(webtoon.getAuthor()).getBytes().length;
+            int temp3 = webtoon.getAuthors().getBytes().length;
             if (maxLengthInThirdColumn < temp3) maxLengthInThirdColumn = temp3;
 
 			// The content in fourth column is fixed.
@@ -90,7 +90,7 @@ public final class ExcelStyleUtil {
 	/**
 	 * Adjusts width of columns in sheet for metadata to fit the content.
 	 */
-	public static void makeColumnsFitContent(Sheet sheet) {
+	public void makeColumnsFitContent(Sheet sheet) {
 		// Gets lengths of the header string in sheet for metadata.
 		MetadataHeader[] metadataHeaders = MetadataHeader.values();
 		int maxLengthInMetadataHeader = 0;
@@ -109,7 +109,7 @@ public final class ExcelStyleUtil {
 
 	/*
 	/// DISCOVERED BUG THAT IT DOES NOT ADJUST WIDTH OF COLUMNS ENOUGH. ///
-	public static void makeColumnsFitContent(SXSSFSheet sheet, int columnsCount) {
+	public void makeColumnsFitContent(SXSSFSheet sheet, int columnsCount) {
 		for (int i = 0; i < columnsCount; i++) {
 			sheet.trackColumnForAutoSizing(i);
 			sheet.autoSizeColumn(i);
@@ -120,22 +120,22 @@ public final class ExcelStyleUtil {
 	/**
 	 * Hides extraneous rows and columns in the sheet.
 	 */
-	public static void hideExtraneousCells(Sheet sheet) {
+	public void hideExtraneousCells(Sheet sheet) {
 		hideExtraneousRows(sheet);
 		hideExtraneousColumns(sheet);
 	}
 
-	public static void hideExtraneousRows(Sheet sheet) {
+	public void hideExtraneousRows(Sheet sheet) {
 		int numberOfRows = sheet.getPhysicalNumberOfRows();
 
 		// Sets up printing console logs.
         WorkingProcess process = WorkingProcess.builder()
                 .message("Hiding rows")
-                .totalProcess(Constants.excel.NEW_MAX_COUNT_OF_ROWS - numberOfRows)
+                .totalProcess(NEW_MAX_COUNT_OF_ROWS - numberOfRows)
                 .build();
-        ConsoleAction.print(process);
+        ConsolePrinter.print(process);
 
-		for (int i = numberOfRows; i < Constants.excel.NEW_MAX_COUNT_OF_ROWS; i++) {
+		for (int i = numberOfRows; i < NEW_MAX_COUNT_OF_ROWS; i++) {
 			process.setCurrentProcess(i);
 
 			Row row = sheet.createRow(i);
@@ -143,17 +143,17 @@ public final class ExcelStyleUtil {
 		}
 	}
 
-	public static void hideExtraneousColumns(Sheet sheet) {
+	public void hideExtraneousColumns(Sheet sheet) {
 		int numberOfColumns = sheet.getRow(0).getLastCellNum();
 
 		// Sets up printing console logs.
 		WorkingProcess process = WorkingProcess.builder()
                 .message("Hiding columns")
-                .totalProcess(Constants.excel.NEW_MAX_COUNT_OF_COLUMNS - numberOfColumns)
+                .totalProcess(NEW_MAX_COUNT_OF_COLUMNS - numberOfColumns)
                 .build();
-		ConsoleAction.print(process);
+		ConsolePrinter.print(process);
 
-		for (int i = numberOfColumns; i < Constants.excel.NEW_MAX_COUNT_OF_COLUMNS; i++) {
+		for (int i = numberOfColumns; i < NEW_MAX_COUNT_OF_COLUMNS; i++) {
 			process.setCurrentProcess(i);
 
 			sheet.setColumnHidden(i, true);
@@ -163,7 +163,7 @@ public final class ExcelStyleUtil {
 	/**
 	 * Removes all rows in the sheet except for header before updating the sheet for list.
 	 */
-	public static void removeAllRows(XSSFSheet sheet) {
+	public void removeAllRows(XSSFSheet sheet) {
 		int numberOfRows = sheet.getPhysicalNumberOfRows();
 		
 		// Sets up printing console logs.
@@ -171,7 +171,7 @@ public final class ExcelStyleUtil {
                 .message("Removing rows")
                 .totalProcess(numberOfRows - 1)
                 .build();
-		ConsoleAction.print(process);
+		ConsolePrinter.print(process);
 
 		for (int i = 1; i < numberOfRows; i++) {
 			process.setCurrentProcess(i);
@@ -184,14 +184,14 @@ public final class ExcelStyleUtil {
 	/**
 	 * Increases row height to accommodate one and a half line of text
 	 */
-	public static void increaseRowHeight(XSSFSheet sheet, XSSFRow row, double multiples) {
+	public void increaseRowHeight(XSSFSheet sheet, XSSFRow row, double multiples) {
 		row.setHeightInPoints((float) (sheet.getDefaultRowHeightInPoints() * multiples));
 	}
 
 	/**
 	 * Resets row height to default value
 	 */
-	public static void initializeRowHeight(XSSFSheet sheet) {
+	public void initializeRowHeight(XSSFSheet sheet) {
 		XSSFRow row;
 		for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
 			row = sheet.getRow(i);
@@ -202,24 +202,24 @@ public final class ExcelStyleUtil {
 	/**
 	 * Returns the decorated cell.
 	 */
-	public static XSSFCell decorateCell(XSSFCell cell, CellStyle style) {
+	public XSSFCell decorateCell(XSSFCell cell, CellStyle style) {
 		cell.setCellStyle(style);
 		return cell;
 	}
 
-	private static CellStyle alignHorizontally(CellStyle style) {
+	private CellStyle alignHorizontally(CellStyle style) {
 		style.setAlignment(HorizontalAlignment.CENTER);
 
 		return style;
 	}
 
-	private static CellStyle alignVertically(CellStyle style) {
+	private CellStyle alignVertically(CellStyle style) {
 		style.setVerticalAlignment(VerticalAlignment.CENTER);
 
 		return style;
 	}
 
-	private static CellStyle applyFont(Workbook workbook, CellStyle style, String fontName) {
+	private CellStyle applyFont(Workbook workbook, CellStyle style, String fontName) {
 		// Creates a new font and alter it.
 		Font font = workbook.createFont();
 		font.setFontHeightInPoints((short) 12);
@@ -233,7 +233,7 @@ public final class ExcelStyleUtil {
 		return style;
 	}
 
-	private static CellStyle drawBorder(CellStyle style) {
+	private CellStyle drawBorder(CellStyle style) {
 		style.setBorderTop(BorderStyle.THIN);
 		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
 		style.setBorderRight(BorderStyle.THIN);
@@ -246,38 +246,38 @@ public final class ExcelStyleUtil {
 		return style;
 	}
 
-	private static CellStyle dyeForegroundColor(CellStyle style) {
+	private CellStyle dyeForegroundColor(CellStyle style) {
 		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
 		return style;
 	}
 
-	public static CellStyle getHeaderCellStyle(Workbook workbook) {
+	public CellStyle getHeaderCellStyle(Workbook workbook) {
 		CellStyle style = workbook.createCellStyle();
 		alignHorizontally(style);
 		alignVertically(style);
-		applyFont(workbook, style, Constants.excel.HEADER_FONT_NAME);
+		applyFont(workbook, style, HEADER_FONT_NAME);
 		drawBorder(style);
 		dyeForegroundColor(style);
 
 		return style;
 	}
 
-	public static CellStyle getContentCellStyle(Workbook workbook) {
+	public CellStyle getContentCellStyle(Workbook workbook) {
 		CellStyle style = workbook.createCellStyle();
 		alignVertically(style);
-		applyFont(workbook, style, Constants.excel.CONTENT_FONT_NAME);
+		applyFont(workbook, style, CONTENT_FONT_NAME);
 		drawBorder(style);
 
 		return style;
 	}
 
-	public static CellStyle getContentCellStyleWithAlignment(Workbook workbook) {
+	public CellStyle getContentCellStyleWithAlignment(Workbook workbook) {
 		CellStyle style = workbook.createCellStyle();
 		alignHorizontally(style);
 		alignVertically(style);
-		applyFont(workbook, style, Constants.excel.CONTENT_FONT_NAME);
+		applyFont(workbook, style, CONTENT_FONT_NAME);
 		drawBorder(style);
 
 		return style;

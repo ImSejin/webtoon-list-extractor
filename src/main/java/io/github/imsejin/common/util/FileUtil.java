@@ -27,24 +27,24 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import io.github.imsejin.common.util.DateUtil.DateType;
+import lombok.experimental.UtilityClass;
 
 /**
  * File uilities
  */
-public final class FileUtil {
+@UtilityClass
+public class FileUtil {
 
-    private static final List<String> extensions = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
+    private final List<String> EXTENSIONS = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
 
-    private static final String ZIP_EXTENSION = extensions.get(extensions.size() - 2); // zip
+    private final String ZIP_EXTENSION = "zip";
 
-    private FileUtil() {}
-
-    public static List<File> getFilePathListForFolder(String folderPath) {
+    public List<File> getFilePathListForFolder(String folderPath) {
         final File folder = new File(folderPath);
         return getFilePathListForFolder(folder);
     }
 
-    public static List<File> getFilePathListForFolder(final File folder) {
+    public List<File> getFilePathListForFolder(final File folder) {
         List<File> fileList = new ArrayList<File>();
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
@@ -67,7 +67,7 @@ public final class FileUtil {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static String readFile(File file) throws IOException {
+	public String readFile(File file) throws IOException {
 		BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
 		return readFileContent(in);
 	}
@@ -82,7 +82,7 @@ public final class FileUtil {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static String readFileContent(InputStream in) throws IOException {
+	public String readFileContent(InputStream in) throws IOException {
 		StringBuffer buf = new StringBuffer();
 
 		for (int i = in.read(); i != -1; i = in.read()) {
@@ -105,7 +105,7 @@ public final class FileUtil {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static String readFile(File file, String encoding) throws IOException {
+	public String readFile(File file, String encoding) throws IOException {
 		StringBuffer sb = new StringBuffer();
 
 		List<String> lines = FileUtils.readLines(file, encoding);
@@ -130,7 +130,7 @@ public final class FileUtil {
 	 * FileUtil.getFileExtension("D:/Program Files/Java/jdk1.8.0_202/README.html"): "html"
 	 * </pre>
 	 */
-	public static String getExtension(File file) {
+	public String getExtension(File file) {
 		return FilenameUtils.getExtension(file.getName());
 	}
 
@@ -143,7 +143,7 @@ public final class FileUtil {
 	 *            <code>String</code>
 	 * @return 존재여부
 	 */
-	public static boolean isExistsFile(String filename) {
+	public boolean isExistsFile(String filename) {
 		File file = new File(filename);
 		return file.exists();
 	}
@@ -157,7 +157,7 @@ public final class FileUtil {
 	 *            <code>String</code>
 	 * @return the string
 	 */
-	public static String stripFilename(String filename) {
+	public String stripFilename(String filename) {
 		return FilenameUtils.getBaseName(filename);
 	}
 
@@ -170,7 +170,7 @@ public final class FileUtil {
 	 *            <code>String</code>
 	 * @return 존재여부
 	 */
-	public static long getFileSize(String filename) throws Exception {
+	public long getFileSize(String filename) throws Exception {
 		File file = new File(filename);
 		if (!file.exists()) {
 			return Long.valueOf("0");
@@ -187,7 +187,7 @@ public final class FileUtil {
      * FileUtil.getFilePathWithYearMonth("C:\Program Files"): new File("C:\Program Files\2019\12")
      * </pre>
      */
-    public static File getFilePathWithYearMonth(String path) {
+    public File getFilePathWithYearMonth(String path) {
         return Paths.get(path, DateUtil.getToday(DateType.YEAR), DateUtil.getToday(DateType.MONTH)).toFile();
     }
 
@@ -200,7 +200,7 @@ public final class FileUtil {
      * FileUtil.getFilePathWithYearMonth("C:\Program Files"): new File("C:\Program Files\2019\12\31")
      * </pre>
      */
-    public static File getFilePathWithYearMonthDay(String path) {
+    public File getFilePathWithYearMonthDay(String path) {
         return Paths.get(path, DateUtil.getToday(DateType.YEAR), DateUtil.getToday(DateType.MONTH), DateUtil.getToday(DateType.DAY)).toFile();
     }
 
@@ -213,7 +213,7 @@ public final class FileUtil {
      * FileUtil.compress(path, "java.zip");
      * </pre>
      */
-    public static File compress(Path path, String zipFileName) {
+    public File compress(Path path, String zipFileName) {
         return compress(path, zipFileName, true);
     }
 
@@ -226,7 +226,7 @@ public final class FileUtil {
      * FileUtil.compress(path, "java.zip", false);
      * </pre>
      */
-    public static File compress(Path path, String zipFileName, boolean willDelete) {
+    public File compress(Path path, String zipFileName, boolean willDelete) {
         // 압축 파일을 제외한 파일 리스트
         File[] fileArray = path.toFile().listFiles((file, fileNm) -> !fileNm.endsWith(ZIP_EXTENSION));
 
@@ -286,7 +286,7 @@ public final class FileUtil {
      * FileUtil.getCreationTime(file): "2020-02-29 23:06:34"
      * </pre>
      */
-    public static String getCreationTime(File file) {
+    public String getCreationTime(File file) {
         BasicFileAttributes attributes;
         FileTime time = null;
 
@@ -314,13 +314,11 @@ public final class FileUtil {
      * FileUtil.isZip(file2): true
      * </pre>
      */
-    public static boolean isZip(File file) {
+    public boolean isZip(File file) {
         if (file == null || !file.isFile()) return false;
 
-        for (String extension : extensions) {
-            if (extension.equalsIgnoreCase(getExtension(file))) {
-                return true;
-            }
+        for (String extension : EXTENSIONS) {
+            if (extension.equalsIgnoreCase(getExtension(file))) return true;
         }
 
         return false;
