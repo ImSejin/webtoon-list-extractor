@@ -2,7 +2,9 @@
 
 ---
 
-![release](https://img.shields.io/github/v/release/ImSejin/webtoon-list-extractor)![jdk](https://img.shields.io/badge/jdk-8-orange)![excel](https://img.shields.io/badge/excel-xlsx-009900)
+![release](https://img.shields.io/github/v/release/ImSejin/webtoon-list-extractor)
+![jdk](https://img.shields.io/badge/jdk-8-orange)
+![excel](https://img.shields.io/badge/excel-xlsx-009900)
 
 **Webtoon List Extractor** can create list of webtoons information and manage update version through Microsoft Excel Sheet.
 
