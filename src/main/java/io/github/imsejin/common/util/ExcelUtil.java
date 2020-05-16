@@ -27,11 +27,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import lombok.experimental.UtilityClass;
 
 /**
+ * 엑셀 유틸리티<br>
  * Excel utilities
  * 
- * <pre>
- * 엑셀 파일을 읽어 리스트를 반환하거나, 리스트를 엑셀 파일로 출력해주는 엑셀 유틸리티.
- * </pre>
+ * <p>
+ * 엑셀 파일을 읽어 리스트를 반환하거나, 리스트를 엑셀 파일로 출력해주는 엑셀 유틸리티<br>
+ * Excel utilities that returns the list by reading the excel file or writes the list as an excel file
+ * </p>
+ * 
+ * @author SEJIN
  */
 @UtilityClass
 public class ExcelUtil {

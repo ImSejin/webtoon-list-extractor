@@ -22,24 +22,32 @@ import io.github.imsejin.file.model.Webtoon;
 import lombok.NonNull;
 
 /**
- * FileService
+ * 파일 서비스<br>
+ * File service
+ * 
+ * <p>
+ * 압축 파일에서 웹툰 정보를 추출하고 리스트 형태로 반환한다.<br>
+ * Extracts the information of webtoon from archive file and returns it in the form of a list.
+ * </p>
  * 
  * @author SEJIN
  */
 public class FileService {
 
-	/**
-	 * Returns current working absolute directory.
-	 */
 	public String getCurrentAbsolutePath() {
 	    // It equals `System.getProperty("user.dir")`
 		return Paths.get("").toAbsolutePath().toString();
 	}
+    /**
+     * 애플리케이션이 있는 현재 경로를 반환한다.<br>
+     * Returns the current path where the application is.
+     */
 
-	/**
-	 * Returns list of files and directories in the path.
-	 */
-	public List<File> getFileList(@NonNull String pathName) {
+    /**
+     * 해당 경로에 있는 파일과 디렉터리의 리스트를 반환한다.<br>
+     * Returns a list of files and directories in the path.
+     */
+    public List<File> getFileList(@NonNull String pathName) {
         File file = new File(pathName);
         return Arrays.asList(file.listFiles());
 	}

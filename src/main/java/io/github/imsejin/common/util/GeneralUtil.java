@@ -11,7 +11,12 @@ import io.github.imsejin.file.model.Webtoon;
 import lombok.experimental.UtilityClass;
 
 /**
- * GeneralUtil
+ * 공통 유틸리티<br>
+ * General utilities
+ * 
+ * <p>
+ * 
+ * </p>
  * 
  * @author SEJIN
  */

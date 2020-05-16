@@ -15,7 +15,14 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 /**
- * 객체의 로딩을 지원하는 유틸 클래스
+ * 객체 유틸리티<br>
+ * Object utilities
+ * 
+ * <p>
+ * 
+ * </p>
+ * 
+ * @author SEJIN
  */
 @UtilityClass
 public class ObjectUtil {

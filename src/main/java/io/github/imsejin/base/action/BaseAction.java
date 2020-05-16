@@ -10,7 +10,12 @@ import io.github.imsejin.file.model.Webtoon;
 import lombok.SneakyThrows;
 
 /**
- * BaseAction
+ * 기본 액션<br>
+ * Base action
+ * 
+ * <p>
+ * 
+ * </p>
  * 
  * @author SEJIN
  */

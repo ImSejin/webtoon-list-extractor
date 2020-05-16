@@ -4,7 +4,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Website that serves webtoon to subscribers.
+ * 웹툰 플랫폼<br>
+ * Platform
+ * 
+ * <p>
+ * 웹툰을 제공하는 웹사이트<br>
+ * Website that serves webtoon for subscribers
+ * </p>
  * 
  * @author SEJIN
  */
@@ -30,8 +36,16 @@ public enum Platform {
 	TM("Toomics", "http://www.toomics.com"),
 	TS("Tstore", "https://www.tstore.co.kr");
 
+    /**
+     * 축약하지 않은 플랫폼의 이름<br>
+     * Non-reduced name of platform
+     */
     private final String fullText;
 
+    /**
+     * 웹툰을 제공하는 웹사이트의 URL<br>
+     * the website URL
+     */
     private final String url;
 
     @Override

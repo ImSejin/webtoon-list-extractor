@@ -30,14 +30,17 @@ import io.github.imsejin.common.util.DateUtil.DateType;
 import lombok.experimental.UtilityClass;
 
 /**
+ * 파일 유틸리티<br>
  * File uilities
+ * 
+ * <p>
+ * 
+ * </p>
+ * 
+ * @author SEJIN
  */
 @UtilityClass
 public class FileUtil {
-
-    private final List<String> EXTENSIONS = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
-
-    private final String ZIP_EXTENSION = "zip";
 
     public List<File> getFilePathListForFolder(String folderPath) {
         final File folder = new File(folderPath);

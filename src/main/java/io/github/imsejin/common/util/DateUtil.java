@@ -23,7 +23,14 @@ import java.util.TimeZone;
 import lombok.experimental.UtilityClass;
 
 /**
+ * 날짜 유틸리티<br>
  * Date utilities
+ * 
+ * <p>
+ * 
+ * </p>
+ * 
+ * @author SEJIN
  */
 @UtilityClass
 public class DateUtil {

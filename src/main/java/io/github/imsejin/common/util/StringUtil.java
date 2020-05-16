@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2011 oneplat.
- * All right reserved.
- *
- * This software is the confidential and proprietary information of SK Telecom.
- * You shall not disclose such Confidential Information and
- * shall use it only in accordance with the terms of the license agreement
- * you entered into with oneplat.
- */
 package io.github.imsejin.common.util;
 
 import java.io.UnsupportedEncodingException;
@@ -26,7 +17,14 @@ import org.apache.commons.codec.binary.Base64;
 import lombok.experimental.UtilityClass;
 
 /**
- * 문자열을 처리하는 유틸 클래스
+ * 문자열 유틸리티<br>
+ * String utilities
+ * 
+ * <p>
+ * 
+ * </p>
+ * 
+ * @author SEJIN
  */
 @UtilityClass
 public class StringUtil {
