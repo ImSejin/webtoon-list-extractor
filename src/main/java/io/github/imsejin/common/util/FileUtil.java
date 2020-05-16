@@ -1,14 +1,11 @@
 package io.github.imsejin.common.util;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
@@ -16,12 +13,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -124,18 +117,33 @@ public class FileUtil {
 		}
 
 		return sb.toString();
-	}
+    }
 
-	/**
-	 * 파일의 확장자를 가져온다.
-	 * 
-	 * <pre>
-	 * FileUtil.getFileExtension("D:/Program Files/Java/jdk1.8.0_202/README.html"): "html"
-	 * </pre>
-	 */
-	public String getExtension(File file) {
-		return FilenameUtils.getExtension(file.getName());
-	}
+    /**
+     * 확장자를 제외한 파일명을 반환한다.
+     * 
+     * <pre>
+     * File file = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
+     * 
+     * FileUtil.getBaseName(file): "README"
+     * </pre>
+     */
+    public String getBaseName(File file) {
+        return FilenameUtils.getBaseName(file.getName());
+    }
+
+    /**
+     * 파일의 확장자를 반환한다.
+     * 
+     * <pre>
+     * File file = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
+     * 
+     * FileUtil.getFileExtension(file): "html"
+     * </pre>
+     */
+    public String getExtension(File file) {
+        return FilenameUtils.getExtension(file.getName());
+    }
 
 	/**
 	 * <p>
@@ -187,7 +195,7 @@ public class FileUtil {
      * <pre>
      * DateUtil.getToday(): "20191231"
      * 
-     * FileUtil.getFilePathWithYearMonth("C:\Program Files"): new File("C:\Program Files\2019\12")
+     * FileUtil.getFilePathWithYearMonth("C:/Program Files"): new File("C:/Program Files/2019/12")
      * </pre>
      */
     public File getFilePathWithYearMonth(String path) {
@@ -200,84 +208,11 @@ public class FileUtil {
      * <pre>
      * DateUtil.getToday(): "20191231"
      * 
-     * FileUtil.getFilePathWithYearMonth("C:\Program Files"): new File("C:\Program Files\2019\12\31")
+     * FileUtil.getFilePathWithYearMonth("C:/Program Files"): new File("C:/Program Files/2019/12/31")
      * </pre>
      */
     public File getFilePathWithYearMonthDay(String path) {
         return Paths.get(path, DateUtil.getToday(DateType.YEAR), DateUtil.getToday(DateType.MONTH), DateUtil.getToday(DateType.DAY)).toFile();
-    }
-
-    /**
-     * 해당 경로에 있는 모든 파일을 압축하고, 압축된 파일을 삭제한다.
-     * (폴더와 압축 파일은 압축 대상에서 제외)
-     * 
-     * <pre>
-     * Path path = Paths.get("C:/Program Files/Java");
-     * FileUtil.compress(path, "java.zip");
-     * </pre>
-     */
-    public File compress(Path path, String zipFileName) {
-        return compress(path, zipFileName, true);
-    }
-
-    /**
-     * 해당 경로에 있는 모든 파일을 압축한다.
-     * (압축된 파일을 삭제할지 결정할 수 있음, 폴더와 압축 파일은 압축 대상에서 제외)
-     * 
-     * <pre>
-     * Path path = Paths.get("C:/Program Files/Java");
-     * FileUtil.compress(path, "java.zip", false);
-     * </pre>
-     */
-    public File compress(Path path, String zipFileName, boolean willDelete) {
-        // 압축 파일을 제외한 파일 리스트
-        File[] fileArray = path.toFile().listFiles((file, fileNm) -> !fileNm.endsWith(ZIP_EXTENSION));
-
-        // 존재하지 않은 경로면, 압축을 중단한다
-        if (fileArray == null) return null;
-
-        // 폴더를 제외한 파일 리스트
-        File[] files = Stream.of(fileArray).filter(File::isFile).toArray(File[]::new);
-
-        // 해당 경로에 파일이 하나도 없으면, 압축을 중단한다
-        if (files == null || files.length == 0) return null;
-
-        // 압축파일명에 `.zip` 확장자가 붙어 있지 않으면, 붙여준다
-        if (!zipFileName.endsWith(ZIP_EXTENSION)) zipFileName += ZIP_EXTENSION;
-
-        // Create the ZIP file
-        File zipFile = Paths.get(path.toString(), zipFileName).toFile();
-        try (ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)))) {
-            // Create a buffer for reading the files
-            byte[] buffer = new byte[1024];
-
-            for (File file : files) {
-                String filePath = file.getPath();
-                String fileName = file.getName();
-
-                FileInputStream in = new FileInputStream(filePath);
-
-                // Add ZIP entry to output stream.
-                out.putNextEntry(new ZipEntry(fileName));
-
-                // Transfer bytes from the file to the ZIP file
-                int len;
-                while ((len = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, len);
-                }
-
-                // Complete the entry
-                out.closeEntry();
-                in.close();
-            }
-
-            // 압축 대상의 파일을 삭제한다
-            if (willDelete) Stream.of(files).forEach(File::delete);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return zipFile;
     }
 
     /**
@@ -307,24 +242,21 @@ public class FileUtil {
     }
     
     /**
-     * 압축 파일인지 확인한다.
+     * 같은 경로에 해당 파일명과 같은 이름의 폴더를 생성한다.
      * 
      * <pre>
-     * File file1 = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
-     * File file2 = new File("D:/Program Files/Java/jdk1.8.0_202/src.zip");
+     * File file = new File("C:/Program Files/list_20191231.xlsx");
      * 
-     * FileUtil.isZip(file1): false
-     * FileUtil.isZip(file2): true
+     * FileUtil.mkdirAsOwnName(file): new File("C:/Program Files/list_20191231")
      * </pre>
      */
-    public boolean isZip(File file) {
-        if (file == null || !file.isFile()) return false;
+    public static File mkdirAsOwnName(File file) {
+        String dirName = stripFilename(file.getName());
 
-        for (String extension : EXTENSIONS) {
-            if (extension.equalsIgnoreCase(getExtension(file))) return true;
-        }
+        File dir = new File(file.getParentFile(), dirName);
+        dir.mkdir();
 
-        return false;
+        return dir;
     }
 
 }
