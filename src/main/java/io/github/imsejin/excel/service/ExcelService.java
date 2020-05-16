@@ -58,7 +58,7 @@ public class ExcelService {
         @SneakyThrows({ FileNotFoundException.class, IOException.class })
 		public Object[] read(String pathName, String latestFileName) {
 			Object[] interactions = new Object[4];
-			File file = new File(pathName, latestFileName + "." + NEW_EXCEL_FILE_EXTENSION);
+			File file = new File(pathName, latestFileName);
 			
 			// Do not close these yet.
 			FileInputStream fis = new FileInputStream(file);
@@ -93,7 +93,7 @@ public class ExcelService {
 				        .platform(platform)
 				        .title(title)
 				        .authors(authors)
-				        .isCompleted(completed)
+				        .completed(completed)
 				        .creationTime(creationTime)
 				        .build();
 

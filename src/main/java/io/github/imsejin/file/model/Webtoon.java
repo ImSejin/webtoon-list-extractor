@@ -45,11 +45,11 @@ public class Webtoon {
      */
     private String platformUrl;
 
-    private boolean isCompleted;
     /**
      * 웹툰의 완결 여부<br>
      * Whether webtoon is completed or not
      */
+    private boolean completed;
 
     /**
      * 웹툰 파일의 생성시간<br>

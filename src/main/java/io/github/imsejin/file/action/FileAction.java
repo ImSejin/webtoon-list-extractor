@@ -29,29 +29,29 @@ public class FileAction {
      */
     @Getter
     @NonNull
-    private final String currentPathName;
+    private final String pathName;
 
     /**
      * 경로를 지정하지 않았을 경우, 애플리케이션의 현재 위치로 지정되어 할당된다.<br>
      * If the path is not specified, it is specified as the current location of the application and assigned.
      */
     public FileAction() {
-        this.currentPathName = this.service.getCurrentAbsolutePath(); // "D:/Cartoons/Webtoons";
+        this.pathName = this.service.getCurrentPathName();
     }
 
     /**
      * 지정한 경로를 할당한다.<br>
      * Assigns the specified path.
      */
-    public FileAction(@NonNull String pathName) {
-        this.currentPathName = pathName;
+    public FileAction(String pathName) {
+        this.pathName = pathName;
     }
 
     /**
      * Returns list of webtoons.
      */
     public List<Webtoon> getWebtoonsList() {
-        List<File> fileList = service.getFileList(currentPathName);
+        List<File> fileList = service.getFileList(pathName);
         List<Webtoon> webtoonList = service.convertToWebtoonList(fileList);
 
         return webtoonList;
@@ -61,7 +61,7 @@ public class FileAction {
      * Returns latest file name.
      */
     public String getLatestWebtoonListName() {
-        List<File> fileList = service.getFileList(currentPathName);
+        List<File> fileList = service.getFileList(pathName);
 
         return service.getLatestFileName(fileList);
     }
