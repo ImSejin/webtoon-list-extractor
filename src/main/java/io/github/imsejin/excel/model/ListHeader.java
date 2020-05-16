@@ -7,6 +7,6 @@ package io.github.imsejin.excel.model;
  */
 public enum ListHeader {
 
-	PLATFORM, TITLE, AUTHOR, COMPLETED, IMPORTATION_DATE
+    PLATFORM, TITLE, AUTHOR, COMPLETED, IMPORTATION_DATE
 
 }

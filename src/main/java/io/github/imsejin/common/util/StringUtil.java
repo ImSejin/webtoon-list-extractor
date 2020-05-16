@@ -11,6 +11,7 @@ package io.github.imsejin.common.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +23,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.binary.Base64;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -1734,13 +1734,10 @@ public class StringUtil {
      * StringUtil.formatComma("100000"): "100,000"
      * </pre>
      */
-    @SneakyThrows(NumberFormatException.class)
-    public String formatComma(String str) {
+    public String formatComma(String amount) {
         String result = "0";
-        double iAmount = (new Double(str)).doubleValue();
-        java.text.DecimalFormat df = new java.text.DecimalFormat("###,###,###,###,###,###,###");
-
-        result = df.format(iAmount);
+        DecimalFormat formatter = new DecimalFormat("###,###,###,###,###,###,###");
+        result = formatter.format(amount);
 
         return result;
     }
@@ -1754,13 +1751,10 @@ public class StringUtil {
      * StringUtil.formatComma(100000): "100,000"
      * </pre>
      */
-    @SneakyThrows(NumberFormatException.class)
-    public String formatComma(int num) {
+    public String formatComma(int amount) {
         String result = "0";
-        double iAmount = (new Double(num)).doubleValue();
-        java.text.DecimalFormat df = new java.text.DecimalFormat("###,###,###,###,###,###,###");
-
-        result = df.format(iAmount);
+        DecimalFormat formatter = new DecimalFormat("###,###,###,###,###,###,###");
+        result = formatter.format(amount);
 
         return result;
     }

@@ -18,54 +18,50 @@ public final class ConsoleThread implements Runnable {
 
     @Setter
     private WorkingProcess workingProcess;
-    
+
     private static final int compensatoryMultiples = PERCENT_MULTIPLES / PROGRESS_BAR_LENGTH;
 
     private static final ColoredPrinter cp = new ColoredPrinter.Builder(1, false)
-	        .foreground(FColor.WHITE)
-			.background(BColor.BLACK)
-			.build();
+            .foreground(FColor.WHITE)
+            .background(BColor.BLACK)
+            .build();
 
     @Override
     public synchronized void run() {
-        try {
-            printProcessing();
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+        printProcessing();
+    }
+
+    public synchronized void printProcessing() {
+        String message = workingProcess.getMessage();
+        int totalProcess = workingProcess.getTotalProcess();
+        int i;
+
+        // Gets changing current process and prints progress states
+        while ((i = workingProcess.getCurrentProcess() + 1) < totalProcess) {
+            // Calculates the percentage of current progress
+            double percentage = ((double) i / totalProcess) * PERCENT_MULTIPLES;
+
+            // Prints progress bar
+            System.out.print(" |");
+            for (int j = 0; j < PROGRESS_BAR_LENGTH; j++) {
+                if (percentage > j * compensatoryMultiples) {
+                    cp.print(" ", Attribute.HIDDEN, FColor.GREEN, BColor.GREEN);
+                } else {
+                    cp.print(" ", Attribute.HIDDEN, FColor.WHITE, BColor.WHITE);
+                }
+            }
+            System.out.print("| ");
+
+            // Prints currently processing item and current process
+            System.out.print(message + "... ");
+            System.out.print("(" + i + "/" + totalProcess + ")");
+
+            // Enable console typewriter to overwrite them
+            System.out.print("\r");
         }
     }
-    
-	public synchronized void printProcessing() throws InterruptedException {
-		String message = workingProcess.getMessage();
-		int totalProcess = workingProcess.getTotalProcess();
-		int i;
 
-		// Gets changing current process and prints progress states
-		while ((i = workingProcess.getCurrentProcess() + 1) < totalProcess) {
-			// Calculates the percentage of current progress
-			double percentage = ((double) i / totalProcess) * PERCENT_MULTIPLES;
-
-			// Prints progress bar
-			System.out.print(" |");
-			for (int j = 0; j < PROGRESS_BAR_LENGTH; j++) {
-				if (percentage > j * compensatoryMultiples) {
-					cp.print(" ", Attribute.HIDDEN, FColor.GREEN, BColor.GREEN);
-				} else {
-					cp.print(" ", Attribute.HIDDEN, FColor.WHITE, BColor.WHITE);
-				}
-			}
-			System.out.print("| ");
-
-			// Prints currently processing item and current process
-			System.out.print(message + "... ");
-			System.out.print("(" + i + "/" + totalProcess + ")");
-
-			// Enable console typewriter to overwrite them
-			System.out.print("\r");
-		}
-	}
-
-	public static void printMetadata(String[] appTitle) {
+    public static void printMetadata(String[] appTitle) {
         for (int i = 0; i < appTitle.length; i++) {
             String line = appTitle[i];
 

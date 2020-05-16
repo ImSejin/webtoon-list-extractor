@@ -13,7 +13,7 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class ConsolePrinter {
-    
+
     private final ProcessBuilder COMMAND = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
 
     static {
