@@ -162,7 +162,8 @@ public class ExcelUtil {
             } else if (type.equals(Character.class)) {
                 result = val.charAt(0);
             } else if (type.equals(Boolean.class)) {
-                result = val.equalsIgnoreCase("T") || val.equalsIgnoreCase("TRUE") || val.equalsIgnoreCase("Y") || val.equalsIgnoreCase("YES")
+                result = val.equalsIgnoreCase("T") || val.equalsIgnoreCase("TRUE")
+                        || val.equalsIgnoreCase("Y") || val.equalsIgnoreCase("YES")
                         || val.equals("1");
             }
 
@@ -262,7 +263,8 @@ public class ExcelUtil {
         @SuppressWarnings("unchecked")
         private <T> void setDataByFields(List<T> list, String defaultValue, Sheet sheet, Row row, Cell cell) {
             Class<T> clazz = (Class<T>) list.get(0).getClass();
-            List<Field> fields = Stream.of(clazz.getDeclaredFields()).filter(field -> isStringClass(field) || isPrimitive(field) || isWrapperClass(field))
+            List<Field> fields = Stream.of(clazz.getDeclaredFields())
+                    .filter(field -> isStringClass(field) || isPrimitive(field) || isWrapperClass(field))
                     .collect(Collectors.toList());
 
             int j = 0;
@@ -318,8 +320,8 @@ public class ExcelUtil {
          */
         private boolean isPrimitive(Field field) {
             Class<?> type = field.getType();
-            return type.equals(byte.class) || type.equals(short.class) || type.equals(int.class) || type.equals(long.class) || type.equals(float.class)
-                    || type.equals(double.class) || type.equals(char.class) || type.equals(boolean.class);
+            return type.equals(byte.class) || type.equals(short.class) || type.equals(int.class) || type.equals(long.class)
+                    || type.equals(float.class) || type.equals(double.class) || type.equals(char.class) || type.equals(boolean.class);
         }
 
         /**
@@ -327,8 +329,8 @@ public class ExcelUtil {
          */
         private boolean isWrapperClass(Field field) {
             Class<?> type = field.getType();
-            return type.equals(Byte.class) || type.equals(Short.class) || type.equals(Integer.class) || type.equals(Long.class) || type.equals(Float.class)
-                    || type.equals(Double.class) || type.equals(Character.class) || type.equals(Boolean.class);
+            return type.equals(Byte.class) || type.equals(Short.class) || type.equals(Integer.class) || type.equals(Long.class)
+                    || type.equals(Float.class) || type.equals(Double.class) || type.equals(Character.class) || type.equals(Boolean.class);
         }
 
     }
