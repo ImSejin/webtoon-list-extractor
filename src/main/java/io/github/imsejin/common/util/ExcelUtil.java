@@ -95,22 +95,11 @@ public class ExcelUtil {
                     endIndex = NUMBER_OF_ROWS;
                 }
 
-                // 로그용
-                final int readableCount = endIndex - startIndex;
-                int currentCount = 1;
-
+                // 엑셀 파일을 읽는다
                 for (int i = startIndex; i < endIndex; i++) {
-                    // 로그를 출력한다
-                    System.out.println(DateUtil.getConsoleTime() + " [DEBUG] Try to read data (" + currentCount + "/" + readableCount + ")");
-                    currentCount++;
-
-                    // 엑셀 파일을 읽는다
                     row = sheet.getRow(i + 1);
                     T vo = clazz.newInstance();
                     setDataByFields(result, vo, clazz, row);
-
-                    // 로그를 출력한다
-                    System.out.println(DateUtil.getConsoleTime() + " [DEBUG] Successfully created list instance from excel file: `" + file.getPath() + "`");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -235,9 +224,6 @@ public class ExcelUtil {
                     if (list != null && !list.isEmpty()) {
                         setDataByFields(list, defaultValue, sheet, row, cell);
                         workbook.write(fos);
-
-                        // 로그를 출력한다
-                        System.out.println(DateUtil.getConsoleTime() + " [DEBUG] Successfully saved excel file to `" + file.getPath() + "`");
                     }
                 }
             } catch (Exception ex) {
@@ -279,9 +265,6 @@ public class ExcelUtil {
             List<Field> fields = Stream.of(clazz.getDeclaredFields()).filter(field -> isStringClass(field) || isPrimitive(field) || isWrapperClass(field))
                     .collect(Collectors.toList());
 
-            // 로그용
-            final int totalCount = list.size();
-
             int j = 0;
             for (T vo : list) {
                 row = sheet.createRow(j + 1);
@@ -292,9 +275,6 @@ public class ExcelUtil {
                     cell.setCellValue(StringUtil.null2string(convertToString(field, vo), defaultValue));
                     k++;
                 }
-
-                // 로그를 출력한다
-                System.out.println(DateUtil.getConsoleTime() + " [DEBUG] Try to write data (" + (j + 1) + "/" + totalCount + ")");
 
                 j++;
             }
