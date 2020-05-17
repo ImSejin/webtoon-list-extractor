@@ -6,7 +6,7 @@
 
 	<groupId>io.github.imsejin</groupId>
 	<artifactId>webtoon-list-extractor</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0.RELEASE</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -127,6 +127,15 @@
 							<mainClass>io.github.imsejin.WebtoonListExtractorApplication</mainClass>
 						</manifest>
 					</archive>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
 				</configuration>
 			</plugin>
 
