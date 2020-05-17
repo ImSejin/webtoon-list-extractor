@@ -75,28 +75,6 @@ public class FileService {
         return webtoonList;
     }
 
-    public String getLatestFileName(List<File> fileList) {
-        String latestFileName = null;
-
-        // Shallow copy.
-        List<File> dummy = new ArrayList<>(fileList);
-
-        // Removes non-webtoon-list from list.
-        dummy.removeIf(file -> {
-            String fileName = getBaseName(file);
-            String fileExtension = getExtension(file);
-
-            return !file.isFile() || !fileName.startsWith(EXCEL_FILE_NAME) || !fileExtension.equals(NEW_EXCEL_FILE_EXTENSION);
-        });
-
-        // Sorts out the latest file.
-        if (ObjectUtil.isNotEmpty(dummy)) {
-            latestFileName = dummy.stream().map(File::getName).sorted(Comparator.reverseOrder()).findFirst().get();
-        }
-
-        return latestFileName;
-    }
-
     /**
      * converts file to webtoon.
      */
@@ -165,6 +143,28 @@ public class FileService {
                 .map(Platform::getFullText)
                 .findFirst()
                 .orElse(acronym);
+    }
+
+    public String getLatestFileName(List<File> fileList) {
+        String latestFileName = null;
+
+        // Shallow copy.
+        List<File> dummy = new ArrayList<>(fileList);
+
+        // Removes non-webtoon-list from list.
+        dummy.removeIf(file -> {
+            String fileName = getBaseName(file);
+            String fileExtension = getExtension(file);
+
+            return !file.isFile() || !fileName.startsWith(EXCEL_FILE_PREFIX) || !fileExtension.equals(XLSX_FILE_EXTENSION);
+        });
+
+        // Sorts out the latest file.
+        if (ObjectUtil.isNotEmpty(dummy)) {
+            latestFileName = dummy.stream().map(File::getName).sorted(Comparator.reverseOrder()).findFirst().get();
+        }
+
+        return latestFileName;
     }
 
 }

@@ -25,10 +25,10 @@ public class Constants {
         public final String HEADER_FONT_NAME = "NanumBarunGothic";
         public final String CONTENT_FONT_NAME = "NanumBarunGothic Light";
 
-        public final int OLD_MAX_COUNT_OF_ROWS = 65536;
-        public final int OLD_MAX_COUNT_OF_COLUMNS = 256;
-        public final int NEW_MAX_COUNT_OF_ROWS = 1048576;
-        public final int NEW_MAX_COUNT_OF_COLUMNS = 16384;
+        public final int XLS_MAX_ROWS = 65536;
+        public final int XLS_MAX_COLUMNS = 256;
+        public final int XLSX_MAX_ROWS = 1048576;
+        public final int XLSX_MAX_COLUMNS = 16384;
     }
 
     @UtilityClass
@@ -38,9 +38,9 @@ public class Constants {
         public final String DELIMITER_AUTHOR = ", ";
         public final String DELIMITER_COMPLETED = " [\u5B8C]"; // " [完]"
 
-        public final String EXCEL_FILE_NAME = "webtoonList";
-        public final String OLD_EXCEL_FILE_EXTENSION = "xls";
-        public final String NEW_EXCEL_FILE_EXTENSION = "xlsx";
+        public final String EXCEL_FILE_PREFIX = "webtoonList-";
+        public final String XLS_FILE_EXTENSION = "xls";
+        public final String XLSX_FILE_EXTENSION = "xlsx";
     }
 
 }

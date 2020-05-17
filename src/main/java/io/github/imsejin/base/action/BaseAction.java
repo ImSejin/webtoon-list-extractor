@@ -1,6 +1,6 @@
 package io.github.imsejin.base.action;
 
-import static io.github.imsejin.common.ApplicationMetadata.APPLICATION_NAME;
+import static io.github.imsejin.common.ApplicationMetadata.*;
 
 import java.util.List;
 
