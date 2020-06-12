@@ -27,17 +27,17 @@ import io.github.imsejin.file.model.Webtoon;
 import lombok.experimental.UtilityClass;
 
 /**
- * ExcelStyleUtil
+ * ExcelStyler
  * 
  * @author SEJIN
  */
 @UtilityClass
-public class ExcelStyleUtil {
+public class ExcelStyler {
 
     /**
      * Adjusts width of columns in sheet for list to fit the content.
      */
-    public void makeColumnsFitContent(Sheet sheet, List<Webtoon> webtoonList) {
+    public void makeColumnsFitContent(Sheet sheet, List<Webtoon> webtoons) {
         // Gets lengths of the header string in sheet for list.
         ListHeader[] listHeaders = ListHeader.values();
         List<Integer> lengthsOfListHeader = new ArrayList<>();
@@ -53,7 +53,7 @@ public class ExcelStyleUtil {
         int maxLengthInThirdColumn = lengthsOfListHeader.get(2);
         int maxLengthInFourthColumn = lengthsOfListHeader.get(3); // Fourth column type is boolean.
         int maxLengthInFifthColumn = lengthsOfListHeader.get(4);
-        for (Webtoon webtoon : webtoonList) {
+        for (Webtoon webtoon : webtoons) {
             int temp1 = webtoon.getPlatform().getBytes().length;
             if (maxLengthInFirstColumn < temp1) maxLengthInFirstColumn = temp1;
 
