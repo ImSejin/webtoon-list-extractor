@@ -70,4 +70,24 @@ public class Webtoon {
      */
     private long size;
 
+    @Override
+    public int hashCode() {
+        return title.hashCode() + authors.hashCode() + platform.hashCode() + Boolean.valueOf(completed).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+
+        if (!(object instanceof Webtoon)) return false;
+
+        Webtoon webtoon = (Webtoon) object;
+        boolean isTitleEqual = webtoon.getTitle().equals(this.getTitle());
+        boolean isAuthorEqual = webtoon.getAuthors().equals(this.getAuthors());
+        boolean isPlatformEqual = webtoon.getPlatform().equals(this.getPlatform());
+        boolean isCompletionEqual = webtoon.isCompleted() == this.isCompleted();
+
+        return isTitleEqual && isAuthorEqual && isPlatformEqual && isCompletionEqual;
+    }
+
 }
