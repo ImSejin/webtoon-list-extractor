@@ -225,18 +225,16 @@ public class FileUtil {
      * </pre>
      */
     public String getCreationTime(File file) {
-        BasicFileAttributes attributes;
-        FileTime time = null;
+        String creationTime = null;
 
         try {
-            attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-            time = attributes.creationTime();
+            BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+            FileTime time = attributes.creationTime();
+            creationTime = LocalDateTime.ofInstant(time.toInstant(), ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        String creationTime = LocalDateTime.ofInstant(time.toInstant(), ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         return creationTime;
     }
