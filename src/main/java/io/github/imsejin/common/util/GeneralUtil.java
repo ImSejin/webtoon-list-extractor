@@ -53,11 +53,11 @@ public class GeneralUtil {
         return Arrays.asList(authors.split(DELIMITER_AUTHOR));
     }
 
-    public String[] calculateMetadata(List<Webtoon> webtoonList) {
+    public String[] calculateMetadata(List<Webtoon> webtoons) {
         String[] metadataContents = new String[2];
 
         // Converts data format from `yyyy-MM-dd HH:mm:ss` to `yyyy-MM-dd`
-        List<String> updateDateList = webtoonList.stream()
+        List<String> updateDateList = webtoons.stream()
                 .map(webtoon -> webtoon.getCreationTime().substring(0, webtoon.getCreationTime().indexOf(" ")))
                 .distinct()
                 .collect(Collectors.toList());
