@@ -12,7 +12,7 @@ public class ApplicationMetadata {
 
     public final String APPLICATION_NAME = "WebtoonListExtractor";
 
-    public final String VERSION = "1.0.0";
+    public final String VERSION = "1.1.0";
 
     public final String VERSION_NAME = "v" + VERSION + ".RELEASE";
 
