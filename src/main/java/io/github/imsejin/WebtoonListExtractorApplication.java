@@ -24,12 +24,46 @@
 
 package io.github.imsejin;
 
-import io.github.imsejin.base.action.BaseAction;
+import static io.github.imsejin.common.ApplicationMetadata.APPLICATION_NAME;
+import static io.github.imsejin.common.util.StringUtil.isBlank;
+import static io.github.imsejin.excel.ExcelExecutor.createWebtoonList;
+import static io.github.imsejin.excel.ExcelExecutor.updateWebtoonList;
+import static io.github.imsejin.file.FileFinder.currentPathName;
+import static io.github.imsejin.file.FileFinder.findLatestWebtoonListName;
+import static io.github.imsejin.file.FileFinder.findWebtoons;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+import io.github.imsejin.console.ConsolePrinter;
+import io.github.imsejin.file.model.Webtoon;
 
 public final class WebtoonListExtractorApplication {
 
     public static void main(String[] args) {
-        new BaseAction(args).execute();
+        final String pathName = args == null || args.length == 0 || isBlank(args[0]) || !Files.isDirectory(Paths.get(args[0]))
+                ? currentPathName()
+                : args[0];
+        List<Webtoon> webtoons = findWebtoons(pathName);
+        
+        String latestFileName = findLatestWebtoonListName(pathName);
+
+        try {
+            if (isBlank(latestFileName)) {
+                createWebtoonList(webtoons, pathName);
+            } else {
+                File webtoonList = new File(pathName, latestFileName);
+                updateWebtoonList(webtoons, pathName, webtoonList);
+            }
+
+            ConsolePrinter.clear();
+            System.out.println(APPLICATION_NAME + " is successfully done.");
+        } catch (Exception ex) {
+            ConsolePrinter.clear();
+            System.out.println(APPLICATION_NAME + " is failed.");
+        }
 
         // Fix the bug that `ERROR: JDWP Unable to get JNI 1.2 environment`
         System.exit(0);
