@@ -13,11 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import io.github.imsejin.common.util.DateUtil.DateType;
 import lombok.experimental.UtilityClass;
@@ -34,6 +30,8 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class FileUtil {
+    
+    private final char EXTENSION_SEPARATOR = '.';
 
     public List<File> getFilePathListForFolder(String folderPath) {
         final File folder = new File(folderPath);
@@ -88,35 +86,24 @@ public class FileUtil {
 		return buf.toString();
 	}
 
+	
 	/**
-	 * <p>
-	 * String 영으로 파일의 내용을 읽는다.
-	 * </p>
-	 *
-	 * @param file
-	 *            <code>File</code>
-	 * @param encoding
-	 *            <code>String</code>
-	 * @return 파일 내용
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * 확장자의 위치를 반환한다.<br>
+	 * Returns the position of the extension.
+	 * 
+	 * <pre>
+	 * File file = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
+	 * FileUtil.indexOfExtension(file): 6
+	 * 
+	 * File anotherFile = new File("D:/Program Files/Java/jdk1.8.0_202/.gitignore");
+	 * FileUtil.indexOfExtension(anotherFile): -1
+	 * </pre>
 	 */
-	public String readFile(File file, String encoding) throws IOException {
-		StringBuffer sb = new StringBuffer();
-
-		List<String> lines = FileUtils.readLines(file, encoding);
-
-		for (Iterator<String> it = lines.iterator();;) {
-			sb.append(it.next());
-
-			if (it.hasNext()) {
-				sb.append("");
-			} else {
-				break;
-			}
-		}
-
-		return sb.toString();
+	public int indexOfExtension(File file) {
+        if (file == null) return -1;
+        
+        int index = file.getName().lastIndexOf(EXTENSION_SEPARATOR);
+        return index == 0 ? -1 : index;
     }
 
     /**
@@ -124,12 +111,19 @@ public class FileUtil {
      * 
      * <pre>
      * File file = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
-     * 
      * FileUtil.getBaseName(file): "README"
+     * 
+     * File anotherFile = new File("D:/Program Files/Java/jdk1.8.0_202/LICENSE");
+     * FileUtil.getBaseName(anotherFile): "LICENSE"
      * </pre>
      */
     public String getBaseName(File file) {
-        return FilenameUtils.getBaseName(file.getName());
+        if (file == null) return "";
+
+        int index = indexOfExtension(file);
+        return index == -1
+                ? file.getName()
+                : file.getName().substring(0, index);
     }
 
     /**
@@ -137,57 +131,17 @@ public class FileUtil {
      * 
      * <pre>
      * File file = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
-     * 
      * FileUtil.getFileExtension(file): "html"
      * </pre>
      */
     public String getExtension(File file) {
-        return FilenameUtils.getExtension(file.getName());
+        if (file == null) return "";
+
+        int index = indexOfExtension(file);
+        return index == -1
+                ? ""
+                : file.getName().substring(index + 1);
     }
-
-	/**
-	 * <p>
-	 * 파일의 존재여부를 확인한다.
-	 * </p>
-	 * 
-	 * @param filename
-	 *            <code>String</code>
-	 * @return 존재여부
-	 */
-	public boolean isExistsFile(String filename) {
-		File file = new File(filename);
-		return file.exists();
-	}
-
-	/**
-	 * <p>
-	 * 디렉토리명을 제외한 파일명을 가져온다.
-	 * </p>
-	 *
-	 * @param filename
-	 *            <code>String</code>
-	 * @return the string
-	 */
-	public String stripFilename(String filename) {
-		return FilenameUtils.getBaseName(filename);
-	}
-
-	/**
-	 * <p>
-	 * 파일의 크기를 가져온다.
-	 * </p>
-	 * 
-	 * @param filename
-	 *            <code>String</code>
-	 * @return 존재여부
-	 */
-	public long getFileSize(String filename) throws Exception {
-		File file = new File(filename);
-		if (!file.exists()) {
-			return Long.valueOf("0");
-		}
-		return file.length();
-	}
 
     /**
      * 디렉터리 경로 끝에 현재의 연/월(yyyy/MM) 폴더를 추가한다.
@@ -249,7 +203,7 @@ public class FileUtil {
      * </pre>
      */
     public static File mkdirAsOwnName(File file) {
-        String dirName = stripFilename(file.getName());
+        String dirName = getBaseName(file);
 
         File dir = new File(file.getParentFile(), dirName);
         dir.mkdir();
