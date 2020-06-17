@@ -1,5 +1,9 @@
 package io.github.imsejin.file;
 
+import static io.github.imsejin.file.FileService.convertToWebtoons;
+import static io.github.imsejin.file.FileService.getFiles;
+import static io.github.imsejin.file.FileService.getLatestFileName;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -36,22 +40,23 @@ public class FileFinder {
     }
 
     /**
-     * Returns list of webtoons.
+     * 지정한 경로에 있는 파일들을 찾아 웹툰으로 변환한다.<br>
+     * Finds the files in the specified path and converts them into webtoons.
      */
     public List<Webtoon> findWebtoons(@NonNull String pathName) {
-        List<File> files = FileService.getFiles(pathName);
-        List<Webtoon> webtoons = FileService.convertToWebtoons(files);
+        List<File> files = getFiles(pathName);
 
-        return webtoons;
+        return convertToWebtoons(files);
     }
 
     /**
-     * Returns latest file name.
+     * 최근에 기록된 웹툰 리스트의 파일명을 반환한다.<br>
+     * Returns the filename of the latest webtoon list.
      */
     public String findLatestWebtoonListName(@NonNull String pathName) {
-        List<File> files = FileService.getFiles(pathName);
+        List<File> files = getFiles(pathName);
 
-        return FileService.getLatestFileName(files);
+        return getLatestFileName(files);
     }
 
 }

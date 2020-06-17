@@ -38,8 +38,7 @@ public class FileService {
      * Returns a list of files and directories in the path.
      */
     List<File> getFiles(String pathName) {
-        File file = new File(pathName);
-        return Arrays.asList(file.listFiles());
+        return Arrays.asList(new File(pathName).listFiles());
     }
 
     /**
