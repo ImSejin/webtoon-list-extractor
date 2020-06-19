@@ -15,18 +15,18 @@ import lombok.experimental.UtilityClass;
 public class ExcelExecutor {
 
     public void createWebtoonList(List<Webtoon> webtoons, String pathName) {
-        ExcelService.forCreating(webtoons, pathName)
+        ExcelService.forCreating(webtoons)
                 .create()
                 .decorate()
-                .save();
+                .save(pathName);
     }
 
     public void updateWebtoonList(List<Webtoon> webtoons, String pathName, File file) {
-        ExcelService.forUpdating(webtoons, pathName, file)
+        ExcelService.forUpdating(webtoons, file)
                 .read()
                 .update()
                 .decorate()
-                .save();
+                .save(pathName);
     }
 
 }

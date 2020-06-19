@@ -1,6 +1,7 @@
 package io.github.imsejin.file.model;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -14,8 +15,9 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString(of = { "title", "authors", "platform" })
 @Builder
+@ToString(of = { "title", "authors", "platform" })
+@EqualsAndHashCode(of = { "title", "authors", "platform", "completed" })
 public class Webtoon {
 
     /**
@@ -69,25 +71,5 @@ public class Webtoon {
      * File size of webtoon file
      */
     private long size;
-
-    @Override
-    public int hashCode() {
-        return title.hashCode() + authors.hashCode() + platform.hashCode() + Boolean.valueOf(completed).hashCode();
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == this) return true;
-
-        if (!(object instanceof Webtoon)) return false;
-
-        Webtoon webtoon = (Webtoon) object;
-        boolean isTitleEqual = webtoon.getTitle().equals(this.getTitle());
-        boolean isAuthorEqual = webtoon.getAuthors().equals(this.getAuthors());
-        boolean isPlatformEqual = webtoon.getPlatform().equals(this.getPlatform());
-        boolean isCompletionEqual = webtoon.isCompleted() == this.isCompleted();
-
-        return isTitleEqual && isAuthorEqual && isPlatformEqual && isCompletionEqual;
-    }
 
 }

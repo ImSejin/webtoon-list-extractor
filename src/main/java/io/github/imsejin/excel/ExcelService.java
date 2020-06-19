@@ -36,30 +36,27 @@ public class ExcelService {
     private final String suffix = "-" + DateUtil.getCurrentDateTime();
 
     private final List<Webtoon> webtoons;
-    private final String pathName;
     private final XSSFWorkbook workbook;
     private final File file;
     private List<Webtoon> previousWebtoons;
 
-    private ExcelService(List<Webtoon> webtoons, String pathName) {
+    private ExcelService(List<Webtoon> webtoons) {
         this.webtoons = webtoons;
-        this.pathName = pathName;
         this.workbook = new XSSFWorkbook();
         this.file = null;
     }
 
     @SneakyThrows({ InvalidFormatException.class, IOException.class })
-    private ExcelService(List<Webtoon> webtoons, String pathName, File file) {
+    private ExcelService(List<Webtoon> webtoons, File file) {
         this.webtoons = webtoons;
-        this.pathName = pathName;
         this.workbook = new XSSFWorkbook(file);
         this.file = file;
     }
 
     //////////////////////////////////////// When create webtoon list ////////////////////////////////////////
 
-    static ExcelService forCreating(@NonNull List<Webtoon> webtoons, @NonNull String pathName) {
-        return new ExcelService(webtoons, pathName);
+    static ExcelService forCreating(@NonNull List<Webtoon> webtoons) {
+        return new ExcelService(webtoons);
     }
 
     ExcelService create() {
@@ -70,8 +67,8 @@ public class ExcelService {
 
     //////////////////////////////////////// When update webtoon list ////////////////////////////////////////
 
-    static ExcelService forUpdating(@NonNull List<Webtoon> webtoons, @NonNull String pathName, @NonNull File file) {
-        return new ExcelService(webtoons, pathName, file);
+    static ExcelService forUpdating(@NonNull List<Webtoon> webtoons, @NonNull File file) {
+        return new ExcelService(webtoons, file);
     }
 
     ExcelService read() {
@@ -111,7 +108,7 @@ public class ExcelService {
     }
 
     @SneakyThrows(IOException.class)
-    File save() {
+    File save(@NonNull String pathName) {
         String fileName = EXCEL_FILE_PREFIX + calculateMetadata(webtoons)[0] + suffix + "." + XLSX_FILE_EXTENSION;
         File newWebtoonList = new File(pathName, fileName);
 
