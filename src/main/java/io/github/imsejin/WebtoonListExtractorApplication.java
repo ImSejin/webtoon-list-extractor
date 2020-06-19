@@ -43,18 +43,19 @@ import io.github.imsejin.file.model.Webtoon;
 public final class WebtoonListExtractorApplication {
 
     public static void main(String[] args) {
+        // 웹툰이 있는 경로를 첫 번째 인자로 주지 않았으면, jar가 있는 현재 경로로 지정한다
         final String pathName = args == null || args.length == 0 || isBlank(args[0]) || !Files.isDirectory(Paths.get(args[0]))
                 ? currentPathName()
                 : args[0];
+
         List<Webtoon> webtoons = findWebtoons(pathName);
-        
-        String latestFileName = findLatestWebtoonListName(pathName);
+        String latestWebtoonListName = findLatestWebtoonListName(pathName);
 
         try {
-            if (isBlank(latestFileName)) {
+            if (isBlank(latestWebtoonListName)) {
                 createWebtoonList(webtoons, pathName);
             } else {
-                File webtoonList = new File(pathName, latestFileName);
+                File webtoonList = new File(pathName, latestWebtoonListName);
                 updateWebtoonList(webtoons, pathName, webtoonList);
             }
 
@@ -62,7 +63,7 @@ public final class WebtoonListExtractorApplication {
             System.out.println(APPLICATION_NAME + " is successfully done.");
         } catch (Exception ex) {
             ConsolePrinter.clear();
-            System.out.println(APPLICATION_NAME + " is failed.");
+            System.out.println(APPLICATION_NAME + " has failed.");
         }
 
         // Fix the bug that `ERROR: JDWP Unable to get JNI 1.2 environment`
