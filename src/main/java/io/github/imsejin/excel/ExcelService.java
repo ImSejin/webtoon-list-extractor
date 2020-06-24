@@ -4,7 +4,7 @@ import static io.github.imsejin.common.Constants.excel.SHEET_NAME_LIST;
 import static io.github.imsejin.common.Constants.excel.SHEET_NAME_METADATA;
 import static io.github.imsejin.common.Constants.file.EXCEL_FILE_PREFIX;
 import static io.github.imsejin.common.Constants.file.XLSX_FILE_EXTENSION;
-import static io.github.imsejin.common.util.GeneralUtil.calculateMetadata;
+import static io.github.imsejin.common.util.GeneralUtils.calculateMetadata;
 import static io.github.imsejin.excel.util.ExcelStyler.hideExtraneousColumns;
 import static io.github.imsejin.excel.util.ExcelStyler.hideExtraneousRows;
 import static io.github.imsejin.excel.util.ExcelStyler.makeColumnsFitContent;
@@ -19,7 +19,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import io.github.imsejin.common.util.DateUtil;
+import io.github.imsejin.common.util.DateUtils;
 import io.github.imsejin.excel.util.ExcelReader;
 import io.github.imsejin.excel.util.ExcelWriter;
 import io.github.imsejin.file.model.Webtoon;
@@ -33,7 +33,7 @@ import lombok.SneakyThrows;
  */
 public class ExcelService {
 
-    private final String suffix = "-" + DateUtil.getCurrentDateTime();
+    private final String suffix = "-" + DateUtils.getCurrentDateTime();
 
     private final List<Webtoon> webtoons;
     private final XSSFWorkbook workbook;

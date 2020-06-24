@@ -6,7 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class CipherUtil {
+public final class CipherUtils {
+
+    private CipherUtils() {}
 
     public static String sha256_base64(String plaintext, boolean salting) {
         return encode(sha256(plaintext, salting));

@@ -33,7 +33,7 @@ import lombok.experimental.UtilityClass;
  * @author SEJIN
  */
 @UtilityClass
-public class DateUtil {
+public class DateUtils {
 
     /** 날짜 유형 */
     public enum DateType {
@@ -322,19 +322,19 @@ public class DateUtil {
 		String _fromDateFormat = "";
 		String _toDateFormat = "";
 
-		if (StringUtil.isNullToString(strSource).trim().equals("")) {
+		if (StringUtils.isNullToString(strSource).trim().equals("")) {
 			return "";
 		}
-		if (StringUtil.isNullToString(fromDateFormat).trim().equals(""))
+		if (StringUtils.isNullToString(fromDateFormat).trim().equals(""))
 			_fromDateFormat = "yyyyMMddHHmmss"; // default값
-		if (StringUtil.isNullToString(toDateFormat).trim().equals(""))
+		if (StringUtils.isNullToString(toDateFormat).trim().equals(""))
 			_toDateFormat = "yyyy-MM-dd HH:mm:ss"; // default값
 
 		try {
 			simpledateformat = new SimpleDateFormat(_fromDateFormat,
 					Locale.getDefault());
 			date = simpledateformat.parse(strSource);
-			if (!StringUtil.isNullToString(strTimeZone).trim().equals("")) {
+			if (!StringUtils.isNullToString(strTimeZone).trim().equals("")) {
 				simpledateformat.setTimeZone(TimeZone.getTimeZone(strTimeZone));
 			}
 			simpledateformat = new SimpleDateFormat(_toDateFormat,
@@ -817,7 +817,7 @@ public class DateUtil {
 					+ dateStr);
 		}
 		if (dateStr.length() == 10) {
-			_dateStr = StringUtil.removeMinusChar(dateStr);
+			_dateStr = StringUtils.removeMinusChar(dateStr);
 		}
 		return _dateStr;
 	}
@@ -832,7 +832,7 @@ public class DateUtil {
 		String _timeStr = timeStr;
 
 		if (_timeStr.length() == 5) {
-			_timeStr = StringUtil.remove(_timeStr, ':');
+			_timeStr = StringUtils.remove(_timeStr, ':');
 		}
 		if (_timeStr == null || !(_timeStr.trim().length() == 4)) {
 			throw new IllegalArgumentException("Invalid time format: "
@@ -854,7 +854,7 @@ public class DateUtil {
      */
     public String toString(Date date, String format, Locale locale) {
 
-        if (StringUtil.isBlank(format)) {
+        if (StringUtils.isBlank(format)) {
             format = "yyyy-MM-dd HH:mm:ss";
         }
 
@@ -1056,7 +1056,7 @@ public class DateUtil {
     public boolean isValidDate(String date) {
         try {
             // 날짜 형식을 통일한다
-            date = StringUtil.removeMinusChar(date);
+            date = StringUtils.removeMinusChar(date);
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             dateFormat.setLenient(false);

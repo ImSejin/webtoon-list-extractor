@@ -38,10 +38,10 @@ import lombok.experimental.UtilityClass;
  * @author SEJIN
  */
 @UtilityClass
-public class ExcelUtil {
+public class ExcelUtils {
 
     /**
-     * ExcelUtil.reader
+     * ExcelUtils.reader
      * 
      * <pre>
      * 1. VO의 필드가 오직 `Wrapper Class` 또는 `String`이어야 하며, 기초형 필드가 있어서는 안된다.
@@ -173,7 +173,7 @@ public class ExcelUtil {
     }
 
     /**
-     * ExcelUtil.writer
+     * ExcelUtils.writer
      * 
      * <pre>
      * 1. VO의 필드가 오직 `기초형`, `Wrapper Class` 또는 `String`이어야 한다.
@@ -249,7 +249,7 @@ public class ExcelUtil {
                 int k = 0;
                 for (Method method : methods) {
                     cell = row.createCell(k);
-                    cell.setCellValue(StringUtil.null2string(method.invoke(vo).toString(), defaultValue));
+                    cell.setCellValue(StringUtils.null2string(method.invoke(vo).toString(), defaultValue));
                     k++;
                 }
 
@@ -274,7 +274,7 @@ public class ExcelUtil {
                 int k = 0;
                 for (Field field : fields) {
                     cell = row.createCell(k);
-                    cell.setCellValue(StringUtil.null2string(convertToString(field, vo), defaultValue));
+                    cell.setCellValue(StringUtils.null2string(convertToString(field, vo), defaultValue));
                     k++;
                 }
 

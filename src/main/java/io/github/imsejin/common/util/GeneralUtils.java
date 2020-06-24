@@ -21,7 +21,7 @@ import lombok.experimental.UtilityClass;
  * @author SEJIN
  */
 @UtilityClass
-public class GeneralUtil {
+public class GeneralUtils {
 
     /**
      * Converts from list of authors to string of authors.
@@ -67,7 +67,7 @@ public class GeneralUtil {
         metadataContents[0] = calculateVersion(updateCount);
 
         // Sorts out the latest importation date.
-        String latestUpdateDate = ObjectUtil.isNullOrEmpty(updateDateList)
+        String latestUpdateDate = CollectionUtils.isNullOrEmpty(updateDateList)
                 ? "-"
                 : updateDateList.stream().sorted(Comparator.reverseOrder()).findFirst().get();
         metadataContents[1] = latestUpdateDate;

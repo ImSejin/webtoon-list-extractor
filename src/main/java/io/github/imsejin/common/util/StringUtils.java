@@ -27,7 +27,7 @@ import lombok.experimental.UtilityClass;
  * @author SEJIN
  */
 @UtilityClass
-public class StringUtil {
+public class StringUtils {
 
 	/** The Constant WHITE_SPACE. */ 
 	private final char WHITE_SPACE = ' ';
@@ -1543,9 +1543,9 @@ public class StringUtil {
 
         if (count < 0) {
             count += arr.size();
-            ObjectUtil.splice(arr, 0, count);
+            CollectionUtils.splice(arr, 0, count);
         } else {
-            ObjectUtil.splice(arr, count, arr.size() - count);
+            CollectionUtils.splice(arr, count, arr.size() - count);
         }
 
         return String.join(delim, arr);
@@ -1616,7 +1616,7 @@ public class StringUtil {
         // `new String[] {}`이 파라미터로 넘어 왔을 때
         if (strs == null || strs.length == 0) return true;
 
-        return Stream.of(strs).allMatch(StringUtil::isBlank);
+        return Stream.of(strs).allMatch(StringUtils::isBlank);
     }
 
     /**

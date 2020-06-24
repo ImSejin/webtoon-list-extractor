@@ -34,7 +34,7 @@ import lombok.experimental.UtilityClass;
  * @author SEJIN
  */
 @UtilityClass
-public class ZipUtil {
+public class ZipUtils {
 
     private final List<String> EXTENSIONS = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
 
@@ -124,7 +124,7 @@ public class ZipUtil {
      * </pre>
      */
     public void decompress(File zipFile, boolean willDelete) {
-        File dir = FileUtil.mkdirAsOwnName(zipFile);
+        File dir = FileUtils.mkdirAsOwnName(zipFile);
         _decompress(zipFile, dir.toPath(), willDelete, false);
     }
 
@@ -156,7 +156,7 @@ public class ZipUtil {
      */
     @Deprecated
     public void decompressAll(File zipFile, boolean willDelete) {
-        File dir = FileUtil.mkdirAsOwnName(zipFile);
+        File dir = FileUtils.mkdirAsOwnName(zipFile);
         _decompress(zipFile, dir.toPath(), willDelete, true);
     }
 
@@ -266,7 +266,7 @@ public class ZipUtil {
             // 디렉터리를 제외한다
             if (exceptDir) {
                 stream = stream.filter(entry -> !entry.isDirectory());
-                mapper = ZipUtil::getFileName;
+                mapper = ZipUtils::getFileName;
             }
 
             entryNames = stream.map(mapper).collect(Collectors.toList());
@@ -311,7 +311,7 @@ public class ZipUtil {
         if (file == null || !file.isFile()) return false;
 
         for (String extension : EXTENSIONS) {
-            if (extension.equalsIgnoreCase(FileUtil.getExtension(file))) return true;
+            if (extension.equalsIgnoreCase(FilenameUtils.extension(file))) return true;
         }
 
         return false;

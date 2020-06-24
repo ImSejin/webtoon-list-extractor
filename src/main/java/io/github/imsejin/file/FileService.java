@@ -1,7 +1,11 @@
 package io.github.imsejin.file;
 
-import static io.github.imsejin.common.Constants.file.*;
-import static io.github.imsejin.common.util.FileUtil.*;
+import static io.github.imsejin.common.Constants.file.DELIMITER_COMPLETED;
+import static io.github.imsejin.common.Constants.file.DELIMITER_PLATFORM;
+import static io.github.imsejin.common.Constants.file.DELIMITER_TITLE;
+import static io.github.imsejin.common.Constants.file.EXCEL_FILE_PREFIX;
+import static io.github.imsejin.common.Constants.file.XLSX_FILE_EXTENSION;
+import static io.github.imsejin.common.util.FileUtils.creationTime;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,8 +17,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.github.imsejin.common.util.ObjectUtil;
-import io.github.imsejin.common.util.ZipUtil;
+import io.github.imsejin.common.util.FilenameUtils;
+import io.github.imsejin.common.util.CollectionUtils;
+import io.github.imsejin.common.util.ZipUtils;
 import io.github.imsejin.file.model.Platform;
 import io.github.imsejin.file.model.Webtoon;
 import lombok.experimental.UtilityClass;
@@ -48,7 +53,7 @@ public class FileService {
         if (files == null) files = new ArrayList<>();
 
         List<Webtoon> webtoons = files.stream()
-                .filter(ZipUtil::isZip)
+                .filter(ZipUtils::isZip)
                 .map(FileService::convertFileToWebtoon)
                 .distinct() // Removes duplicated webtoons.
                 .sorted(Comparator.comparing(Webtoon::getPlatform)
@@ -66,15 +71,15 @@ public class FileService {
      * converts file to webtoon.
      */
     private Webtoon convertFileToWebtoon(File file) {
-        String fileName = getBaseName(file);
-        Map<String, String> webtoonInfo = classifyWebtoonInfo(fileName);
+        String filename = FilenameUtils.baseName(file);
+        Map<String, String> webtoonInfo = classifyWebtoonInfo(filename);
 
         String title = webtoonInfo.get("title");
         String authors = webtoonInfo.get("authors");
         String platform = webtoonInfo.get("platform");
         String completed = webtoonInfo.get("completed");
-        String creationTime = getCreationTime(file);
-        String fileExtension = getExtension(file);
+        String creationTime = creationTime(file);
+        String fileExtension = FilenameUtils.extension(file);
         long size = file.length();
 
         return Webtoon.builder()
@@ -132,30 +137,30 @@ public class FileService {
                 .orElse(acronym);
     }
 
-    String getLatestFileName(List<File> files) {
-        String latestFileName = null;
+    String getLatestFilename(List<File> files) {
+        String latestFilename = null;
 
         // Shallow copy.
         List<File> dummy = new ArrayList<>(files);
 
         // Removes non-webtoon-list from list.
         dummy.removeIf(file -> {
-            String fileName = getBaseName(file);
-            String fileExtension = getExtension(file);
+            String filename = FilenameUtils.baseName(file);
+            String fileExtension = FilenameUtils.extension(file);
 
-            return !file.isFile() || !fileName.startsWith(EXCEL_FILE_PREFIX) || !fileExtension.equals(XLSX_FILE_EXTENSION);
+            return !file.isFile() || !filename.startsWith(EXCEL_FILE_PREFIX) || !fileExtension.equals(XLSX_FILE_EXTENSION);
         });
 
         // Sorts out the latest file.
-        if (ObjectUtil.isNotEmpty(dummy)) {
-            latestFileName = dummy.stream()
+        if (CollectionUtils.isNotEmpty(dummy)) {
+            latestFilename = dummy.stream()
                     .map(File::getName)
                     .sorted(Comparator.reverseOrder())
                     .findFirst()
                     .get();
         }
 
-        return latestFileName;
+        return latestFilename;
     }
 
 }
