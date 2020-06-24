@@ -2,12 +2,18 @@ package io.github.imsejin.common.util;
 
 import java.io.File;
 
-import lombok.experimental.UtilityClass;
+/**
+ * 파일명 유틸리티<br>
+ * Filename utilities
+ * 
+ * 
+ * @author SEJIN
+ */
+public final class FilenameUtils {
 
-@UtilityClass
-public class FilenameUtils {
+    private FilenameUtils() {}
 
-    private final char EXTENSION_SEPARATOR = '.';
+    private static final char EXTENSION_SEPARATOR = '.';
 
     /**
      * 확장자의 위치를 반환한다.<br>
@@ -21,7 +27,7 @@ public class FilenameUtils {
      * FilenameUtils.indexOfExtension(anotherFile): -1
      * </pre>
      */
-    public int indexOfExtension(String filename) {
+    public static int indexOfExtension(String filename) {
         if (filename == null) return -1;
 
         int index = filename.lastIndexOf(EXTENSION_SEPARATOR);
@@ -40,7 +46,7 @@ public class FilenameUtils {
      * FilenameUtils.baseName(anotherFile): "LICENSE"
      * </pre>
      */
-    public String baseName(File file) {
+    public static String baseName(File file) {
         if (file == null) return "";
 
         String filename = file.getName();
@@ -59,7 +65,7 @@ public class FilenameUtils {
      * FilenameUtils.extension(file): "html"
      * </pre>
      */
-    public String extension(File file) {
+    public static String extension(File file) {
         if (file == null) return "";
 
         String filename = file.getName();
@@ -91,7 +97,7 @@ public class FilenameUtils {
      * FilenameUtils.toSafeName("I feel happy when coding."): "I feel happy when coding．"
      * </pre>
      */
-    public String toSafeName(String filename) {
+    public static String toSafeName(String filename) {
         return filename.replaceAll("\\\\", "＼")
                 .replaceAll("/", "／")
                 .replaceAll(":", "：")

@@ -33,7 +33,7 @@ import lombok.SneakyThrows;
  */
 public class ExcelService {
 
-    private final String suffix = "-" + DateUtils.getCurrentDateTime();
+    private final String suffix = "-" + DateUtils.now();
 
     private final List<Webtoon> webtoons;
     private final XSSFWorkbook workbook;

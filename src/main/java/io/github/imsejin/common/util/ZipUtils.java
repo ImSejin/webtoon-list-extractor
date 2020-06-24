@@ -21,8 +21,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * 압축 유틸리티<br>
  * Archive utilities
@@ -33,12 +31,13 @@ import lombok.experimental.UtilityClass;
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class ZipUtils {
+public final class ZipUtils {
 
-    private final List<String> EXTENSIONS = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
+    private ZipUtils() {}
 
-    private final String ZIP_FILE_EXTENSION = ".zip";
+    private static final List<String> EXTENSIONS = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
+
+    private static final String ZIP_FILE_EXTENSION = ".zip";
 
     /**
      * 해당 경로에 있는 모든 파일을 압축하고, 압축된 파일을 삭제한다.
@@ -49,7 +48,7 @@ public class ZipUtils {
      * ZipUtil.compress(path, "java.zip");
      * </pre>
      */
-    public File compress(Path path, String zipFileName) {
+    public static File compress(Path path, String zipFileName) {
         return compress(path, zipFileName, true);
     }
 
@@ -62,7 +61,7 @@ public class ZipUtils {
      * ZipUtil.compress(path, "java.zip", false);
      * </pre>
      */
-    public File compress(Path path, String zipFileName, boolean willDelete) {
+    public static File compress(Path path, String zipFileName, boolean willDelete) {
         // 압축 파일을 제외한 파일 리스트
         File[] fileArray = path.toFile().listFiles((file, fileNm) -> !fileNm.endsWith(ZIP_FILE_EXTENSION));
 
@@ -123,7 +122,7 @@ public class ZipUtils {
      * ZipUtil.decompress(zipFile, false);
      * </pre>
      */
-    public void decompress(File zipFile, boolean willDelete) {
+    public static void decompress(File zipFile, boolean willDelete) {
         File dir = FileUtils.mkdirAsOwnName(zipFile);
         _decompress(zipFile, dir.toPath(), willDelete, false);
     }
@@ -139,7 +138,7 @@ public class ZipUtils {
      * ZipUtil.decompress(zipFile, destination, false);
      * </pre>
      */
-    public void decompress(File zipFile, Path dest, boolean willDelete) {
+    public static void decompress(File zipFile, Path dest, boolean willDelete) {
         _decompress(zipFile, dest, willDelete, false);
     }
 
@@ -155,7 +154,7 @@ public class ZipUtils {
      * </pre>
      */
     @Deprecated
-    public void decompressAll(File zipFile, boolean willDelete) {
+    public static void decompressAll(File zipFile, boolean willDelete) {
         File dir = FileUtils.mkdirAsOwnName(zipFile);
         _decompress(zipFile, dir.toPath(), willDelete, true);
     }
@@ -173,11 +172,11 @@ public class ZipUtils {
      * </pre>
      */
     @Deprecated
-    public void decompressAll(File zipFile, Path dest, boolean willDelete) {
+    public static void decompressAll(File zipFile, Path dest, boolean willDelete) {
         _decompress(zipFile, dest, willDelete, true);
     }
 
-    private void _decompress(File zipFile, Path dest, boolean willDelete, boolean nested) {
+    private static void _decompress(File zipFile, Path dest, boolean willDelete, boolean nested) {
         // 유효한 압축파일인지 확인한다
         if (zipFile == null || !zipFile.getName().endsWith(ZIP_FILE_EXTENSION)) return;
 
@@ -236,7 +235,7 @@ public class ZipUtils {
      * ZipUtil.getEntryNames(zipFile): ["query.sql", "data.zip", "catalina.out", "dir/", "eclipse-log.log"]
      * </pre>
      */
-    public List<String> getEntryNames(File zipFile) {
+    public static List<String> getEntryNames(File zipFile) {
         return getEntryNames(zipFile, false);
     }
 
@@ -250,7 +249,7 @@ public class ZipUtils {
      * ZipUtil.getEntryNames(zipFile, true): ["query.sql", "data.zip", "catalina.out", "eclipse-log.log"]
      * </pre>
      */
-    public List<String> getEntryNames(File zipFile, boolean exceptDir) {
+    public static List<String> getEntryNames(File zipFile, boolean exceptDir) {
         List<String> entryNames = null;
 
         // 유효한 압축파일인지 확인한다
@@ -277,14 +276,14 @@ public class ZipUtils {
         return entryNames;
     }
 
-    private String getFileName(ZipEntry entry) {
+    private static String getFileName(ZipEntry entry) {
         String fileName = entry.getName();
         int lastIndexOfSeparator = lastIndexDirectory(fileName);
 
         return lastIndexOfSeparator != -1 ? fileName.substring(lastIndexOfSeparator + 1) : fileName;
     }
 
-    private int lastIndexDirectory(String pathName) {
+    private static int lastIndexDirectory(String pathName) {
         int index = -1;
 
         // 기본 `경로 구분자`의 경우
@@ -307,7 +306,7 @@ public class ZipUtils {
      * ZipUtil.isZip(file2): true
      * </pre>
      */
-    public boolean isZip(File file) {
+    public static boolean isZip(File file) {
         if (file == null || !file.isFile()) return false;
 
         for (String extension : EXTENSIONS) {

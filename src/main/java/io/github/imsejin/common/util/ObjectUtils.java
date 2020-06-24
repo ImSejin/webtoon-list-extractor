@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
-
 /**
  * 객체 유틸리티<br>
  * Object utilities
@@ -19,11 +16,11 @@ import lombok.experimental.UtilityClass;
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class ObjectUtils {
+public final class ObjectUtils {
 
-    @SneakyThrows({ IOException.class, ClassNotFoundException.class })
-    public Object cloneDeep(Object obj) {
+    private ObjectUtils() {}
+
+    public static Object cloneDeep(Object obj) throws IOException, ClassNotFoundException {
         Object clone = null;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

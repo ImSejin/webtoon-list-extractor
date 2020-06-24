@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * 파일 유틸리티<br>
  * File uilities
@@ -21,8 +19,9 @@ import lombok.experimental.UtilityClass;
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class FileUtils {
+public final class FileUtils {
+
+    private FileUtils() {}
     
     /**
      * 파일의 생성시간을 반환한다.
@@ -33,7 +32,7 @@ public class FileUtils {
      * FileUtils.getCreationTime(file): "2020-02-29 23:06:34"
      * </pre>
      */
-    public String creationTime(File file) {
+    public static String creationTime(File file) {
         String creationTime = null;
 
         try {
@@ -57,7 +56,7 @@ public class FileUtils {
      * FileUtils.mkdirAsOwnName(file): new File("C:\\Program Files\\list_20191231")
      * </pre>
      */
-    public File mkdirAsOwnName(File file) {
+    public static File mkdirAsOwnName(File file) {
         String dirName = FilenameUtils.baseName(file);
 
         File dir = new File(file.getParentFile(), dirName);

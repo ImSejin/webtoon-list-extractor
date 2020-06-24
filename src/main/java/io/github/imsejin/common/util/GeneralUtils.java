@@ -1,6 +1,6 @@
 package io.github.imsejin.common.util;
 
-import static io.github.imsejin.common.Constants.file.*;
+import static io.github.imsejin.common.Constants.file.DELIMITER_AUTHOR;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.github.imsejin.file.model.Webtoon;
-import lombok.experimental.UtilityClass;
 
 /**
  * 공통 유틸리티<br>
@@ -20,8 +19,9 @@ import lombok.experimental.UtilityClass;
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class GeneralUtils {
+public final class GeneralUtils {
+
+    private GeneralUtils() {}
 
     /**
      * Converts from list of authors to string of authors.
@@ -29,7 +29,7 @@ public class GeneralUtils {
      * @param list of authors
      * @return string of authors
      */
-    public String convertAuthors(List<String> authors) {
+    public static String convertAuthors(List<String> authors) {
         StringBuffer sb = new StringBuffer();
 
         int size = authors.size();
@@ -49,11 +49,11 @@ public class GeneralUtils {
      * @param string of authors
      * @return list of authors
      */
-    public List<String> convertAuthors(String authors) {
+    public static List<String> convertAuthors(String authors) {
         return Arrays.asList(authors.split(DELIMITER_AUTHOR));
     }
 
-    public String[] calculateMetadata(List<Webtoon> webtoons) {
+    public static String[] calculateMetadata(List<Webtoon> webtoons) {
         String[] metadataContents = new String[2];
 
         // Converts data format from `yyyy-MM-dd HH:mm:ss` to `yyyy-MM-dd`
@@ -75,7 +75,7 @@ public class GeneralUtils {
         return metadataContents;
     }
 
-    public String calculateVersion(int updateCount) {
+    public static String calculateVersion(int updateCount) {
         final int initialVersionCode = 100; // It means `1.0.0`.
         String version = "";
 
