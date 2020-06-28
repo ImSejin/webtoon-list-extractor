@@ -1,7 +1,6 @@
 package io.github.imsejin.excel.util;
 
-import static io.github.imsejin.common.Constants.excel.SHEET_NAME_DATABASE;
-import static io.github.imsejin.common.Constants.excel.SHEET_NAME_METADATA;
+import static io.github.imsejin.common.Constants.excel.*;
 
 import java.util.ArrayList;
 import java.util.List;

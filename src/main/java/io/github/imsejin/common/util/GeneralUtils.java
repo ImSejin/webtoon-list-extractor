@@ -1,6 +1,6 @@
 package io.github.imsejin.common.util;
 
-import static io.github.imsejin.common.Constants.file.DELIMITER_AUTHOR;
+import static io.github.imsejin.common.Constants.file.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -26,7 +26,6 @@ public final class GeneralUtils {
     /**
      * Converts from list of authors to string of authors.
      * 
-     * @param list of authors
      * @return string of authors
      */
     public static String convertAuthors(List<String> authors) {
@@ -46,7 +45,6 @@ public final class GeneralUtils {
     /**
      * Converts from string of authors to list of authors.
      * 
-     * @param string of authors
      * @return list of authors
      */
     public static List<String> convertAuthors(String authors) {

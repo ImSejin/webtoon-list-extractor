@@ -105,15 +105,6 @@
 							<mainClass>io.github.imsejin.WebtoonListExtractorApplication</mainClass>
 						</manifest>
 					</archive>
-					<executions>
-						<execution>
-							<id>make-assembly</id>
-							<phase>package</phase>
-							<goals>
-								<goal>single</goal>
-							</goals>
-						</execution>
-					</executions>
 				</configuration>
 			</plugin>
 

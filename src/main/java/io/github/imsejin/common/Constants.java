@@ -1,5 +1,6 @@
 package io.github.imsejin.common;
 
+
 import lombok.experimental.UtilityClass;
 
 /**

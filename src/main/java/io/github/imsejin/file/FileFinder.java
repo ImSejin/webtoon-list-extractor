@@ -1,8 +1,8 @@
 package io.github.imsejin.file;
 
-import static io.github.imsejin.file.FileService.convertToWebtoons;
-import static io.github.imsejin.file.FileService.getFiles;
-import static io.github.imsejin.file.FileService.getLatestFilename;
+import static io.github.imsejin.file.FileService.*;
+import static io.github.imsejin.file.FileService.*;
+import static io.github.imsejin.file.FileService.*;
 
 import java.io.File;
 import java.io.IOException;
