@@ -24,13 +24,10 @@
 
 package io.github.imsejin;
 
-import static io.github.imsejin.common.ApplicationMetadata.APPLICATION_NAME;
-import static io.github.imsejin.common.util.StringUtils.isBlank;
-import static io.github.imsejin.excel.ExcelExecutor.createWebtoonList;
-import static io.github.imsejin.excel.ExcelExecutor.updateWebtoonList;
-import static io.github.imsejin.file.FileFinder.currentPathName;
-import static io.github.imsejin.file.FileFinder.findLatestWebtoonListName;
-import static io.github.imsejin.file.FileFinder.findWebtoons;
+import static io.github.imsejin.common.ApplicationMetadata.*;
+import static io.github.imsejin.common.util.StringUtils.*;
+import static io.github.imsejin.excel.ExcelExecutor.*;
+import static io.github.imsejin.file.FileFinder.*;
 
 import java.io.File;
 import java.nio.file.Files;
