@@ -1,22 +1,21 @@
 package io.github.imsejin.common;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * ApplicationMetadata
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class ApplicationMetadata {
+public final class ApplicationMetadata {
 
-    public final String APPLICATION_NAME = "WebtoonListExtractor";
+    private ApplicationMetadata() {}
 
-    public final String VERSION = "1.1.0";
+    public static final String APPLICATION_NAME = "WebtoonListExtractor";
 
-    public final String VERSION_NAME = "v" + VERSION + ".RELEASE";
+    public static final String VERSION = "1.1.0";
 
-    public final String[] APPLICATION_TITLE = { "	                 _                     _    _     _",
+    public static final String VERSION_NAME = "v" + VERSION + ".RELEASE";
+
+    public static final String[] APPLICATION_TITLE = { "	                 _                     _    _     _",
                                                 "	___ __   ____   | |                   | |  (_)   | |",
                                                 "	\\  \\  \\ /   /___| |__  ___  ___  _ ___| |   _ ___| |_",
                                                 "	 \\  \\  \\   / __ \\  _ \\/ _ \\/ _ \\| '_  \\ |  | | __|  _|",

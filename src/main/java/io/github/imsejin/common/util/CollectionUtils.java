@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * 컬렉션 유틸리티<br>
  * Collection utilities
@@ -16,20 +14,21 @@ import lombok.experimental.UtilityClass;
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class CollectionUtils {
+public final class CollectionUtils {
+
+    private CollectionUtils() {}
 
     /**
      * 컬렉션이 null인지 또는 비어있는지 확인한다.
      */
-    public boolean isNullOrEmpty(Collection<?> cl) {
+    public static boolean isNullOrEmpty(Collection<?> cl) {
         return cl == null || cl.isEmpty();
     }
 
     /**
      * 컬렉션이 null인지 또는 비어있는지 확인한다.
      */
-    public boolean isNullOrEmpty(Collection<?>... cls) {
+    public static boolean isNullOrEmpty(Collection<?>... cls) {
         // `빈 컬렉션 배열`이 파라미터로 넘어 왔을 때
         if (cls == null || cls.length == 0) return true;
 
@@ -42,14 +41,14 @@ public class CollectionUtils {
     /**
      * 요소가 있는 컬렉션인지 확인한다.
      */
-    public boolean isNotEmpty(Collection<?> cl) {
+    public static boolean isNotEmpty(Collection<?> cl) {
         return !isNullOrEmpty(cl);
     }
 
     /**
      * 요소가 있는 컬렉션인지 확인한다.
      */
-    public boolean isNotEmpty(Collection<?>... cls) {
+    public static boolean isNotEmpty(Collection<?>... cls) {
         return !isNullOrEmpty(cls);
     }
 
@@ -66,7 +65,7 @@ public class CollectionUtils {
      * CollectionUtils.splice(list, 3): [] / list: ["A", "B", "C"]
      * </pre>
      */
-    public <T> List<T> splice(List<T> arr, int start) {
+    public static <T> List<T> splice(List<T> arr, int start) {
         return splice(arr, start, arr.size());
     }
 
@@ -83,7 +82,7 @@ public class CollectionUtils {
      * CollectionUtils.splice(list, 3, 1): [] / list: ["A", "B", "C"]
      * </pre>
      */
-    public <T> List<T> splice(List<T> arr, int start, int deleteCount) {
+    public static <T> List<T> splice(List<T> arr, int start, int deleteCount) {
         List<T> remained = arr; // new ArrayList<>(arr); 새로운 리스트로 래핑하면 파라미터로 받은 리스트에 영향이 가지 않는다
         List<T> deleted = new ArrayList<>();
         if (deleteCount <= 0) return deleted;

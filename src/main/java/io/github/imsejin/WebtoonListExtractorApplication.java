@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  * 
  * Copyright (c) 2019-2020 Im Sejin
@@ -24,20 +24,25 @@
 
 package io.github.imsejin;
 
-import static io.github.imsejin.common.ApplicationMetadata.*;
-import static io.github.imsejin.common.util.StringUtils.*;
-import static io.github.imsejin.excel.ExcelExecutor.*;
 import static io.github.imsejin.file.FileFinder.*;
+import io.github.imsejin.console.ConsolePrinter;
+import io.github.imsejin.file.model.Webtoon;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import io.github.imsejin.console.ConsolePrinter;
-import io.github.imsejin.file.model.Webtoon;
+import static io.github.imsejin.common.ApplicationMetadata.APPLICATION_NAME;
+import static io.github.imsejin.common.util.StringUtils.isBlank;
+import static io.github.imsejin.excel.ExcelExecutor.createWebtoonList;
+import static io.github.imsejin.excel.ExcelExecutor.updateWebtoonList;
+import static io.github.imsejin.file.FileFinder.findLatestWebtoonListName;
+import static io.github.imsejin.file.FileFinder.findWebtoons;
 
 public final class WebtoonListExtractorApplication {
+
+    private WebtoonListExtractorApplication() {}
 
     public static void main(String[] args) {
         // 웹툰이 있는 경로를 첫 번째 인자로 주지 않았으면, jar가 있는 현재 경로로 지정한다

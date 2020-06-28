@@ -1,43 +1,42 @@
 package io.github.imsejin.excel.util;
 
-import static io.github.imsejin.common.Constants.excel.*;
-import static io.github.imsejin.common.util.GeneralUtils.*;
-import static io.github.imsejin.excel.util.ExcelStyler.*;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
+import io.github.imsejin.excel.model.ListHeader;
+import io.github.imsejin.excel.model.MetadataHeader;
+import io.github.imsejin.file.model.Webtoon;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import io.github.imsejin.excel.model.ListHeader;
-import io.github.imsejin.excel.model.MetadataHeader;
-import io.github.imsejin.file.model.Webtoon;
-import lombok.experimental.UtilityClass;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import static io.github.imsejin.common.Constants.excel.*;
+import static io.github.imsejin.common.util.GeneralUtils.calculateMetadata;
+import static io.github.imsejin.excel.util.ExcelStyler.*;
 
 /**
  * ExcelWriter
- * 
+ *
  * @author SEJIN
  */
-@UtilityClass
-public class ExcelWriter {
+public final class ExcelWriter {
+
+    private ExcelWriter() {}
 
     private static final ListHeader[] listHeaders = ListHeader.values();
 
     private static final MetadataHeader[] metadataHeaders = MetadataHeader.values();
 
-    public void create(List<Webtoon> webtoons, XSSFWorkbook workbook) {
+    public static void create(List<Webtoon> webtoons, XSSFWorkbook workbook) {
         createListSheet(webtoons, workbook);
         createMetadataSheet(webtoons, workbook);
         createDatabaseSheet(webtoons, workbook);
     }
 
-    private void createListSheet(List<Webtoon> webtoons, XSSFWorkbook workbook) {
+    private static void createListSheet(List<Webtoon> webtoons, XSSFWorkbook workbook) {
         // Constitutes excel sheet.
         XSSFSheet sheet = workbook.createSheet(SHEET_NAME_LIST);
         XSSFRow row = sheet.createRow(0);
@@ -66,7 +65,7 @@ public class ExcelWriter {
         }
     }
 
-    private void createMetadataSheet(List<Webtoon> webtoons, XSSFWorkbook workbook) {
+    private static void createMetadataSheet(List<Webtoon> webtoons, XSSFWorkbook workbook) {
         // Constitutes excel sheet.
         XSSFSheet sheet = workbook.createSheet(SHEET_NAME_METADATA);
         XSSFRow row;
@@ -91,7 +90,7 @@ public class ExcelWriter {
      * Do not use `hideExtraneousRows`
      * because it causes `Sheet.getLastRowNum` not to work.
      */
-    private void createDatabaseSheet(List<Webtoon> webtoons, XSSFWorkbook workbook) {
+    private static void createDatabaseSheet(List<Webtoon> webtoons, XSSFWorkbook workbook) {
         // Constitutes excel sheet.
         XSSFSheet sheet = workbook.createSheet(SHEET_NAME_DATABASE);
         XSSFRow row;
@@ -111,13 +110,13 @@ public class ExcelWriter {
         }
     }
 
-    public void update(List<Webtoon> previousList, List<Webtoon> presentList, XSSFWorkbook workbook) {
+    public static void update(List<Webtoon> previousList, List<Webtoon> presentList, XSSFWorkbook workbook) {
         updateListSheet(previousList, presentList, workbook);
         updateMetadataSheet(presentList, workbook);
         updateDatabaseSheet(previousList, presentList, workbook);
     }
 
-    private void updateListSheet(List<Webtoon> previousList, List<Webtoon> presentList, XSSFWorkbook workbook) {
+    private static void updateListSheet(List<Webtoon> previousList, List<Webtoon> presentList, XSSFWorkbook workbook) {
         XSSFSheet sheet = workbook.getSheet(SHEET_NAME_LIST);
         XSSFRow row;
 
@@ -144,7 +143,7 @@ public class ExcelWriter {
         }
     }
 
-    private void updateMetadataSheet(List<Webtoon> presentList, XSSFWorkbook workbook) {
+    private static void updateMetadataSheet(List<Webtoon> presentList, XSSFWorkbook workbook) {
         XSSFSheet sheet = workbook.getSheet(SHEET_NAME_METADATA);
         XSSFRow row;
         XSSFCell cell;
@@ -160,7 +159,7 @@ public class ExcelWriter {
         }
     }
 
-    private void updateDatabaseSheet(List<Webtoon> previousList, List<Webtoon> presentList, XSSFWorkbook workbook) {
+    private static void updateDatabaseSheet(List<Webtoon> previousList, List<Webtoon> presentList, XSSFWorkbook workbook) {
         // Removes the sheet for database.
         workbook.removeSheetAt(2);
         XSSFSheet sheet = workbook.createSheet(SHEET_NAME_DATABASE);
@@ -194,7 +193,7 @@ public class ExcelWriter {
         }
     }
 
-    private void overwriteCreationTime(List<Webtoon> fromList, List<Webtoon> toList) {
+    private static void overwriteCreationTime(List<Webtoon> fromList, List<Webtoon> toList) {
         for (Webtoon from : fromList) {
             String time = from.getCreationTime();
 

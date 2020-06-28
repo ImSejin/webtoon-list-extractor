@@ -1,36 +1,36 @@
 package io.github.imsejin.excel.util;
 
-import static io.github.imsejin.common.Constants.excel.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import io.github.imsejin.file.model.Webtoon;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import io.github.imsejin.file.model.Webtoon;
-import lombok.experimental.UtilityClass;
+import java.util.ArrayList;
+import java.util.List;
+
+import static io.github.imsejin.common.Constants.excel.SHEET_NAME_DATABASE;
+import static io.github.imsejin.common.Constants.excel.SHEET_NAME_METADATA;
 
 /**
  * ExcelReader
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class ExcelReader {
+public final class ExcelReader {
+
+    private ExcelReader() {}
 
     /**
      * The `SXSSFWorkbook` constructor that takes the `XSSFWorkbook` as param.
      * You cannot override or access the initial rows in the template file.
      * You must not use `new SXSSFWorkbook(new XSSFWorkbook(FileInputStream))`.
      */
-    public List<Webtoon> read(Workbook workbook) {
+    public static List<Webtoon> read(Workbook workbook) {
         return getData(workbook);
     }
 
-    private List<Webtoon> getData(Workbook workbook) {
+    private static List<Webtoon> getData(Workbook workbook) {
         // Reads the sheet for database.
         List<Webtoon> webtoons = new ArrayList<>();
         Sheet sheet = workbook.getSheet(SHEET_NAME_DATABASE);
@@ -62,7 +62,7 @@ public class ExcelReader {
         return webtoons;
     }
 
-    private String getVersion(Workbook workbook) {
+    private static String getVersion(Workbook workbook) {
         String version = "";
 
         try {

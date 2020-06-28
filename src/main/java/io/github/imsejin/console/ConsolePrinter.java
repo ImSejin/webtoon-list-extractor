@@ -1,20 +1,20 @@
 package io.github.imsejin.console;
 
-import java.io.IOException;
-
 import io.github.imsejin.common.ApplicationMetadata;
 import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
+
+import java.io.IOException;
 
 /**
  * ConsolePrinter
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class ConsolePrinter {
+public final class ConsolePrinter {
 
-    private final ProcessBuilder COMMAND = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
+    private ConsolePrinter() {}
+
+    private static final ProcessBuilder COMMAND = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
 
     static {
         // Initially clear console
@@ -25,11 +25,11 @@ public class ConsolePrinter {
     }
 
     @SneakyThrows({ IOException.class, InterruptedException.class })
-    public void clear() {
+    public static void clear() {
         COMMAND.start().waitFor();
     }
 
-    public synchronized void print(WorkingProcess workingProcess) {
+    public static synchronized void print(WorkingProcess workingProcess) {
         // ConsoleThread will be multiply used in thread
         ConsoleThread thread = new ConsoleThread();
         thread.setWorkingProcess(workingProcess);

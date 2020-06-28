@@ -1,24 +1,18 @@
 package io.github.imsejin.file;
 
-import static io.github.imsejin.common.Constants.file.*;
-import static io.github.imsejin.common.util.FileUtils.*;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.common.util.CollectionUtils;
+import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.common.util.ZipUtils;
 import io.github.imsejin.file.model.Platform;
 import io.github.imsejin.file.model.Webtoon;
-import lombok.experimental.UtilityClass;
+
+import java.io.File;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static io.github.imsejin.common.Constants.file.*;
+import static io.github.imsejin.common.util.FileUtils.creationTime;
 
 /**
  * 파일 서비스<br>
@@ -31,21 +25,22 @@ import lombok.experimental.UtilityClass;
  * 
  * @author SEJIN
  */
-@UtilityClass
-public class FileService {
+public final class FileService {
+
+    private FileService() {}
 
     /**
      * 해당 경로에 있는 파일과 디렉터리의 리스트를 반환한다.<br>
      * Returns a list of files and directories in the path.
      */
-    List<File> getFiles(String pathName) {
+    static List<File> getFiles(String pathName) {
         return Arrays.asList(new File(pathName).listFiles());
     }
 
     /**
      * Converts list of files and directories to list of webtoons.
      */
-    List<Webtoon> convertToWebtoons(List<File> files) {
+    static List<Webtoon> convertToWebtoons(List<File> files) {
         if (files == null) files = new ArrayList<>();
 
         List<Webtoon> webtoons = files.stream()
@@ -66,7 +61,7 @@ public class FileService {
     /**
      * converts file to webtoon.
      */
-    private Webtoon convertFileToWebtoon(File file) {
+    private static Webtoon convertFileToWebtoon(File file) {
         String filename = FilenameUtils.baseName(file);
         Map<String, String> webtoonInfo = classifyWebtoonInfo(filename);
 
@@ -92,7 +87,7 @@ public class FileService {
     /**
      * Analyzes the file name and classifies it as platform, title, author and completed.
      */
-    private Map<String, String> classifyWebtoonInfo(String fileName) {
+    private static Map<String, String> classifyWebtoonInfo(String fileName) {
         StringBuffer sb = new StringBuffer(fileName);
 
         // Platform
@@ -125,7 +120,7 @@ public class FileService {
     /**
      * Converts acronym of platform to full text.
      */
-    private String convertAcronym(String acronym) {
+    private static String convertAcronym(String acronym) {
         return Stream.of(Platform.values())
                 .filter(platform -> platform.name().equals(acronym))
                 .map(Platform::getFullText)
@@ -133,7 +128,7 @@ public class FileService {
                 .orElse(acronym);
     }
 
-    String getLatestFilename(List<File> files) {
+    static String getLatestFilename(List<File> files) {
         String latestFilename = null;
 
         // Shallow copy.
