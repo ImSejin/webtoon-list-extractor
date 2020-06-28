@@ -1,6 +1,6 @@
 package io.github.imsejin.common.util;
 
-import static io.github.imsejin.common.util.DateUtils.today;
+import io.github.imsejin.common.constants.DateType;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.github.imsejin.common.constants.DateType;
+import static io.github.imsejin.common.util.DateUtils.today;
 
 /**
  * 경로명 유틸리티<br>
@@ -27,7 +27,8 @@ public final class PathnameUtils {
     private static final String UNIX_SEPARATOR = "/";
     
     /**
-     * 현재 경로명을 반환한다.
+     * 애플리케이션이 있는 현재 경로를 반환한다.<br>
+     * Returns the current path where the application is.
      * 
      * <pre>
      * PathnameUtils.currentPathname(): "E:\\repositories\\lezhin-comics-downloader"
@@ -35,6 +36,8 @@ public final class PathnameUtils {
      */
     public static String currentPathname() {
         try {
+            // 이 코드는 `System.getProperty("user.dir")`으로 대체할 수 있다.
+            // This code can be replaced with `System.getProperty("user.dir")`.
             return Paths.get(".").toRealPath().toString();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -80,7 +83,7 @@ public final class PathnameUtils {
      */
     public static String correct(boolean absolute, String pathname) {
         String trimmed = Stream.of(pathname.split(WINDOWS_SEPARATOR)) // split with Windows separators.
-                .map(p -> Stream.of(p.split(UNIX_SEPARATOR)).collect(Collectors.joining())) // split with Unix separators.
+                .map(p -> String.join("", p.split(UNIX_SEPARATOR))) // split with Unix separators.
                 .filter(StringUtils::isNotBlank)
                 .map(String::trim)
                 .collect(Collectors.joining(File.separator));

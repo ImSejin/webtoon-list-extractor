@@ -77,7 +77,7 @@ public final class FileService {
                 .title(title)
                 .authors(authors)
                 .platform(platform)
-                .completed(Boolean.valueOf(completed))
+                .completed(Boolean.parseBoolean(completed))
                 .creationTime(creationTime)
                 .fileExtension(fileExtension)
                 .size(size)
@@ -146,8 +146,7 @@ public final class FileService {
         if (CollectionUtils.isNotEmpty(dummy)) {
             latestFilename = dummy.stream()
                     .map(File::getName)
-                    .sorted(Comparator.reverseOrder())
-                    .findFirst()
+                    .max(Comparator.naturalOrder())
                     .get();
         }
 

@@ -1,13 +1,13 @@
 package io.github.imsejin.common.util;
 
-import static io.github.imsejin.common.Constants.file.*;
+import io.github.imsejin.file.model.Webtoon;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.github.imsejin.file.model.Webtoon;
+import static io.github.imsejin.common.Constants.file.DELIMITER_AUTHOR;
 
 /**
  * 공통 유틸리티<br>
@@ -25,15 +25,15 @@ public final class GeneralUtils {
 
     /**
      * Converts from list of authors to string of authors.
-     * 
+     *
+     * @param authors list of authors
      * @return string of authors
      */
     public static String convertAuthors(List<String> authors) {
         StringBuffer sb = new StringBuffer();
 
         int size = authors.size();
-        for (int i = 0; i < size; i++) {
-            String author = authors.get(i);
+        for (String author : authors) {
             sb.append(author);
             sb.append(DELIMITER_AUTHOR);
         }
@@ -44,7 +44,8 @@ public final class GeneralUtils {
 
     /**
      * Converts from string of authors to list of authors.
-     * 
+     *
+     * @param authors string of authors
      * @return list of authors
      */
     public static List<String> convertAuthors(String authors) {
@@ -67,7 +68,7 @@ public final class GeneralUtils {
         // Sorts out the latest importation date.
         String latestUpdateDate = CollectionUtils.isNullOrEmpty(updateDateList)
                 ? "-"
-                : updateDateList.stream().sorted(Comparator.reverseOrder()).findFirst().get();
+                : updateDateList.stream().max(Comparator.naturalOrder()).get();
         metadataContents[1] = latestUpdateDate;
 
         return metadataContents;

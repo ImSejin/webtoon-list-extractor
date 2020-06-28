@@ -24,7 +24,7 @@
 
 package io.github.imsejin;
 
-import static io.github.imsejin.file.FileFinder.*;
+import io.github.imsejin.common.util.PathnameUtils;
 import io.github.imsejin.console.ConsolePrinter;
 import io.github.imsejin.file.model.Webtoon;
 
@@ -47,7 +47,7 @@ public final class WebtoonListExtractorApplication {
     public static void main(String[] args) {
         // 웹툰이 있는 경로를 첫 번째 인자로 주지 않았으면, jar가 있는 현재 경로로 지정한다
         final String pathname = args == null || args.length == 0 || isBlank(args[0]) || !Files.isDirectory(Paths.get(args[0]))
-                ? currentPathName()
+                ? PathnameUtils.currentPathname()
                 : args[0];
 
         List<Webtoon> webtoons = findWebtoons(pathname);

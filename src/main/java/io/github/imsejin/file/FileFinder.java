@@ -21,16 +21,6 @@ import static io.github.imsejin.file.FileService.*;
  */
 public final class FileFinder {
 
-    /**
-     * 애플리케이션이 있는 현재 경로를 반환한다.<br>
-     * Returns the current path where the application is.
-     */
-    @SneakyThrows(IOException.class)
-    public String currentPathName() {
-        // 이 코드는 `System.getProperty("user.dir")`으로 대체할 수 있다.
-        // This code can be replaced with `System.getProperty("user.dir")`.
-        return Paths.get(".").toRealPath().toString();
-    }
     private FileFinder() {}
 
     /**

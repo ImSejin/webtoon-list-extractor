@@ -70,11 +70,11 @@ public final class ExcelStyler {
         // One character needs 256 bytes.
         final int padding = 256 * 6;
         // final double compensatory = 0.7;
-        sheet.setColumnWidth(0, (int) (maxLengthsInContent.get(0) * 256 + padding));
-        sheet.setColumnWidth(1, (int) (maxLengthsInContent.get(1) * 256 + padding)); // compensatory
-        sheet.setColumnWidth(2, (int) (maxLengthsInContent.get(2) * 256 + padding)); // compensatory
-        sheet.setColumnWidth(3, (int) (maxLengthsInContent.get(3) * 256 + padding));
-        sheet.setColumnWidth(4, (int) (maxLengthsInContent.get(4) * 256 + padding));
+        sheet.setColumnWidth(0, maxLengthsInContent.get(0) * 256 + padding);
+        sheet.setColumnWidth(1, maxLengthsInContent.get(1) * 256 + padding); // compensatory
+        sheet.setColumnWidth(2, maxLengthsInContent.get(2) * 256 + padding); // compensatory
+        sheet.setColumnWidth(3, maxLengthsInContent.get(3) * 256 + padding);
+        sheet.setColumnWidth(4, maxLengthsInContent.get(4) * 256 + padding);
     }
 
     /**
@@ -93,8 +93,8 @@ public final class ExcelStyler {
 
         // Sets the width of columns.
         final int padding = 256 * 8;
-        sheet.setColumnWidth(0, (int) (maxLengthInMetadataHeader * 256 + padding));
-        sheet.setColumnWidth(1, (int) (maxLengthInMetadataHeader * 256 + padding));
+        sheet.setColumnWidth(0, maxLengthInMetadataHeader * 256 + padding);
+        sheet.setColumnWidth(1, maxLengthInMetadataHeader * 256 + padding);
     }
 
     /*
