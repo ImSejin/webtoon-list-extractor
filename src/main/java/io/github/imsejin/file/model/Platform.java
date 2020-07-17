@@ -1,7 +1,8 @@
 package io.github.imsejin.file.model;
 
-import lombok.Getter;
+import io.github.imsejin.common.constants.KeyValue;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * 웹툰 플랫폼<br>
@@ -14,9 +15,9 @@ import lombok.RequiredArgsConstructor;
  * 
  * @author SEJIN
  */
-@Getter
+@ToString
 @RequiredArgsConstructor
-public enum Platform {
+public enum Platform implements KeyValue {
 
     CA("Comica", "http://www.comica.com"),
     CO("Comico", "http://comico.kr/webtoon/week"),
@@ -49,8 +50,17 @@ public enum Platform {
     private final String url;
 
     @Override
-    public String toString() {
-        return "[fullText=" + this.fullText + ", url=" + this.url + "]";
+    public String key() {
+        return name();
+    }
+
+    @Override
+    public String value() {
+        return this.fullText;
+    }
+
+    public String url() {
+        return this.url;
     }
 
 }

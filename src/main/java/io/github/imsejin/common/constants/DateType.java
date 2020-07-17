@@ -1,6 +1,9 @@
 package io.github.imsejin.common.constants;
 
-public enum DateType implements GettableEnum {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public enum DateType implements KeyValue {
 
     YEAR("yyyy"), MONTH("MM"), DAY("dd"), HOUR("HH"), MINUTE("mm"), SECOND("ss"), MILLISECOND("SSS"),
 
@@ -38,10 +41,6 @@ public enum DateType implements GettableEnum {
     F_ALL(F_DATE.value() + F_HOUR_2_MILSEC.value());
 
     private final String pattern;
-
-    DateType(String pattern) {
-        this.pattern = pattern;
-    }
 
     @Override
     public String key() {

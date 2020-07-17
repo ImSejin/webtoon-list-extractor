@@ -123,7 +123,7 @@ public final class FileService {
     private static String convertAcronym(String acronym) {
         return Stream.of(Platform.values())
                 .filter(platform -> platform.name().equals(acronym))
-                .map(Platform::getFullText)
+                .map(Platform::value)
                 .findFirst()
                 .orElse(acronym);
     }
