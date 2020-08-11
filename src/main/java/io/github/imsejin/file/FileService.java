@@ -87,8 +87,8 @@ public final class FileService {
     /**
      * Analyzes the file name and classifies it as platform, title, author and completed.
      */
-    private static Map<String, String> classifyWebtoonInfo(String fileName) {
-        StringBuffer sb = new StringBuffer(fileName);
+    private static Map<String, String> classifyWebtoonInfo(String filename) {
+        StringBuilder sb = new StringBuilder(filename);
 
         // Platform
         int i = sb.indexOf(DELIMITER_PLATFORM);
@@ -101,7 +101,7 @@ public final class FileService {
         sb.delete(0, j + DELIMITER_TITLE.length());
 
         // Completed or uncompleted
-        boolean completed = fileName.endsWith(DELIMITER_COMPLETED);
+        boolean completed = filename.endsWith(DELIMITER_COMPLETED);
 
         // Authors
         String authors = completed
@@ -122,7 +122,7 @@ public final class FileService {
      */
     private static String convertAcronym(String acronym) {
         return Stream.of(Platform.values())
-                .filter(platform -> platform.name().equals(acronym))
+                .filter(platform -> platform.key().equals(acronym))
                 .map(Platform::value)
                 .findFirst()
                 .orElse(acronym);

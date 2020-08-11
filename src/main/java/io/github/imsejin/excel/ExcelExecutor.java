@@ -14,19 +14,19 @@ public final class ExcelExecutor {
 
     private ExcelExecutor() {}
 
-    public static void createWebtoonList(List<Webtoon> webtoons, String pathName) {
+    public static void createWebtoonList(List<Webtoon> webtoons, String pathname) {
         ExcelService.forCreating(webtoons)
                 .create()
                 .decorate()
-                .save(pathName);
+                .save(pathname);
     }
 
-    public static void updateWebtoonList(List<Webtoon> webtoons, String pathName, File file) {
+    public static void updateWebtoonList(List<Webtoon> webtoons, String pathname, File file) {
         ExcelService.forUpdating(webtoons, file)
                 .read()
                 .update()
                 .decorate()
-                .save(pathName);
+                .save(pathname);
     }
 
 }
