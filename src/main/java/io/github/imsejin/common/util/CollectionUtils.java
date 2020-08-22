@@ -32,7 +32,7 @@ public final class CollectionUtils {
         // `빈 컬렉션 배열`이 파라미터로 넘어 왔을 때
         if (cls == null || cls.length == 0) return true;
 
-        for (Collection<?> cl : cls) {
+        for (var cl : cls) {
             if (isNullOrEmpty(cl)) return true;
         }
         return false;
@@ -41,14 +41,14 @@ public final class CollectionUtils {
     /**
      * 요소가 있는 컬렉션인지 확인한다.
      */
-    public static boolean isNotEmpty(Collection<?> cl) {
+    public static boolean exists(Collection<?> cl) {
         return !isNullOrEmpty(cl);
     }
 
     /**
      * 요소가 있는 컬렉션인지 확인한다.
      */
-    public static boolean isNotEmpty(Collection<?>... cls) {
+    public static boolean exists(Collection<?>... cls) {
         return !isNullOrEmpty(cls);
     }
 

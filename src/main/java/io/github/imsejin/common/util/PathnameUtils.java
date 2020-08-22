@@ -84,8 +84,8 @@ public final class PathnameUtils {
     public static String correct(boolean absolute, String pathname) {
         String trimmed = Stream.of(pathname.split(WINDOWS_SEPARATOR)) // split with Windows separators.
                 .map(p -> String.join("", p.split(UNIX_SEPARATOR))) // split with Unix separators.
-                .filter(StringUtils::isNotBlank)
-                .map(String::trim)
+                .filter(p -> !StringUtils.isNullOrBlank(p))
+                .map(String::strip)
                 .collect(Collectors.joining(File.separator));
 
         return absolute && !OSDetector.isWindows()
@@ -103,8 +103,7 @@ public final class PathnameUtils {
      * </pre>
      */
     public static String concat(boolean absolute, String... pathnames) {
-        return correct(absolute,
-                Stream.of(pathnames).collect(Collectors.joining(File.separator)));
+        return correct(absolute, String.join(File.separator, pathnames));
     }
 
     /**

@@ -30,10 +30,9 @@ public final class GeneralUtils {
      * @return string of authors
      */
     public static String convertAuthors(List<String> authors) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        int size = authors.size();
-        for (String author : authors) {
+        for (var author : authors) {
             sb.append(author);
             sb.append(DELIMITER_AUTHOR);
         }
@@ -76,17 +75,17 @@ public final class GeneralUtils {
 
     public static String calculateVersion(int updateCount) {
         final int initialVersionCode = 100; // It means `1.0.0`.
-        String version = "";
+        StringBuilder version = new StringBuilder();
 
-        int count = (updateCount > 1 ? updateCount - 1 : 0); // Why it subtracts 1 is starting point of version is `1.0.0`.
+        int count = updateCount > 1 ? updateCount - 1 : 0; // Why it subtracts 1 is starting point of version is `1.0.0`.
         String str = String.valueOf(initialVersionCode + count);
         String[] arr = str.split("");
-        for (int i = 0; i < arr.length; i++) {
-            version += arr[i];
-            if (i < arr.length - 1) version += ".";
+        for (var i = 0; i < arr.length; i++) {
+            version.append(arr[i]);
+            if (i < arr.length - 1) version.append(".");
         }
 
-        return version;
+        return version.toString();
     }
 
 }

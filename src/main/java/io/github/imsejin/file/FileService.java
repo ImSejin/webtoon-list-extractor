@@ -143,7 +143,7 @@ public final class FileService {
         });
 
         // Sorts out the latest file.
-        if (CollectionUtils.isNotEmpty(dummy)) {
+        if (CollectionUtils.exists(dummy)) {
             latestFilename = dummy.stream()
                     .map(File::getName)
                     .max(Comparator.naturalOrder())

@@ -146,10 +146,10 @@ public final class DateUtils {
      * </pre>
      */
     public static boolean validate(String date) {
-        try {
-            // 날짜 형식을 통일한다
-            date = StringUtils.removeMinusChar(date);
+        // 날짜 형식을 통일한다
+        date = date.replace("-", "");
 
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DateType.DATE.value());
             dateFormat.setLenient(false);
             dateFormat.parse(date);

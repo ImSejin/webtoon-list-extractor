@@ -34,7 +34,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static io.github.imsejin.common.ApplicationMetadata.APPLICATION_NAME;
-import static io.github.imsejin.common.util.StringUtils.isBlank;
+import static io.github.imsejin.common.util.StringUtils.isNullOrBlank;
 import static io.github.imsejin.excel.ExcelExecutor.createWebtoonList;
 import static io.github.imsejin.excel.ExcelExecutor.updateWebtoonList;
 import static io.github.imsejin.file.FileFinder.findLatestWebtoonListName;
@@ -46,7 +46,7 @@ public final class WebtoonListExtractorApplication {
 
     public static void main(String[] args) {
         // 웹툰이 있는 경로를 첫 번째 인자로 주지 않았으면, jar가 있는 현재 경로로 지정한다
-        final String pathname = args == null || args.length == 0 || isBlank(args[0]) || !Files.isDirectory(Paths.get(args[0]))
+        final String pathname = args == null || args.length == 0 || isNullOrBlank(args[0]) || !Files.isDirectory(Paths.get(args[0]))
                 ? PathnameUtils.currentPathname()
                 : args[0];
 
@@ -54,7 +54,7 @@ public final class WebtoonListExtractorApplication {
         String latestWebtoonListName = findLatestWebtoonListName(pathname);
 
         try {
-            if (isBlank(latestWebtoonListName)) {
+            if (isNullOrBlank(latestWebtoonListName)) {
                 createWebtoonList(webtoons, pathname);
             } else {
                 File webtoonList = new File(pathname, latestWebtoonListName);
