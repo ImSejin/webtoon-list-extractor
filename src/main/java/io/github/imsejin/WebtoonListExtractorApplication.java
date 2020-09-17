@@ -34,11 +34,11 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static io.github.imsejin.common.ApplicationMetadata.APPLICATION_NAME;
-import static io.github.imsejin.util.StringUtils.isNullOrBlank;
 import static io.github.imsejin.excel.ExcelExecutor.createWebtoonList;
 import static io.github.imsejin.excel.ExcelExecutor.updateWebtoonList;
 import static io.github.imsejin.file.FileFinder.findLatestWebtoonListName;
 import static io.github.imsejin.file.FileFinder.findWebtoons;
+import static io.github.imsejin.util.StringUtils.isNullOrBlank;
 
 public final class WebtoonListExtractorApplication {
 
