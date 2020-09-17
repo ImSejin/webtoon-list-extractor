@@ -1,5 +1,6 @@
 package io.github.imsejin.common.util;
 
+import io.github.imsejin.util.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -242,7 +243,7 @@ public final class ExcelUtils {
                 int k = 0;
                 for (Method method : methods) {
                     cell = row.createCell(k);
-                    cell.setCellValue(StringUtils.ifBlank(method.invoke(vo).toString(), defaultValue));
+                    cell.setCellValue(StringUtils.ifNullOrBlank(method.invoke(vo).toString(), defaultValue));
                     k++;
                 }
 
@@ -267,7 +268,7 @@ public final class ExcelUtils {
                 int k = 0;
                 for (Field field : fields) {
                     cell = row.createCell(k);
-                    cell.setCellValue(StringUtils.ifBlank(convertToString(field, vo), defaultValue));
+                    cell.setCellValue(StringUtils.ifNullOrBlank(convertToString(field, vo), defaultValue));
                     k++;
                 }
 

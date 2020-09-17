@@ -1,9 +1,9 @@
 package io.github.imsejin.excel;
 
-import io.github.imsejin.common.util.DateUtils;
 import io.github.imsejin.excel.util.ExcelReader;
 import io.github.imsejin.excel.util.ExcelWriter;
 import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.util.DateTimeUtils;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -30,7 +30,7 @@ import static io.github.imsejin.excel.util.ExcelStyler.*;
  */
 public class ExcelService {
 
-    private final String suffix = "-" + DateUtils.now();
+    private final String suffix = "-" + DateTimeUtils.now();
 
     private final List<Webtoon> webtoons;
     private final XSSFWorkbook workbook;

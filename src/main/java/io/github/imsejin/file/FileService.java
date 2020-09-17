@@ -1,18 +1,20 @@
 package io.github.imsejin.file;
 
 import io.github.imsejin.common.util.CollectionUtils;
-import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.common.util.ZipUtils;
+import io.github.imsejin.constant.DateType;
 import io.github.imsejin.file.model.Platform;
 import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.util.FileUtils;
+import io.github.imsejin.util.FilenameUtils;
 
 import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.github.imsejin.common.Constants.file.*;
-import static io.github.imsejin.common.util.FileUtils.creationTime;
 
 /**
  * 파일 서비스<br>
@@ -69,7 +71,8 @@ public final class FileService {
         String authors = webtoonInfo.get("authors");
         String platform = webtoonInfo.get("platform");
         String completed = webtoonInfo.get("completed");
-        String creationTime = creationTime(file);
+        String creationTime = FileUtils.getCreationTime(file)
+                .format(DateTimeFormatter.ofPattern(DateType.F_DATE_TIME.value()));
         String fileExtension = FilenameUtils.extension(file);
         long size = file.length();
 
