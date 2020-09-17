@@ -19,17 +19,18 @@ import static io.github.imsejin.common.Constants.file.*;
 /**
  * 파일 서비스<br>
  * File service
- * 
+ *
  * <p>
  * 압축 파일에서 웹툰 정보를 추출하고 리스트 형태로 반환한다.<br>
  * Extracts the information of webtoon from archive file and returns it in the form of a list.
  * </p>
- * 
+ *
  * @author SEJIN
  */
 public final class FileService {
 
-    private FileService() {}
+    private FileService() {
+    }
 
     /**
      * 해당 경로에 있는 파일과 디렉터리의 리스트를 반환한다.<br>

@@ -25,7 +25,7 @@ import static io.github.imsejin.excel.util.ExcelStyler.*;
 
 /**
  * ExcelService
- * 
+ *
  * @author SEJIN
  */
 public class ExcelService {
@@ -43,7 +43,7 @@ public class ExcelService {
         this.file = null;
     }
 
-    @SneakyThrows({ InvalidFormatException.class, IOException.class })
+    @SneakyThrows({InvalidFormatException.class, IOException.class})
     private ExcelService(List<Webtoon> webtoons, File file) {
         this.webtoons = webtoons;
         this.workbook = new XSSFWorkbook(file);
@@ -112,7 +112,7 @@ public class ExcelService {
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(newWebtoonList))) {
             workbook.write(out);
         } finally {
-            if (workbook != null) workbook.close();
+            workbook.close();
         }
 
         return newWebtoonList;

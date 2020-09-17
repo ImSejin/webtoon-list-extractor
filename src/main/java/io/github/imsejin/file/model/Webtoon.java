@@ -1,23 +1,18 @@
 package io.github.imsejin.file.model;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * 웹툰<br>
  * Webtoon
- * 
+ *
  * @author SEJIN
  */
 @Getter
 @Setter
 @Builder
-@ToString(of = { "title", "authors", "platform" })
-@EqualsAndHashCode(of = { "title", "authors", "platform", "completed" })
+@ToString(of = {"title", "authors", "platform"})
+@EqualsAndHashCode(of = {"title", "authors", "platform", "completed"})
 public class Webtoon {
 
     /**
@@ -60,13 +55,13 @@ public class Webtoon {
     @NonNull
     private String creationTime;
 
-    /** 
+    /**
      * 웹툰 파일의 압축 포맷<br>
      * Compression format of webtoon file
      */
     private String fileExtension;
 
-    /** 
+    /**
      * 웹툰 파일의 크기<br>
      * File size of webtoon file
      */

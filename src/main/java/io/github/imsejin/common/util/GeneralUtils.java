@@ -73,13 +73,20 @@ public final class GeneralUtils {
         return metadataContents;
     }
 
+    /**
+     * Calculates version with count of updating.
+     *
+     * @param updateCount count of updating
+     * @return version
+     */
     public static String calculateVersion(int updateCount) {
         final int initialVersionCode = 100; // It means `1.0.0`.
-        StringBuilder version = new StringBuilder();
 
-        int count = updateCount > 1 ? updateCount - 1 : 0; // Why it subtracts 1 is starting point of version is `1.0.0`.
+        int count = Math.max(updateCount - 1, 0); // Why it subtracts 1 is starting point of version is `1.0.0`.
         String str = String.valueOf(initialVersionCode + count);
         String[] arr = str.split("");
+
+        StringBuilder version = new StringBuilder();
         for (var i = 0; i < arr.length; i++) {
             version.append(arr[i]);
             if (i < arr.length - 1) version.append(".");

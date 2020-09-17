@@ -24,11 +24,12 @@ import static io.github.imsejin.excel.util.ExcelStyler.*;
  */
 public final class ExcelWriter {
 
-    private ExcelWriter() {}
-
     private static final ListHeader[] listHeaders = ListHeader.values();
 
     private static final MetadataHeader[] metadataHeaders = MetadataHeader.values();
+
+    private ExcelWriter() {
+    }
 
     public static void create(List<Webtoon> webtoons, XSSFWorkbook workbook) {
         createListSheet(webtoons, workbook);

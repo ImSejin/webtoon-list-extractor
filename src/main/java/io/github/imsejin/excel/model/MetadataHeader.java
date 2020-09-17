@@ -2,7 +2,7 @@ package io.github.imsejin.excel.model;
 
 /**
  * MetadataHeader
- * 
+ *
  * @author SEJIN
  */
 public enum MetadataHeader {

@@ -7,12 +7,10 @@ import java.io.IOException;
 
 /**
  * ConsolePrinter
- * 
+ *
  * @author SEJIN
  */
 public final class ConsolePrinter {
-
-    private ConsolePrinter() {}
 
     private static final ProcessBuilder COMMAND = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
 
@@ -24,7 +22,10 @@ public final class ConsolePrinter {
         ConsoleThread.printMetadata(ApplicationMetadata.APPLICATION_TITLE);
     }
 
-    @SneakyThrows({ IOException.class, InterruptedException.class })
+    private ConsolePrinter() {
+    }
+
+    @SneakyThrows({IOException.class, InterruptedException.class})
     public static void clear() {
         COMMAND.start().waitFor();
     }

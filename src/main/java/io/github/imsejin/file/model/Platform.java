@@ -7,12 +7,12 @@ import lombok.ToString;
 /**
  * 웹툰 플랫폼<br>
  * Platform
- * 
+ *
  * <p>
  * 웹툰을 제공하는 웹사이트<br>
  * Website that serves webtoon for subscribers
  * </p>
- * 
+ *
  * @author SEJIN
  */
 @ToString

@@ -17,12 +17,13 @@ import static io.github.imsejin.common.Constants.excel.*;
 
 /**
  * ExcelStyler
- * 
+ *
  * @author SEJIN
  */
 public final class ExcelStyler {
 
-    private ExcelStyler() {}
+    private ExcelStyler() {
+    }
 
     /**
      * Adjusts width of columns in sheet for list to fit the content.
@@ -54,7 +55,7 @@ public final class ExcelStyler {
             if (maxLengthInThirdColumn < temp3) maxLengthInThirdColumn = temp3;
 
             // The content in fourth column is fixed.
-            maxLengthInFourthColumn = maxLengthInFourthColumn < 5 ? 5 : maxLengthInFourthColumn;
+            maxLengthInFourthColumn = Math.max(maxLengthInFourthColumn, 5);
 
             int temp5 = webtoon.getCreationTime().getBytes().length;
             if (maxLengthInFifthColumn < temp5) maxLengthInFifthColumn = temp5;

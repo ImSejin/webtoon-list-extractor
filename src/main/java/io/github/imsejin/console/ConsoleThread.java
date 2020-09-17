@@ -1,23 +1,20 @@
 package io.github.imsejin.console;
 
-import static io.github.imsejin.common.Constants.console.*;
-
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi.Attribute;
 import com.diogonunes.jcdp.color.api.Ansi.BColor;
 import com.diogonunes.jcdp.color.api.Ansi.FColor;
-
 import lombok.Setter;
+
+import static io.github.imsejin.common.Constants.console.PERCENT_MULTIPLES;
+import static io.github.imsejin.common.Constants.console.PROGRESS_BAR_LENGTH;
 
 /**
  * ConsoleService
- * 
+ *
  * @author SEJIN
  */
 public final class ConsoleThread implements Runnable {
-
-    @Setter
-    private WorkingProcess workingProcess;
 
     private static final int compensatoryMultiples = PERCENT_MULTIPLES / PROGRESS_BAR_LENGTH;
 
@@ -26,40 +23,8 @@ public final class ConsoleThread implements Runnable {
             .background(BColor.BLACK)
             .build();
 
-    @Override
-    public synchronized void run() {
-        printProcessing();
-    }
-
-    public synchronized void printProcessing() {
-        String message = workingProcess.getMessage();
-        int totalProcess = workingProcess.getTotalProcess();
-        int i;
-
-        // Gets changing current process and prints progress states
-        while ((i = workingProcess.getCurrentProcess() + 1) < totalProcess) {
-            // Calculates the percentage of current progress
-            double percentage = ((double) i / totalProcess) * PERCENT_MULTIPLES;
-
-            // Prints progress bar
-            System.out.print(" |");
-            for (int j = 0; j < PROGRESS_BAR_LENGTH; j++) {
-                if (percentage > j * compensatoryMultiples) {
-                    cp.print(" ", Attribute.HIDDEN, FColor.GREEN, BColor.GREEN);
-                } else {
-                    cp.print(" ", Attribute.HIDDEN, FColor.WHITE, BColor.WHITE);
-                }
-            }
-            System.out.print("| ");
-
-            // Prints currently processing item and current process
-            System.out.print(message + "... ");
-            System.out.print("(" + i + "/" + totalProcess + ")");
-
-            // Enable console typewriter to overwrite them
-            System.out.print("\r");
-        }
-    }
+    @Setter
+    private WorkingProcess workingProcess;
 
     public static void printMetadata(String[] appTitle) {
         for (int i = 0; i < appTitle.length; i++) {
@@ -101,6 +66,41 @@ public final class ConsoleThread implements Runnable {
         }
 
         System.out.println();
+    }
+
+    @Override
+    public synchronized void run() {
+        printProcessing();
+    }
+
+    public synchronized void printProcessing() {
+        String message = workingProcess.getMessage();
+        int totalProcess = workingProcess.getTotalProcess();
+        int i;
+
+        // Gets changing current process and prints progress states
+        while ((i = workingProcess.getCurrentProcess() + 1) < totalProcess) {
+            // Calculates the percentage of current progress
+            double percentage = ((double) i / totalProcess) * PERCENT_MULTIPLES;
+
+            // Prints progress bar
+            System.out.print(" |");
+            for (int j = 0; j < PROGRESS_BAR_LENGTH; j++) {
+                if (percentage > j * compensatoryMultiples) {
+                    cp.print(" ", Attribute.HIDDEN, FColor.GREEN, BColor.GREEN);
+                } else {
+                    cp.print(" ", Attribute.HIDDEN, FColor.WHITE, BColor.WHITE);
+                }
+            }
+            System.out.print("| ");
+
+            // Prints currently processing item and current process
+            System.out.print(message + "... ");
+            System.out.print("(" + i + "/" + totalProcess + ")");
+
+            // Enable console typewriter to overwrite them
+            System.out.print("\r");
+        }
     }
 
 }

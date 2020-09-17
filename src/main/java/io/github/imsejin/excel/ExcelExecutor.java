@@ -12,7 +12,8 @@ import java.util.List;
  */
 public final class ExcelExecutor {
 
-    private ExcelExecutor() {}
+    private ExcelExecutor() {
+    }
 
     public static void createWebtoonList(List<Webtoon> webtoons, String pathname) {
         ExcelService.forCreating(webtoons)

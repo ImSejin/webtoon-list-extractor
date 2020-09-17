@@ -14,12 +14,13 @@ import static io.github.imsejin.common.Constants.excel.SHEET_NAME_METADATA;
 
 /**
  * ExcelReader
- * 
+ *
  * @author SEJIN
  */
 public final class ExcelReader {
 
-    private ExcelReader() {}
+    private ExcelReader() {
+    }
 
     /**
      * The `SXSSFWorkbook` constructor that takes the `XSSFWorkbook` as param.

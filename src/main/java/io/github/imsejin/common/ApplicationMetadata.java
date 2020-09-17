@@ -2,12 +2,10 @@ package io.github.imsejin.common;
 
 /**
  * ApplicationMetadata
- * 
+ *
  * @author SEJIN
  */
 public final class ApplicationMetadata {
-
-    private ApplicationMetadata() {}
 
     public static final String APPLICATION_NAME = "WebtoonListExtractor";
 
@@ -27,5 +25,8 @@ public final class ApplicationMetadata {
                                                 "	   | |___ /    \\ |_| | | (_| | (__| |_( (_) ) |",
                                                 "	   |_____|__/\\__\\__|_|  \\__,_|\\___|\\__|\\___/|_|",
                                                 "	   :: " + APPLICATION_NAME + " ::       (" + VERSION_NAME + ")" };
+
+    private ApplicationMetadata() {
+    }
 
 }

@@ -91,7 +91,7 @@ public final class ExcelUtils {
                 // 엑셀 파일을 읽는다
                 for (int i = startIndex; i < endIndex; i++) {
                     row = sheet.getRow(i + 1);
-                    T vo = clazz.newInstance();
+                    T vo = clazz.getDeclaredConstructor().newInstance();
                     setDataByFields(result, vo, clazz, row);
                 }
             } catch (Exception ex) {
@@ -111,7 +111,7 @@ public final class ExcelUtils {
             for (Field field : clazz.getDeclaredFields()) {
                 // NPE를 방지하고 모든 데이터를 문자열로 취급한다
                 cell = row.getCell(i, MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                cell.setCellType(CellType.STRING);
+                // cell.setCellType(CellType.STRING); // Deprecated for removal since v5.0
                 String val = cell.getStringCellValue();
 
                 // private 접근자라도 접근하게 한다

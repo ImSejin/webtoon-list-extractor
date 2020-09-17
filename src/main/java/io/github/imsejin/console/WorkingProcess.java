@@ -7,7 +7,7 @@ import lombok.ToString;
 
 /**
  * WorkingProcess
- * 
+ *
  * @author SEJIN
  */
 @Getter

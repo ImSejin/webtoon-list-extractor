@@ -11,17 +11,18 @@ import static io.github.imsejin.file.FileService.*;
 /**
  * 파일 파인더<br>
  * File finder
- * 
+ *
  * <p>
  * 지정한 경로에 있는 웹툰 파일을 읽고 이미 작성된 웹툰 리스트가 있는지 확인한다.<br>
  * Reads webtoon files at the specified path and checks if there is a webtoon list already written.
  * </p>
- * 
+ *
  * @author SEJIN
  */
 public final class FileFinder {
 
-    private FileFinder() {}
+    private FileFinder() {
+    }
 
     /**
      * 지정한 경로에 있는 파일들을 찾아 웹툰으로 변환한다.<br>
