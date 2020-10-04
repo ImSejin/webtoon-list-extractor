@@ -1,8 +1,8 @@
-package io.github.imsejin.excel;
+package io.github.imsejin.wnliext.excel;
 
-import io.github.imsejin.excel.util.ExcelReader;
-import io.github.imsejin.excel.util.ExcelWriter;
-import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.wnliext.excel.util.ExcelReader;
+import io.github.imsejin.wnliext.excel.util.ExcelWriter;
+import io.github.imsejin.wnliext.file.model.Webtoon;
 import io.github.imsejin.util.DateTimeUtils;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -16,12 +16,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static io.github.imsejin.common.Constants.excel.SHEET_NAME_LIST;
-import static io.github.imsejin.common.Constants.excel.SHEET_NAME_METADATA;
-import static io.github.imsejin.common.Constants.file.EXCEL_FILE_PREFIX;
-import static io.github.imsejin.common.Constants.file.XLSX_FILE_EXTENSION;
-import static io.github.imsejin.common.util.GeneralUtils.calculateMetadata;
-import static io.github.imsejin.excel.util.ExcelStyler.*;
+import static io.github.imsejin.wnliext.common.Constants.excel.SHEET_NAME_LIST;
+import static io.github.imsejin.wnliext.common.Constants.excel.SHEET_NAME_METADATA;
+import static io.github.imsejin.wnliext.common.Constants.file.EXCEL_FILE_PREFIX;
+import static io.github.imsejin.wnliext.common.Constants.file.XLSX_FILE_EXTENSION;
+import static io.github.imsejin.wnliext.common.util.GeneralUtils.calculateMetadata;
+import static io.github.imsejin.wnliext.excel.util.ExcelStyler.*;
 
 /**
  * ExcelService

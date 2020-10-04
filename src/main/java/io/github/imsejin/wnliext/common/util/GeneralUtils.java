@@ -1,13 +1,13 @@
-package io.github.imsejin.common.util;
+package io.github.imsejin.wnliext.common.util;
 
-import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.wnliext.file.model.Webtoon;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.github.imsejin.common.Constants.file.DELIMITER_AUTHOR;
+import static io.github.imsejin.wnliext.common.Constants.file.DELIMITER_AUTHOR;
 
 /**
  * 공통 유틸리티<br>

@@ -1,4 +1,4 @@
-package io.github.imsejin.console;
+package io.github.imsejin.wnliext.console;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi.Attribute;
@@ -6,8 +6,8 @@ import com.diogonunes.jcdp.color.api.Ansi.BColor;
 import com.diogonunes.jcdp.color.api.Ansi.FColor;
 import lombok.Setter;
 
-import static io.github.imsejin.common.Constants.console.PERCENT_MULTIPLES;
-import static io.github.imsejin.common.Constants.console.PROGRESS_BAR_LENGTH;
+import static io.github.imsejin.wnliext.common.Constants.console.PERCENT_MULTIPLES;
+import static io.github.imsejin.wnliext.common.Constants.console.PROGRESS_BAR_LENGTH;
 
 /**
  * ConsoleService

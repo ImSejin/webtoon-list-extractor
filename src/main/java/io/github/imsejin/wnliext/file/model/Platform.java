@@ -1,4 +1,4 @@
-package io.github.imsejin.file.model;
+package io.github.imsejin.wnliext.file.model;
 
 import io.github.imsejin.constant.interfaces.KeyValue;
 import lombok.RequiredArgsConstructor;

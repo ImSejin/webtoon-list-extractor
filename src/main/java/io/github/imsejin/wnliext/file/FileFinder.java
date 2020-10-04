@@ -1,12 +1,12 @@
-package io.github.imsejin.file;
+package io.github.imsejin.wnliext.file;
 
-import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.NonNull;
 
 import java.io.File;
 import java.util.List;
 
-import static io.github.imsejin.file.FileService.*;
+import static io.github.imsejin.wnliext.file.FileService.*;
 
 /**
  * 파일 파인더<br>

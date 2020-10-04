@@ -1,4 +1,4 @@
-package io.github.imsejin.common.util;
+package io.github.imsejin.wnliext.common.util;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;

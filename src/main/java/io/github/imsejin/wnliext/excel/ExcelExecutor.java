@@ -1,6 +1,6 @@
-package io.github.imsejin.excel;
+package io.github.imsejin.wnliext.excel;
 
-import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.wnliext.file.model.Webtoon;
 
 import java.io.File;
 import java.util.List;

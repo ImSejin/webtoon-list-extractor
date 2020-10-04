@@ -1,4 +1,4 @@
-package io.github.imsejin.file.model;
+package io.github.imsejin.wnliext.file.model;
 
 import lombok.*;
 

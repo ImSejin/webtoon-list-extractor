@@ -1,6 +1,6 @@
-package io.github.imsejin.excel.util;
+package io.github.imsejin.wnliext.excel.util;
 
-import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.wnliext.file.model.Webtoon;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -9,8 +9,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.imsejin.common.Constants.excel.SHEET_NAME_DATABASE;
-import static io.github.imsejin.common.Constants.excel.SHEET_NAME_METADATA;
+import static io.github.imsejin.wnliext.common.Constants.excel.SHEET_NAME_DATABASE;
+import static io.github.imsejin.wnliext.common.Constants.excel.SHEET_NAME_METADATA;
 
 /**
  * ExcelReader

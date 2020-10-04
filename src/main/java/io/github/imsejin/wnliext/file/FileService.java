@@ -1,10 +1,10 @@
-package io.github.imsejin.file;
+package io.github.imsejin.wnliext.file;
 
-import io.github.imsejin.common.util.CollectionUtils;
-import io.github.imsejin.common.util.ZipUtils;
+import io.github.imsejin.wnliext.common.util.CollectionUtils;
+import io.github.imsejin.wnliext.common.util.ZipUtils;
 import io.github.imsejin.constant.DateType;
-import io.github.imsejin.file.model.Platform;
-import io.github.imsejin.file.model.Webtoon;
+import io.github.imsejin.wnliext.file.model.Platform;
+import io.github.imsejin.wnliext.file.model.Webtoon;
 import io.github.imsejin.util.FileUtils;
 import io.github.imsejin.util.FilenameUtils;
 
@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.github.imsejin.common.Constants.file.*;
+import static io.github.imsejin.wnliext.common.Constants.file.*;
 
 /**
  * 파일 서비스<br>

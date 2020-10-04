@@ -1,6 +1,6 @@
-package io.github.imsejin.console;
+package io.github.imsejin.wnliext.console;
 
-import io.github.imsejin.common.ApplicationMetadata;
+import io.github.imsejin.wnliext.common.ApplicationMetadata;
 import lombok.SneakyThrows;
 
 import java.io.IOException;

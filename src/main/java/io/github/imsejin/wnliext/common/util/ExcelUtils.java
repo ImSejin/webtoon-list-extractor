@@ -1,4 +1,4 @@
-package io.github.imsejin.common.util;
+package io.github.imsejin.wnliext.common.util;
 
 import io.github.imsejin.util.StringUtils;
 import org.apache.poi.ss.usermodel.*;
