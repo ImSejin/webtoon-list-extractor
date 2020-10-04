@@ -1,7 +1,7 @@
 package io.github.imsejin.wnliext.common.util;
 
-import io.github.imsejin.util.FileUtils;
-import io.github.imsejin.util.FilenameUtils;
+import io.github.imsejin.common.util.FileUtils;
+import io.github.imsejin.common.util.FilenameUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

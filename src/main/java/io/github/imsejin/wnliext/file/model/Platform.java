@@ -1,6 +1,6 @@
 package io.github.imsejin.wnliext.file.model;
 
-import io.github.imsejin.constant.interfaces.KeyValue;
+import io.github.imsejin.common.constant.interfaces.KeyValue;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 

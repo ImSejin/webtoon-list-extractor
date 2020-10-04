@@ -40,7 +40,7 @@ public final class ConsoleThread implements Runnable {
                         // List
                         cp.print(line.charAt(j), Attribute.BOLD, FColor.CYAN, BColor.NONE);
                     }
-                } else if (3 <= i && i < 6) {
+                } else if (i < 6) {
                     // By fourth line
                     if (j < 44 - 4) {
                         // Webtoon
@@ -49,7 +49,7 @@ public final class ConsoleThread implements Runnable {
                         // List
                         cp.print(line.charAt(j), Attribute.BOLD, FColor.CYAN, BColor.NONE);
                     }
-                } else if (6 <= i && i < 12) {
+                } else if (i < 12) {
                     // Extractor
                     cp.print(line.charAt(j), Attribute.BOLD, FColor.YELLOW, BColor.NONE);
                 } else {

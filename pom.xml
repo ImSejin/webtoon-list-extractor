@@ -13,7 +13,7 @@
         <java.version>14</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
-        <common.utils.version>0.1.0</common.utils.version>
+        <common.utils.version>0.2.0</common.utils.version>
         <apache.poi.version>4.1.2</apache.poi.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>

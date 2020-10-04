@@ -1,9 +1,9 @@
 package io.github.imsejin.wnliext.excel;
 
+import io.github.imsejin.common.util.DateTimeUtils;
 import io.github.imsejin.wnliext.excel.util.ExcelReader;
 import io.github.imsejin.wnliext.excel.util.ExcelWriter;
 import io.github.imsejin.wnliext.file.model.Webtoon;
-import io.github.imsejin.util.DateTimeUtils;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -56,16 +56,16 @@ public class ExcelService {
         return new ExcelService(webtoons);
     }
 
-    ExcelService create() {
-        ExcelWriter.create(webtoons, workbook);
-
-        return this;
+    static ExcelService forUpdating(@NonNull List<Webtoon> webtoons, @NonNull File file) {
+        return new ExcelService(webtoons, file);
     }
 
     //////////////////////////////////////// When update webtoon list ////////////////////////////////////////
 
-    static ExcelService forUpdating(@NonNull List<Webtoon> webtoons, @NonNull File file) {
-        return new ExcelService(webtoons, file);
+    ExcelService create() {
+        ExcelWriter.create(webtoons, workbook);
+
+        return this;
     }
 
     ExcelService read() {
