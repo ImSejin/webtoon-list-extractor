@@ -1,5 +1,6 @@
 package io.github.imsejin.wnliext.common.util;
 
+import io.github.imsejin.common.util.CollectionUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 
 import java.util.Arrays;

@@ -13,7 +13,7 @@
         <java.version>14</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
-        <common.utils.version>0.2.0</common.utils.version>
+        <common.utils.version>0.2.1</common.utils.version>
         <apache.poi.version>4.1.2</apache.poi.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>
@@ -121,8 +121,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>13</source>
+                    <target>13</target>
                 </configuration>
             </plugin>
         </plugins>

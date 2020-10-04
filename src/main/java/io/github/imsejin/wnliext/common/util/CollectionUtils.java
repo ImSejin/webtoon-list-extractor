@@ -1,7 +1,6 @@
 package io.github.imsejin.wnliext.common.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,40 +16,6 @@ import java.util.List;
 public final class CollectionUtils {
 
     private CollectionUtils() {}
-
-    /**
-     * 컬렉션이 null인지 또는 비어있는지 확인한다.
-     */
-    public static boolean isNullOrEmpty(Collection<?> cl) {
-        return cl == null || cl.isEmpty();
-    }
-
-    /**
-     * 컬렉션이 null인지 또는 비어있는지 확인한다.
-     */
-    public static boolean isNullOrEmpty(Collection<?>... cls) {
-        // `빈 컬렉션 배열`이 파라미터로 넘어 왔을 때
-        if (cls == null || cls.length == 0) return true;
-
-        for (var cl : cls) {
-            if (isNullOrEmpty(cl)) return true;
-        }
-        return false;
-    }
-
-    /**
-     * 요소가 있는 컬렉션인지 확인한다.
-     */
-    public static boolean exists(Collection<?> cl) {
-        return !isNullOrEmpty(cl);
-    }
-
-    /**
-     * 요소가 있는 컬렉션인지 확인한다.
-     */
-    public static boolean exists(Collection<?>... cls) {
-        return !isNullOrEmpty(cls);
-    }
 
     /**
      * Javascript의 splice와 동일하다.<br>
