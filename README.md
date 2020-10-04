@@ -1,23 +1,23 @@
-### Webtoon List Extractor
+# Webtoon List Extractor
 
----
+<p align="center">
+    <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/imsejin/webtoon-list-extractor">
+    <img alt="jdk14" src="https://img.shields.io/badge/jdk-14-orange">
+    <img alt="GitHub" src="https://img.shields.io/github/license/imsejin/webtoon-list-extractor">
+    <img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/imsejin/webtoon-list-extractor/total">
+	<img alt="GitHub Releases" src="https://img.shields.io/github/downloads/imsejin/webtoon-list-extractor/latest/total">
+</p>
+Webtoon list extractor can create list of webtoons information and manage update version through Microsoft Excel Sheet.
 
-![release](https://img.shields.io/github/v/release/ImSejin/webtoon-list-extractor)
-![jdk](https://img.shields.io/badge/jdk-14-orange)
-![excel](https://img.shields.io/badge/excel-xlsx-009900)
-![GitHub](https://img.shields.io/github/license/imsejin/webtoon-list-extractor)
+<br><br>
 
-**Webtoon List Extractor** can create list of webtoons information and manage update version through Microsoft Excel Sheet.
-
-
-
-### Preview
+## Preview
 
 ![preview](<https://user-images.githubusercontent.com/46176032/81501581-2eadea00-9314-11ea-89ae-990a75ee3b4e.gif>)
 
+<br><br>
 
-
-### Usage
+## Usage
 
 This is an executable JAR package. To run it, use the following command
 
@@ -26,12 +26,3 @@ java -jar webtoon-list-extractor.jar [webtoon files path]
 ```
 
 then create *webtoonList_{yyyyMMddHHmmss}.xlsx*.
-
-
-
-### Dependencies
-
-* Apache Commons
-* Apache POI
-* Lombok
-* JCDP
