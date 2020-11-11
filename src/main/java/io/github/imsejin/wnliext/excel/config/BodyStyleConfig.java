@@ -8,7 +8,10 @@ public class BodyStyleConfig implements ExcelStyleConfig {
 
     @Override
     public void configure(Configurer configurer) {
-        configurer.border()
+        configurer.alignment()
+                    .vertical(VerticalAlignment.CENTER)
+                    .and()
+                .border()
                     .all(BorderStyle.THIN, IndexedColors.BLACK)
                 .and()
                 .font()
