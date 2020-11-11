@@ -33,11 +33,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static io.github.imsejin.common.util.StringUtils.isNullOrBlank;
 import static io.github.imsejin.wnliext.common.ApplicationMetadata.APPLICATION_NAME;
-import static io.github.imsejin.wnliext.excel.ExcelExecutor.createWebtoonList;
-import static io.github.imsejin.wnliext.excel.ExcelExecutor.updateWebtoonList;
-import static io.github.imsejin.wnliext.file.FileFinder.findLatestWebtoonListName;
+import static io.github.imsejin.wnliext.excel.ExcelExecutor.create;
+import static io.github.imsejin.wnliext.excel.ExcelExecutor.update;
+import static io.github.imsejin.wnliext.file.FileFinder.findLatestWebtoonList;
 import static io.github.imsejin.wnliext.file.FileFinder.findWebtoons;
 
 public final class Application {
@@ -46,27 +45,37 @@ public final class Application {
     }
 
     public static void main(String[] args) {
-        // 웹툰이 있는 경로를 첫 번째 인자로 주지 않았으면, jar가 있는 현재 경로로 지정한다
-        final String pathname = args == null || args.length == 0 || isNullOrBlank(args[0]) || !Files.isDirectory(Paths.get(args[0]))
-                ? PathnameUtils.getCurrentPathname()
-                : args[0];
-
-        List<Webtoon> webtoons = findWebtoons(pathname);
-        String latestWebtoonListName = findLatestWebtoonListName(pathname);
-
-        try {
-            if (isNullOrBlank(latestWebtoonListName)) {
-                createWebtoonList(webtoons, pathname);
-            } else {
-                File webtoonList = new File(pathname, latestWebtoonListName);
-                updateWebtoonList(webtoons, pathname, webtoonList);
+        String pathname;
+        if (args == null || args.length == 0) {
+            pathname = PathnameUtils.getCurrentPathname();
+        } else {
+            String arg = args[0];
+            if (!Files.isDirectory(Paths.get(arg))) {
+                throw new RuntimeException(String.format("Invalid pathname: '%s'", arg));
             }
 
-            ConsolePrinter.clear();
-            System.out.println(APPLICATION_NAME + " is successfully done.");
+            pathname = arg;
+        }
+
+        List<Webtoon> webtoons = findWebtoons(pathname);
+        File listFile = findLatestWebtoonList(pathname);
+
+        // Prints console logs.
+        webtoons.forEach(System.out::println);
+        System.out.printf("\nTotal %,d webtoon%s\n", webtoons.size(), webtoons.isEmpty() ? "" : "s");
+
+        try {
+            if (listFile == null) {
+                create(webtoons, pathname);
+            } else {
+                update(webtoons, pathname, listFile);
+            }
+
+            ConsolePrinter.printLogo();
+            System.out.printf("%s is successfully done.\n", APPLICATION_NAME);
         } catch (Exception ex) {
-            ConsolePrinter.clear();
-            System.out.println(APPLICATION_NAME + " has failed.");
+            ConsolePrinter.printLogo();
+            System.out.printf("%s has failed.\n", APPLICATION_NAME);
         }
 
         // Fix the bug that `ERROR: JDWP Unable to get JNI 1.2 environment`
