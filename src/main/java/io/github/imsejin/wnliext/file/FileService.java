@@ -1,20 +1,19 @@
 package io.github.imsejin.wnliext.file;
 
-import io.github.imsejin.common.constant.DateType;
 import io.github.imsejin.common.util.CollectionUtils;
-import io.github.imsejin.common.util.FileUtils;
 import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.wnliext.common.util.ZipUtils;
-import io.github.imsejin.wnliext.file.model.Platform;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 
+import javax.annotation.Nullable;
 import java.io.File;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static io.github.imsejin.wnliext.common.Constants.file.*;
+import static io.github.imsejin.wnliext.common.Constants.file.EXCEL_FILE_PREFIX;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 /**
  * 파일 서비스<br>
@@ -33,128 +32,46 @@ public final class FileService {
     }
 
     /**
-     * 해당 경로에 있는 파일과 디렉터리의 리스트를 반환한다.<br>
      * Returns a list of files and directories in the path.
      */
-    static List<File> getFiles(String pathName) {
-        return Arrays.asList(new File(pathName).listFiles());
+    static List<File> getFiles(String pathname) {
+        File[] files = new File(pathname).listFiles();
+        return files == null ? new ArrayList<>() : Arrays.asList(files);
     }
 
     /**
      * Converts list of files and directories to list of webtoons.
      */
-    static List<Webtoon> convertToWebtoons(List<File> files) {
+    static List<Webtoon> convert(List<File> files) {
         if (files == null) files = new ArrayList<>();
 
-        List<Webtoon> webtoons = files.stream()
+        return files.stream()
                 .filter(ZipUtils::isZip)
-                .map(FileService::convertFileToWebtoon)
+                .map(Webtoon::from)
                 .distinct() // Removes duplicated webtoons.
-                .sorted(Comparator.comparing(Webtoon::getPlatform)
+                .sorted(comparing((Webtoon it) -> it.getPlatform().value())
                         .thenComparing(Webtoon::getTitle)) // Sorts list of webtoons.
-                .peek(System.out::println) // Prints console logs.
-                .collect(Collectors.toList());
-
-        // Prints console logs.
-        System.out.println("\r\nTotal " + webtoons.size() + " webtoon" + (webtoons.size() > 1 ? "s" : ""));
-
-        return webtoons;
+                .collect(toList());
     }
 
-    /**
-     * converts file to webtoon.
-     */
-    private static Webtoon convertFileToWebtoon(File file) {
-        String filename = FilenameUtils.baseName(file);
-        Map<String, String> webtoonInfo = classifyWebtoonInfo(filename);
-
-        String title = webtoonInfo.get("title");
-        String authors = webtoonInfo.get("authors");
-        String platform = webtoonInfo.get("platform");
-        String completed = webtoonInfo.get("completed");
-        String creationTime = FileUtils.getCreationTime(file)
-                .format(DateTimeFormatter.ofPattern(DateType.F_DATE_TIME.value()));
-        String fileExtension = FilenameUtils.extension(file);
-        long size = file.length();
-
-        return Webtoon.builder()
-                .title(title)
-                .authors(authors)
-                .platform(platform)
-                .completed(Boolean.parseBoolean(completed))
-                .creationTime(creationTime)
-                .fileExtension(fileExtension)
-                .size(size)
-                .build();
-    }
-
-    /**
-     * Analyzes the file name and classifies it as platform, title, author and completed.
-     */
-    private static Map<String, String> classifyWebtoonInfo(String filename) {
-        StringBuilder sb = new StringBuilder(filename);
-
-        // Platform
-        int i = sb.indexOf(DELIMITER_PLATFORM);
-        String platform = convertAcronym(sb.substring(0, i));
-        sb.delete(0, i + DELIMITER_PLATFORM.length());
-
-        // Title
-        int j = sb.lastIndexOf(DELIMITER_TITLE);
-        String title = sb.substring(0, j);
-        sb.delete(0, j + DELIMITER_TITLE.length());
-
-        // Completed or uncompleted
-        boolean completed = filename.endsWith(DELIMITER_COMPLETED);
-
-        // Authors
-        String authors = completed
-                ? sb.substring(0, sb.indexOf(DELIMITER_COMPLETED))
-                : sb.toString();
-
-        Map<String, String> map = new HashMap<>();
-        map.put("title", title);
-        map.put("authors", authors);
-        map.put("platform", platform);
-        map.put("completed", String.valueOf(completed));
-
-        return map;
-    }
-
-    /**
-     * Converts acronym of platform to full text.
-     */
-    private static String convertAcronym(String acronym) {
-        return Stream.of(Platform.values())
-                .filter(platform -> platform.key().equals(acronym))
-                .map(Platform::value)
-                .findFirst()
-                .orElse(acronym);
-    }
-
-    static String getLatestFilename(List<File> files) {
-        String latestFilename = null;
+    @Nullable
+    static File getLatestFile(List<File> files) {
+        File latestFile = null;
 
         // Shallow copy.
-        List<File> dummy = new ArrayList<>(files);
+        List<File> clone = new ArrayList<>(files);
 
         // Removes non-webtoon-list from list.
-        dummy.removeIf(file -> {
-            String filename = FilenameUtils.baseName(file);
-            String fileExtension = FilenameUtils.extension(file);
-
-            return !file.isFile() || !filename.startsWith(EXCEL_FILE_PREFIX) || !fileExtension.equals(XLSX_FILE_EXTENSION);
-        });
+        clone.removeIf(it ->!it.isFile()
+                || !FilenameUtils.baseName(it).startsWith(EXCEL_FILE_PREFIX)
+                || !FilenameUtils.extension(it).equals("xls"));
 
         // Sorts out the latest file.
-        if (CollectionUtils.exists(dummy)) {
-            latestFilename = dummy.stream()
-                    .map(File::getName)
-                    .max(Comparator.naturalOrder())
-                    .get();
+        if (CollectionUtils.exists(clone)) {
+            latestFile = clone.stream().max(comparing(File::getName)).orElse(null);
         }
 
-        return latestFilename;
+        return latestFile;
     }
 
 }
