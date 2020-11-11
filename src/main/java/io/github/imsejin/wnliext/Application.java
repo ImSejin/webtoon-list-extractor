@@ -73,9 +73,10 @@ public final class Application {
 
             ConsolePrinter.printLogo();
             System.out.printf("%s is successfully done.\n", APPLICATION_NAME);
-        } catch (Exception ex) {
+        } catch (Exception e) {
             ConsolePrinter.printLogo();
             System.out.printf("%s has failed.\n", APPLICATION_NAME);
+            e.printStackTrace();
         }
 
         // Fix the bug that `ERROR: JDWP Unable to get JNI 1.2 environment`
