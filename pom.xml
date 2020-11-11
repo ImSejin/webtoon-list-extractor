@@ -13,39 +13,17 @@
         <java.version>14</java.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
-        <common.utils.version>0.2.1</common.utils.version>
+        <javaxcel.core.version>0.5.1</javaxcel.core.version>
         <apache.poi.version>4.1.2</apache.poi.version>
         <lombok.version>1.18.14</lombok.version>
     </properties>
 
     <dependencies>
-        <!-- Common Utils -->
+        <!-- Javaxcel Core -->
         <dependency>
-            <groupId>io.github.imsejin</groupId>
-            <artifactId>common-utils</artifactId>
-            <version>${common.utils.version}</version>
-        </dependency>
-
-        <!-- Apache POI -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-scratchpad</artifactId>
-            <version>${apache.poi.version}</version>
+            <groupId>com.github.javaxcel</groupId>
+            <artifactId>javaxcel-core</artifactId>
+            <version>${javaxcel.core.version}</version>
         </dependency>
 
         <!-- Lombok -->
