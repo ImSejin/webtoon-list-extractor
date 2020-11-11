@@ -7,17 +7,20 @@ import io.github.imsejin.wnliext.file.FileFinder;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.junit.jupiter.api.Test;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.*;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class ExcelServiceTest {
 
@@ -29,14 +32,14 @@ public class ExcelServiceTest {
 
     @Test
     @SneakyThrows
-    public void write() {
+    public void write(@TempDir Path path) {
         // given
         String pathname = "D:/Cartoons/Webtoons";
         List<Webtoon> webtoons = FileFinder.findWebtoons(pathname);
 
         // when
-        @Cleanup HSSFWorkbook workbook = new HSSFWorkbook();
-        File file = new File(pathname, "webtoonList-" + DateTimeUtils.now() + ".xls");
+        @Cleanup Workbook workbook = new XSSFWorkbook();
+        File file = new File(path.toFile(), "webtoonList-" + DateTimeUtils.now() + ".xlsx");
         @Cleanup FileOutputStream out = new FileOutputStream(file);
 
         ExcelWriterFactory.create(workbook, Webtoon.class)
@@ -59,7 +62,7 @@ public class ExcelServiceTest {
         assertThat(webtoonList).isNotNull();
 
         // when
-        @Cleanup HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(webtoonList));
+        @Cleanup Workbook workbook = new XSSFWorkbook(new FileInputStream(webtoonList));
         List<Webtoon> webtoons = ExcelReaderFactory.create(workbook, Webtoon.class).parallel().read();
 
         // then

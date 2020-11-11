@@ -6,7 +6,7 @@ import io.github.imsejin.common.util.DateTimeUtils;
 import io.github.imsejin.wnliext.common.util.GeneralUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.SneakyThrows;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public final class ExcelExecutor {
         System.out.printf("\nCannot find a list.\nCreate a new list: '%s'\n", file);
 
         OutputStream out = new FileOutputStream(file);
-        Workbook workbook = new HSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook();
 
         ExcelWriterFactory.create(workbook, Webtoon.class)
                 .sheetName("Webtoons")
@@ -48,7 +48,7 @@ public final class ExcelExecutor {
         System.out.printf("\nFound the latest list: '%s'\nCreate a new list: '%s'\n", file, newFile);
 
         // Reads the latest webtoon list file.
-        Workbook oldWorkbook = new HSSFWorkbook(new FileInputStream(file));
+        Workbook oldWorkbook = new XSSFWorkbook(new FileInputStream(file));
         List<Webtoon> oldList = ExcelReaderFactory.create(oldWorkbook, Webtoon.class).read();
 
         // Overwrites creation time of new item with old item.
@@ -62,7 +62,7 @@ public final class ExcelExecutor {
 
         // Writes data of webtoons.
         OutputStream out = new FileOutputStream(newFile);
-        Workbook newWorkbook = new HSSFWorkbook();
+        Workbook newWorkbook = new XSSFWorkbook();
 
         ExcelWriterFactory.create(newWorkbook, Webtoon.class)
                 .sheetName("Webtoons")
@@ -75,7 +75,7 @@ public final class ExcelExecutor {
         String version = GeneralUtils.calcVersion(webtoons);
         String now = DateTimeUtils.now();
 
-        return String.format("%s-%s-%s.xls", EXCEL_FILE_PREFIX, version, now);
+        return String.format("%s-%s-%s.xlsx", EXCEL_FILE_PREFIX, version, now);
     }
 
 }

@@ -64,7 +64,7 @@ public final class FileService {
         // Removes non-webtoon-list from list.
         clone.removeIf(it ->!it.isFile()
                 || !FilenameUtils.baseName(it).startsWith(EXCEL_FILE_PREFIX)
-                || !FilenameUtils.extension(it).equals("xls"));
+                || !FilenameUtils.extension(it).equals("xlsx"));
 
         // Sorts out the latest file.
         if (CollectionUtils.exists(clone)) {
