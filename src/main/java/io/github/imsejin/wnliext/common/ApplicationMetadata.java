@@ -7,7 +7,7 @@ public final class ApplicationMetadata {
 
     public static final String APPLICATION_NAME = "WebtoonListExtractor";
 
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1";
 
     public static final String[] APPLICATION_TITLE = { "	                 _                     _    _     _",
                                                 "	___ __   ____   | |                   | |  (_)   | |",
