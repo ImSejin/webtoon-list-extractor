@@ -9,9 +9,7 @@ public final class ApplicationMetadata {
 
     public static final String APPLICATION_NAME = "WebtoonListExtractor";
 
-    public static final String VERSION = "1.1.13";
-
-    public static final String VERSION_NAME = "v" + VERSION + ".RELEASE";
+    public static final String VERSION = "2.0.0";
 
     public static final String[] APPLICATION_TITLE = { "	                 _                     _    _     _",
                                                 "	___ __   ____   | |                   | |  (_)   | |",
@@ -24,7 +22,7 @@ public final class ApplicationMetadata {
                                                 "	   |  ___|\\ \\/ /  _| '_ / _` |/ __|  _|/ _ \\| '__|",
                                                 "	   | |___ /    \\ |_| | | (_| | (__| |_( (_) ) |",
                                                 "	   |_____|__/\\__\\__|_|  \\__,_|\\___|\\__|\\___/|_|",
-                                                "	   :: " + APPLICATION_NAME + " ::       (" + VERSION_NAME + ")" };
+                                                "	   :: " + APPLICATION_NAME + " ::       (v" + VERSION + ".RELEASE)" };
 
     private ApplicationMetadata() {
     }
