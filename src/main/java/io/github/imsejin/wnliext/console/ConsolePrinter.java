@@ -4,9 +4,7 @@ import io.github.imsejin.wnliext.common.ApplicationMetadata;
 import lombok.SneakyThrows;
 
 /**
- * ConsolePrinter
- *
- * @author SEJIN
+ * Console printer
  */
 public final class ConsolePrinter {
 

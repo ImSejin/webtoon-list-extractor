@@ -10,9 +10,7 @@ import static io.github.imsejin.wnliext.common.Constants.console.PERCENT_MULTIPL
 import static io.github.imsejin.wnliext.common.Constants.console.PROGRESS_BAR_LENGTH;
 
 /**
- * ConsoleService
- *
- * @author SEJIN
+ * Console thread
  */
 public final class ConsoleThread implements Runnable {
 

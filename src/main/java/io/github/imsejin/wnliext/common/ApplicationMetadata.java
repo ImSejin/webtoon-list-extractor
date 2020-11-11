@@ -1,9 +1,7 @@
 package io.github.imsejin.wnliext.common;
 
 /**
- * ApplicationMetadata
- *
- * @author SEJIN
+ * Application metadata
  */
 public final class ApplicationMetadata {
 

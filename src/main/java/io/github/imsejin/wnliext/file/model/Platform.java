@@ -15,8 +15,6 @@ import static java.util.stream.Collectors.toMap;
  * Platform for webtoon.
  *
  * <p> Website that serves webtoon for subscribers
- *
- * @author SEJIN
  */
 @RequiredArgsConstructor
 public enum Platform implements KeyValue {

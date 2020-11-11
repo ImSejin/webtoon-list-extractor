@@ -22,10 +22,7 @@ import java.util.regex.Pattern;
 import static io.github.imsejin.wnliext.file.constant.Delimiter.*;
 
 /**
- * 웹툰<br>
  * Webtoon
- *
- * @author SEJIN
  */
 @Getter
 @Setter

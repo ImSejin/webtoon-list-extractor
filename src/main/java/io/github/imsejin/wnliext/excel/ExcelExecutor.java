@@ -18,9 +18,7 @@ import java.util.List;
 import static io.github.imsejin.wnliext.common.Constants.file.EXCEL_FILE_PREFIX;
 
 /**
- * ExcelExecutor
- *
- * @author SEJIN
+ * Excel executor
  */
 public final class ExcelExecutor {
 

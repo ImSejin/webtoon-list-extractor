@@ -6,9 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * WorkingProcess
- *
- * @author SEJIN
+ * Working process
  */
 @Getter
 @Setter

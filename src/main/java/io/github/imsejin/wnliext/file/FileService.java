@@ -16,15 +16,10 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 /**
- * 파일 서비스<br>
  * File service
  *
- * <p>
- * 압축 파일에서 웹툰 정보를 추출하고 리스트 형태로 반환한다.<br>
- * Extracts the information of webtoon from archive file and returns it in the form of a list.
- * </p>
- *
- * @author SEJIN
+ * <p> Extracts the information of webtoon from archive file
+ * and returns it in the form of a list.
  */
 public final class FileService {
 
