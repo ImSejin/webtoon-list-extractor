@@ -1,21 +1,23 @@
 package io.github.imsejin.wnliext.file.model;
 
 import io.github.imsejin.common.constant.interfaces.KeyValue;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toMap;
 
 /**
- * 웹툰 플랫폼<br>
- * Platform
+ * Platform for webtoon.
  *
- * <p>
- * 웹툰을 제공하는 웹사이트<br>
- * Website that serves webtoon for subscribers
- * </p>
+ * <p> Website that serves webtoon for subscribers
  *
  * @author SEJIN
  */
-@ToString
 @RequiredArgsConstructor
 public enum Platform implements KeyValue {
 
@@ -37,17 +39,35 @@ public enum Platform implements KeyValue {
     TM("Toomics", "http://www.toomics.com"),
     TS("Tstore", "https://www.tstore.co.kr");
 
+    private static final Map<String, Platform> keyMap = Arrays.stream(values())
+            .collect(collectingAndThen(toMap(Platform::key, it -> it), Collections::unmodifiableMap));
+
+    private static final Map<String, Platform> valueMap = Arrays.stream(values())
+            .collect(collectingAndThen(toMap(Platform::value, it -> it), Collections::unmodifiableMap));
+
     /**
-     * 축약하지 않은 플랫폼의 이름<br>
-     * Non-reduced name of platform
+     * Non-reduced name of platform.
      */
     private final String fullText;
 
     /**
-     * 웹툰을 제공하는 웹사이트의 URL<br>
-     * the website URL
+     * Website URL.
      */
+    @Getter
     private final String url;
+
+    public static Platform ofKey(String key) {
+        return keyMap.get(key);
+    }
+
+    public static Platform ofValue(String value) {
+        return valueMap.get(value);
+    }
+
+    @Override
+    public String toString() {
+        return this.fullText;
+    }
 
     @Override
     public String key() {
@@ -57,10 +77,6 @@ public enum Platform implements KeyValue {
     @Override
     public String value() {
         return this.fullText;
-    }
-
-    public String url() {
-        return this.url;
     }
 
 }
