@@ -2,7 +2,7 @@
 
 <p align="center">
     <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/imsejin/webtoon-list-extractor">
-    <img alt="jdk14" src="https://img.shields.io/badge/jdk-14-orange">
+    <img alt="jdk11" src="https://img.shields.io/badge/jdk-11-orange">
     <img alt="GitHub" src="https://img.shields.io/github/license/imsejin/webtoon-list-extractor">
     <img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/imsejin/webtoon-list-extractor/total">
 	<img alt="GitHub Releases" src="https://img.shields.io/github/downloads/imsejin/webtoon-list-extractor/latest/total">
