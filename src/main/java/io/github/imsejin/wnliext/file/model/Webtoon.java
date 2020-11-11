@@ -30,7 +30,7 @@ import static io.github.imsejin.wnliext.file.constant.Delimiter.*;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = {"title", "authors", "platform"})
+@EqualsAndHashCode(of = {"platform", "title", "authors"})
 @NoArgsConstructor
 @ExcelModel(headerStyle = HeaderStyleConfig.class, bodyStyle = BodyStyleConfig.class)
 public class Webtoon {
@@ -41,7 +41,7 @@ public class Webtoon {
     @Nonnull
     @ExcelColumn(name = "PLATFORM")
     @ExcelWriterExpression("#platform.value()")
-    @ExcelReaderExpression("T(io.github.imsejin.wnliext.file.model.Platform).from(#platform)")
+    @ExcelReaderExpression("T(io.github.imsejin.wnliext.file.model.Platform).ofValue(#platform)")
     private Platform platform;
 
     /**
