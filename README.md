@@ -25,4 +25,5 @@ This is an executable JAR package. To run it, use the following command
 java -jar webtoon-list-extractor.jar [webtoon files path]
 ```
 
-then create *webtoonList_{yyyyMMddHHmmss}.xlsx*.
+- Export filename:  `webtoonList-{version}-{yyyyMMddHHmmss}.xlsx`.
+
