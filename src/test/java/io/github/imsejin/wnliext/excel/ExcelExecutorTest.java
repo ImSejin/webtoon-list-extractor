@@ -1,0 +1,71 @@
+package io.github.imsejin.wnliext.excel;
+
+import com.github.javaxcel.factory.ExcelReaderFactory;
+import io.github.imsejin.wnliext.common.util.ZipUtils;
+import io.github.imsejin.wnliext.file.FileFinder;
+import io.github.imsejin.wnliext.file.model.Webtoon;
+import lombok.SneakyThrows;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
+class ExcelExecutorTest {
+
+    @Test
+    @SneakyThrows
+    void overwriteCreationTime() {
+        // given
+        String pathname = "D:/Cartoons/Webtoons";
+        List<Webtoon> webtoons = FileFinder.findWebtoons(pathname);
+        File file = FileFinder.findLatestWebtoonList(pathname);
+
+        if (file == null) return;
+
+        // when
+        Workbook oldWorkbook = new XSSFWorkbook(new FileInputStream(file));
+        List<Webtoon> oldList = ExcelReaderFactory.create(oldWorkbook, Webtoon.class).read();
+
+        for (Webtoon oldThing : oldList) {
+            Optional<Webtoon> maybeNewThing = webtoons.stream().filter(oldThing::equals).findFirst();
+            maybeNewThing.ifPresent(it -> {
+                if (oldThing.getCreationTime().equals(it.getCreationTime())) return;
+                System.out.printf("old: %s / %s || new: %s / %s\n",
+                        oldThing.getTitle(), oldThing.getCreationTime(), it.getTitle(), it.getCreationTime());
+                it.setCreationTime(oldThing.getCreationTime());
+            });
+        }
+    }
+
+    @Test
+    void convertFileToWebtoon() {
+        // given
+        String pathname = "D:/Cartoons/Webtoons";
+        File[] arr = new File(pathname).listFiles();
+
+        if (arr == null) return;
+
+        // when
+        List<File> files = Arrays.asList(arr);
+        List<Webtoon> duplicates = files.stream()
+                .filter(ZipUtils::isZip)
+                .map(Webtoon::from)
+                .filter(it -> Collections.frequency(files, it) > 1)
+                .sorted(comparing((Webtoon it) -> it.getPlatform().value())
+                        .thenComparing(Webtoon::getTitle)) // Sorts list of webtoons.
+                .collect(toList());
+
+        // then
+        duplicates.forEach(System.out::println);
+    }
+
+}

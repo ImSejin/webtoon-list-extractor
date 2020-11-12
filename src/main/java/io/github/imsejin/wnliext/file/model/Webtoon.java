@@ -4,11 +4,10 @@ import com.github.javaxcel.annotation.*;
 import io.github.imsejin.common.util.FileUtils;
 import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.common.util.StringUtils;
-import io.github.imsejin.wnliext.excel.config.CenterBodyStyleConfig;
 import io.github.imsejin.wnliext.excel.config.BodyStyleConfig;
+import io.github.imsejin.wnliext.excel.config.CenterBodyStyleConfig;
 import io.github.imsejin.wnliext.excel.config.HeaderStyleConfig;
 import io.github.imsejin.wnliext.excel.config.RightBodyStyleConfig;
-import io.github.imsejin.wnliext.file.constant.Delimiter;
 import lombok.*;
 
 import javax.annotation.Nonnull;
@@ -54,7 +53,7 @@ public class Webtoon {
     @Nonnull
     @ExcelColumn(name = "AUTHORS")
     @ExcelWriterExpression("#authors.toString().replaceAll('[\\[\\]]', '')")
-    @ExcelReaderExpression("T(java.util.Arrays).asList(#authors.split(', '))")
+    @ExcelReaderExpression("T(java.util.Arrays).stream(#authors.split(', ')).collect(T(java.util.stream.Collectors).toList())")
     private List<String> authors;
 
     /**
@@ -109,9 +108,10 @@ public class Webtoon {
         Webtoon webtoon = new Webtoon();
         webtoon.platform = Platform.ofKey(match.get(1));
         webtoon.title = match.get(2);
-        webtoon.authors = Arrays.asList(match.get(3).split(Delimiter.AUTHOR.getValue()));
+        webtoon.authors = Arrays.asList(match.get(3).split(AUTHOR.getValue()));
         webtoon.completed = completed;
-        webtoon.creationTime = FileUtils.getCreationTime(file);
+        // To compares written date time with this, removes nanoseconds.
+        webtoon.creationTime = FileUtils.getCreationTime(file).withNano(0);
         webtoon.size = file.length();
 
         return webtoon;
