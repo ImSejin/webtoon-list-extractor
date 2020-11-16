@@ -59,13 +59,18 @@ class ExcelExecutorTest {
         List<Webtoon> duplicates = files.stream()
                 .filter(ZipUtils::isZip)
                 .map(Webtoon::from)
-                .filter(it -> Collections.frequency(files, it) > 1)
+                .distinct()
                 .sorted(comparing((Webtoon it) -> it.getPlatform().value())
                         .thenComparing(Webtoon::getTitle)) // Sorts list of webtoons.
                 .collect(toList());
 
         // then
         duplicates.forEach(System.out::println);
+        System.out.printf("\nTotal %,d webtoon%s\n", duplicates.size(), duplicates.isEmpty() ? "" : "s");
+
+        // Checks duplicated webtoons.
+        duplicates.stream().filter(it -> Collections.frequency(duplicates, it) > 1)
+                .forEach(System.out::println);
     }
 
 }
