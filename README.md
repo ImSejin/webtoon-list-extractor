@@ -1,6 +1,7 @@
 # Webtoon List Extractor
 
 <p align="center">
+    <a href="https://lgtm.com/projects/g/ImSejin/webtoon-list-extractor/context:java"><img alt="Language grade: Java" src="https://img.shields.io/lgtm/grade/java/g/ImSejin/webtoon-list-extractor.svg?logo=lgtm&logoWidth=18"/></a>
     <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/imsejin/webtoon-list-extractor">
     <img alt="jdk11" src="https://img.shields.io/badge/jdk-11-orange">
     <img alt="GitHub" src="https://img.shields.io/github/license/imsejin/webtoon-list-extractor">
