@@ -1,4 +1,4 @@
-# Webtoon List Extractor
+# 📇 Webtoon List Extractor
 
 <p align="center">
     <a href="https://lgtm.com/projects/g/ImSejin/webtoon-list-extractor/context:java"><img alt="Language grade: Java" src="https://img.shields.io/lgtm/grade/java/g/ImSejin/webtoon-list-extractor.svg?logo=lgtm&logoWidth=18"/></a>
