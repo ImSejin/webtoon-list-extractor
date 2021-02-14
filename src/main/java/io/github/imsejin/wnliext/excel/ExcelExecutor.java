@@ -34,12 +34,12 @@ public final class ExcelExecutor {
     }
 
     public static void update(List<Webtoon> webtoons, String pathname, File file) {
-        File newFile = createFile(pathname, webtoons);
-        System.out.printf("\nFound the latest list: '%s'\nCreate a new list: '%s'\n", file, newFile);
-
         // Overwrites creation time of new item with old item.
         List<Webtoon> oldList = read(file);
         overwriteDateTime(oldList, webtoons);
+
+        File newFile = createFile(pathname, webtoons);
+        System.out.printf("\nFound the latest list: '%s'\nCreate a new list: '%s'\n", file, newFile);
 
         write(newFile, webtoons);
     }
