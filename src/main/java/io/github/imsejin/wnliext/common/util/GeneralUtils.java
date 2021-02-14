@@ -1,10 +1,8 @@
 package io.github.imsejin.wnliext.common.util;
 
-import io.github.imsejin.common.constant.DateType;
 import io.github.imsejin.common.util.StringUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -23,9 +21,8 @@ public final class GeneralUtils {
      */
     public static String calcVersion(List<Webtoon> webtoons) {
         // Gets unique number of creation date.
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateType.DATE.value());
         final int numOfUpdates = (int) webtoons.stream()
-                .map(it -> it.getCreationTime().format(formatter)).distinct().count();
+                .map(it -> it.getCreationTime().toLocalDate()).distinct().count();
 
         final int initVersion = 100; // It means `1.0.0`.
         final int addition = Math.max(numOfUpdates - 1, 0); // Why it subtracts 1 is starting point of version is `1.0.0`.

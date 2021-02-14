@@ -97,10 +97,9 @@ public class Webtoon {
         boolean completed = filename.endsWith(COMPLETED.getValue());
         String regex;
         if (completed) {
-            regex = String.format("^(.+)" + PLATFORM + "(.+)" + TITLE + "(.+).{%d}?$",
-                    COMPLETED.getValue().length());
+            regex = String.format("^(.+)%s(.+)%s(.+).{%d}?$", PLATFORM, TITLE, COMPLETED.getValue().length());
         } else {
-            regex = "^(.+)" + PLATFORM + "(.+)" + TITLE + "(.+)$";
+            regex = String.format("^(.+)%s(.+)%s(.+)$", PLATFORM, TITLE);
         }
 
         Map<Integer, String> match = StringUtils.find(filename, regex, Pattern.MULTILINE, 1, 2, 3);

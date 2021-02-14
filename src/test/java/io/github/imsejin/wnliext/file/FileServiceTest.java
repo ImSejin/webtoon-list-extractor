@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static io.github.imsejin.wnliext.file.constant.Delimiter.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FileServiceTest {
@@ -29,11 +30,11 @@ class FileServiceTest {
         sb.delete(0, j + Delimiter.TITLE.getValue().length());
 
         // Completed or uncompleted
-        boolean completed = filename.endsWith(Delimiter.COMPLETED.getValue());
+        boolean completed = filename.endsWith(COMPLETED.getValue());
 
         // Authors
         String authors = completed
-                ? sb.substring(0, sb.indexOf(Delimiter.COMPLETED.getValue()))
+                ? sb.substring(0, sb.indexOf(COMPLETED.getValue()))
                 : sb.toString();
 
         Map<String, Object> map = new HashMap<>();
@@ -69,10 +70,10 @@ class FileServiceTest {
     @DisplayName("Classify webtoon information")
     void classifyWebtoonInfo(String filename) {
         // when
-        boolean completed = filename.endsWith(Delimiter.COMPLETED.getValue());
+        boolean completed = filename.endsWith(COMPLETED.getValue());
         String regex = completed
-                ? String.format("^(.+)_(.+) - (.+).{%d}?$", Delimiter.COMPLETED.getValue().length())
-                : "^(.+)_(.+) - (.+)$";
+                ? String.format("^(.+)%s(.+)%s(.+).{%d}?$", PLATFORM, TITLE, COMPLETED.getValue().length())
+                : String.format("^(.+)%s(.+)%s(.+)$", PLATFORM, TITLE);
         Map<Integer, String> match = StringUtils.find(filename, regex, Pattern.MULTILINE, 1, 2, 3);
 
         Platform platform = Platform.ofKey(match.get(1));
