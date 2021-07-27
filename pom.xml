@@ -10,12 +10,14 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>14</java.version>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
         <javaxcel.core.version>0.5.1</javaxcel.core.version>
         <apache.poi.version>4.1.2</apache.poi.version>
         <lombok.version>1.18.14</lombok.version>
+        <!-- General properties -->
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
     </properties>
 
     <dependencies>
@@ -70,12 +72,14 @@
     </dependencies>
 
     <build>
-        <finalName>${artifactId}-${version}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
+                    <finalName>${project.build.finalName}-jar-without-dependencies</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
@@ -83,6 +87,16 @@
                             <mainClass>io.github.imsejin.wnliext.Application</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
@@ -113,32 +127,41 @@
                 </executions>
             </plugin>
 
-            <!-- Maven assembly:assembly -->
+            <!--
+                Assembler for third-party libraries
+                THIS PLUGIN ASSEMBLES OWN CODE AND DEPENDENCIES IN A JAR FILE BY THE FOLLOWING COMMAND.
+                    mvn assembly:single
+                THE GOAL "assembly:assembly" IS REMOVED SINCE "3.X.X".
+                REPLACEMENT OF THE GOAL IS "assembly:single".
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.1</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>io.github.imsejin.wnliext.Application</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>create-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>13</source>
-                    <target>13</target>
-                </configuration>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>${project.build.finalName}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+                                    <mainClass>io.github.imsejin.wnliext.Application</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
