@@ -28,7 +28,7 @@ public final class ExcelExecutor {
 
     public static void create(List<Webtoon> webtoons, String pathname) {
         File file = createFile(pathname, webtoons);
-        System.out.printf("\nCannot find a list.\nCreate a new list: '%s'\n", file);
+        System.out.printf("%nCannot find a list.%nCreate a new list: '%s'%n", file);
 
         write(file, webtoons);
     }
@@ -39,7 +39,7 @@ public final class ExcelExecutor {
         overwriteDateTime(oldList, webtoons);
 
         File newFile = createFile(pathname, webtoons);
-        System.out.printf("\nFound the latest list: '%s'\nCreate a new list: '%s'\n", file, newFile);
+        System.out.printf("%nFound the latest list: '%s'%nCreate a new list: '%s'%n", file, newFile);
 
         write(newFile, webtoons);
     }

@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static io.github.imsejin.wnliext.common.Constants.file.EXCEL_FILE_PREFIX;
@@ -31,14 +32,14 @@ public final class FileService {
      */
     static List<File> getFiles(String pathname) {
         File[] files = new File(pathname).listFiles();
-        return files == null ? new ArrayList<>() : Arrays.asList(files);
+        return files == null ? Collections.emptyList() : Arrays.asList(files);
     }
 
     /**
      * Converts list of files and directories to list of webtoons.
      */
     static List<Webtoon> convert(List<File> files) {
-        if (files == null) files = new ArrayList<>();
+        if (files == null) files = Collections.emptyList();
 
         return files.stream()
                 .filter(ZipUtils::isZip)

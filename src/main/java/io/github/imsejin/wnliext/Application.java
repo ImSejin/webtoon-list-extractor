@@ -62,7 +62,7 @@ public final class Application {
 
         // Prints console logs.
         webtoons.forEach(System.out::println);
-        System.out.printf("\nTotal %,d webtoon%s\n", webtoons.size(), webtoons.isEmpty() ? "" : "s");
+        System.out.printf("%nTotal %,d webtoon%s%n", webtoons.size(), webtoons.isEmpty() ? "" : "s");
 
         try {
             if (listFile == null) {
@@ -72,10 +72,10 @@ public final class Application {
             }
 
             ConsolePrinter.printLogo();
-            System.out.printf("%s is successfully done.\n", APPLICATION_NAME);
+            System.out.printf("%s is successfully done.%n", APPLICATION_NAME);
         } catch (Exception e) {
             ConsolePrinter.printLogo();
-            System.out.printf("%s has failed.\n", APPLICATION_NAME);
+            System.out.printf("%s has failed.%n", APPLICATION_NAME);
             e.printStackTrace();
         }
 
