@@ -2,9 +2,11 @@ package io.github.imsejin.wnliext.file.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
-import java.util.Arrays;
+import java.net.URL;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Map;
 
 import static java.util.stream.Collectors.collectingAndThen;
@@ -15,63 +17,64 @@ import static java.util.stream.Collectors.toMap;
  *
  * <p> Website that serves webtoon for subscribers
  */
+@Getter
 @RequiredArgsConstructor
 public enum Platform {
 
-    CA("Comica", "http://www.comica.com"),
-    CO("Comico", "http://comico.kr/webtoon/week"),
-    D("Daum", "http://webtoon.daum.net"),
-    H("Hankyoreh", "http://nuri.hani.co.kr/hanisite/dev/board/list.html?h_gcode=board&h_code=100"),
-    I("IlyoMedia", "http://ilyo.co.kr/?ac=list&cate_id=118"),
-    K("Kakao", "https://page.kakao.com/main"),
-    L("Lezhin", "https://www.lezhin.com/ko"),
-    N("Naver", "https://comic.naver.com/index.nhn"),
-    NT("Nate", "http://comics.nate.com/main"),
-    O("Ktoon", "https://www.myktoon.com/web/homescreen/main.kt"),
-    OS("OneStore", "https://m.onestore.co.kr/mobilepoc/books/main.omp"),
-    P("Paran", "http://www.paran.com"),
-    SD("SportsDonga", "http://sports.donga.com/Cartoon?cid=0100000201"),
-    ST("SportsToday", "http://stoo.asiae.co.kr/cartoon"),
-    T("Toptoon", "https://toptoon.com"),
-    TM("Toomics", "http://www.toomics.com"),
-    TS("Tstore", "https://www.tstore.co.kr");
+    COMICA("CA", "Comica", "http://www.comica.com"),
+    COMICO("CO", "Comico", "http://comico.kr/webtoon/week"),
+    DAUM("D", "Daum", "http://webtoon.daum.net"),
+    HANKYOREH("H", "Hankyoreh", "http://nuri.hani.co.kr/hanisite/dev/board/list.html?h_gcode=board&h_code=100"),
+    ILYO_MEDIA("I", "IlyoMedia", "http://ilyo.co.kr/?ac=list&cate_id=118"),
+    KAKAO("K", "Kakao", "https://page.kakao.com/main"),
+    LEZHIN("L", "Lezhin", "https://www.lezhin.com/ko"),
+    NAVER("N", "Naver", "https://comic.naver.com/index.nhn"),
+    NATE("NT", "Nate", "http://comics.nate.com/main"),
+    OLLEH("O", "Ktoon", "https://www.myktoon.com/web/homescreen/main.kt"),
+    ONE_STORE("OS", "OneStore", "https://m.onestore.co.kr/mobilepoc/books/main.omp"),
+    PARAN("P", "Paran", "http://www.paran.com"),
+    SPORTS_DONGA("SD", "SportsDonga", "http://sports.donga.com/Cartoon?cid=0100000201"),
+    SPORTS_TODAY("ST", "SportsToday", "http://stoo.asiae.co.kr/cartoon"),
+    TOPTOON("T", "Toptoon", "https://toptoon.com"),
+    TOOMICS("TM", "Toomics", "http://www.toomics.com"),
+    T_STORE("TS", "Tstore", "https://www.tstore.co.kr");
 
-    private static final Map<String, Platform> keyMap = Arrays.stream(values())
-            .collect(collectingAndThen(toMap(Platform::key, it -> it), Collections::unmodifiableMap));
+    private static final Map<String, Platform> $CODE_LOOKUP = EnumSet.allOf(Platform.class).stream()
+            .collect(collectingAndThen(toMap(it -> it.code, it -> it), Collections::unmodifiableMap));
 
-    private static final Map<String, Platform> valueMap = Arrays.stream(values())
-            .collect(collectingAndThen(toMap(Platform::value, it -> it), Collections::unmodifiableMap));
+    private static final Map<String, Platform> $CODE_NAME_LOOKUP = EnumSet.allOf(Platform.class).stream()
+            .collect(collectingAndThen(toMap(it -> it.codeName, it -> it), Collections::unmodifiableMap));
+
+    private final String code;
 
     /**
      * Non-reduced name of platform.
      */
-    private final String fullText;
+    private final String codeName;
 
     /**
      * Website URL.
      */
-    @Getter
-    private final String url;
+    private final URL url;
 
-    public static Platform ofKey(String key) {
-        return keyMap.get(key);
+    @SneakyThrows
+    Platform(String code, String codeName, String url) {
+        this.code = code;
+        this.codeName = codeName;
+        this.url = new URL(url);
     }
 
-    public static Platform ofValue(String value) {
-        return valueMap.get(value);
+    public static Platform fromCode(String code) {
+        if ($CODE_LOOKUP.containsKey(code)) return $CODE_LOOKUP.get(code);
+        throw new IllegalArgumentException("Enumeration 'Platform' has no code: " + code);
     }
 
-    @Override
-    public String toString() {
-        return this.fullText;
-    }
-
-    public String key() {
-        return name();
-    }
-
-    public String value() {
-        return this.fullText;
+    /**
+     * @see Webtoon#getPlatform()
+     */
+    public static Platform fromCodeName(String codeName) {
+        if ($CODE_NAME_LOOKUP.containsKey(codeName)) return $CODE_NAME_LOOKUP.get(codeName);
+        throw new IllegalArgumentException("Enumeration 'Platform' has no code name: " + codeName);
     }
 
 }

@@ -60,7 +60,7 @@ class ExcelExecutorTest {
                 .filter(ZipUtils::isZip)
                 .map(Webtoon::from)
                 .distinct()
-                .sorted(comparing((Webtoon it) -> it.getPlatform().value())
+                .sorted(comparing((Webtoon it) -> it.getPlatform().getCodeName())
                         .thenComparing(Webtoon::getTitle)) // Sorts list of webtoons.
                 .collect(toList());
 

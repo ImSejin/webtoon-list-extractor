@@ -40,7 +40,7 @@ class FileServiceTest {
         Map<String, Object> map = new HashMap<>();
         map.put("title", title);
         map.put("authors", Arrays.asList(authors.split(", ")));
-        map.put("platform", Platform.ofKey(platform));
+        map.put("platform", Platform.fromCode(platform));
         map.put("completed", completed);
 
         return map;
@@ -76,7 +76,7 @@ class FileServiceTest {
                 : String.format("^(.+)%s(.+)%s(.+)$", PLATFORM, TITLE);
         Map<Integer, String> match = StringUtils.find(filename, regex, Pattern.MULTILINE, 1, 2, 3);
 
-        Platform platform = Platform.ofKey(match.get(1));
+        Platform platform = Platform.fromCode(match.get(1));
         String title = match.get(2);
         List<String> authors = Arrays.asList(match.get(3).split(", "));
 

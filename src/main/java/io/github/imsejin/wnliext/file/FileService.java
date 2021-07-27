@@ -44,7 +44,7 @@ public final class FileService {
                 .filter(ZipUtils::isZip)
                 .map(Webtoon::from)
                 .distinct() // Removes duplicated webtoons.
-                .sorted(comparing((Webtoon it) -> it.getPlatform().value())
+                .sorted(comparing((Webtoon it) -> it.getPlatform().getCodeName())
                         .thenComparing(Webtoon::getTitle)) // Sorts list of webtoons.
                 .collect(toList());
     }

@@ -36,8 +36,8 @@ public class Webtoon {
      */
     @Nonnull
     @ExcelColumn(name = "PLATFORM")
-    @ExcelWriterExpression("#platform.value()")
-    @ExcelReaderExpression("T(io.github.imsejin.wnliext.file.model.Platform).ofValue(#platform)")
+    @ExcelWriterExpression("#platform.getCodeName()")
+    @ExcelReaderExpression("T(io.github.imsejin.wnliext.file.model.Platform).fromCodeName(#platform)")
     private Platform platform;
 
     /**
@@ -105,7 +105,7 @@ public class Webtoon {
         Map<Integer, String> match = StringUtils.find(filename, regex, Pattern.MULTILINE, 1, 2, 3);
 
         Webtoon webtoon = new Webtoon();
-        webtoon.platform = Platform.ofKey(match.get(1));
+        webtoon.platform = Platform.fromCode(match.get(1));
         webtoon.title = match.get(2);
         webtoon.authors = Arrays.asList(match.get(3).split(AUTHOR.getValue()));
         webtoon.completed = completed;
