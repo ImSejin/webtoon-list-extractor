@@ -44,7 +44,8 @@ public class ExcelServiceTest {
 
         ExcelWriterFactory.create(workbook, Webtoon.class)
                 .sheetName("List")
-                .autoResizeCols().hideExtraCols()
+                .autoResizeColumns()
+                .hideExtraColumns()
                 .write(out, webtoons);
 
         // then

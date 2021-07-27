@@ -1,6 +1,5 @@
 package io.github.imsejin.wnliext.file.model;
 
-import io.github.imsejin.common.constant.interfaces.KeyValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +16,7 @@ import static java.util.stream.Collectors.toMap;
  * <p> Website that serves webtoon for subscribers
  */
 @RequiredArgsConstructor
-public enum Platform implements KeyValue {
+public enum Platform {
 
     CA("Comica", "http://www.comica.com"),
     CO("Comico", "http://comico.kr/webtoon/week"),
@@ -67,12 +66,10 @@ public enum Platform implements KeyValue {
         return this.fullText;
     }
 
-    @Override
     public String key() {
         return name();
     }
 
-    @Override
     public String value() {
         return this.fullText;
     }

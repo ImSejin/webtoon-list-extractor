@@ -59,8 +59,9 @@ public final class ExcelExecutor {
 
         ExcelWriterFactory.create(newWorkbook, Webtoon.class)
                 .sheetName("Webtoons")
-                .disableRolling()
-                .autoResizeCols().hideExtraCols()
+                .unrotate()
+                .autoResizeColumns()
+                .hideExtraColumns()
                 .write(out, webtoons);
     }
 
