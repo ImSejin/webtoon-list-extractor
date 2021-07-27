@@ -8,9 +8,10 @@ import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.io.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.awt.*;
 import java.io.File;
@@ -20,25 +21,25 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ExcelServiceTest {
+class ExcelServiceTest {
 
     @Test
-    public void getAllFontNames() {
+    void getAllFontNames() {
         String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         Arrays.stream(fontNames).forEach(System.out::println);
     }
 
     @Test
     @SneakyThrows
-    public void write(@TempDir Path path) {
+    void write(@TempDir Path path) {
         // given
-        String pathname = "D:/Cartoons/Webtoons";
+        String pathname = "F:/Dropbox/cartoons/webtoons";
         List<Webtoon> webtoons = FileFinder.findWebtoons(pathname);
 
         // when
-        @Cleanup Workbook workbook = new XSSFWorkbook();
+        @Cleanup Workbook workbook = new SXSSFWorkbook();
         File file = new File(path.toFile(), "webtoonList-" + DateTimeUtils.now() + ".xlsx");
         @Cleanup FileOutputStream out = new FileOutputStream(file);
 
@@ -54,9 +55,9 @@ public class ExcelServiceTest {
 
     @Test
     @SneakyThrows
-    public void read() {
+    void read() {
         // given
-        String pathname = "D:/Cartoons/Webtoons";
+        String pathname = "F:/Dropbox/cartoons/webtoons";
 
         // when & then
         File webtoonList = FileFinder.findLatestWebtoonList(pathname);
