@@ -1,17 +1,17 @@
 package io.github.imsejin.wnliext.console;
 
 import io.github.imsejin.wnliext.common.ApplicationMetadata;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 /**
  * Console printer
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ConsolePrinter {
 
     private static final ProcessBuilder COMMAND = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
-
-    private ConsolePrinter() {
-    }
 
     @SneakyThrows
     public static void clear() {

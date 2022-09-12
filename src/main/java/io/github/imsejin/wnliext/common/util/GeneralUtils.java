@@ -2,16 +2,16 @@ package io.github.imsejin.wnliext.common.util;
 
 import io.github.imsejin.common.util.StringUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 /**
  * General utilities
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GeneralUtils {
-
-    private GeneralUtils() {
-    }
 
     /**
      * Calculates version with number of updates.

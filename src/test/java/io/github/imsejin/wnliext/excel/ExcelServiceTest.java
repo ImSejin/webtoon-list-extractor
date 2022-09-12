@@ -64,7 +64,7 @@ class ExcelServiceTest {
 
         // when & then
         File webtoonList = FileFinder.findLatestWebtoonList(pathname);
-        assertThat(webtoonList).isNotNull();
+        assertThat(webtoonList).isNotNull().isNotEmpty().canRead();
 
         // when
         @Cleanup Workbook workbook = new XSSFWorkbook(new FileInputStream(webtoonList));
@@ -75,7 +75,7 @@ class ExcelServiceTest {
 
         // then
         webtoons.forEach(System.out::println);
-        System.out.printf("filename: %s\nnumber of webtoons: %,d\n", webtoonList, webtoons.size());
+        System.out.printf("fileName: %s\nnumber of webtoons: %,d\n", webtoonList, webtoons.size());
     }
 
 }

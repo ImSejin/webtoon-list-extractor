@@ -1,6 +1,8 @@
 package io.github.imsejin.wnliext.common.util;
 
 import io.github.imsejin.common.util.FilenameUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,18 +26,10 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
- * 압축 유틸리티<br>
  * Archive utilities
- * 
- * <p>
- * 
- * </p>
- * 
- * @author SEJIN
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ZipUtils {
-
-    private ZipUtils() {}
 
     private static final List<String> EXTENSIONS = Arrays.asList("7z", "alz", "ace", "exe", "gz", "iso", "lzh", "rar", "tar", "tgz", "xz", "zip", "zipx");
 
@@ -44,7 +38,7 @@ public final class ZipUtils {
     /**
      * 해당 경로에 있는 모든 파일을 압축하고, 압축된 파일을 삭제한다.
      * (폴더와 압축 파일은 압축 대상에서 제외)
-     * 
+     *
      * <pre>
      * Path path = Paths.get("C:/Program Files/Java");
      * ZipUtil.compress(path, "java.zip");
@@ -57,7 +51,7 @@ public final class ZipUtils {
     /**
      * 해당 경로에 있는 모든 파일을 압축한다.
      * (압축된 파일을 삭제할지 결정할 수 있음, 폴더와 압축 파일은 압축 대상에서 제외)
-     * 
+     *
      * <pre>
      * Path path = Paths.get("C:/Program Files/Java");
      * ZipUtil.compress(path, "java.zip", false);
@@ -117,10 +111,10 @@ public final class ZipUtils {
     /**
      * 압축파일을 같은 경로에 폴더를 만들어 해제한다.
      * (압축파일을 삭제할지 결정할 수 있음)
-     * 
+     *
      * <pre>
      * File zipFile = new File("C:/Program Files/Java/jdk-8.zip");
-     * 
+     *
      * ZipUtil.decompress(zipFile, false);
      * </pre>
      */
@@ -142,11 +136,11 @@ public final class ZipUtils {
     /**
      * 압축파일을 지정한 경로에 해제한다.
      * (압축파일을 삭제할지 결정할 수 있음)
-     * 
+     *
      * <pre>
      * File zipFile = new File("C:/Program Files/Java/jdk-8.zip");
      * Path destination = Paths.get("E:/Program Files/Java/jdk");
-     * 
+     *
      * ZipUtil.decompress(zipFile, destination, false);
      * </pre>
      */
@@ -158,10 +152,10 @@ public final class ZipUtils {
      * 압축파일을 같은 경로에 폴더를 만들어 해제한다.
      * (압축파일을 삭제할지 결정할 수 있음)
      * (중첩 압축파일을 모두 해제함)
-     * 
+     *
      * <pre>
      * File zipFile = new File("C:/Program Files/Java/jdk-8.zip");
-     * 
+     *
      * ZipUtil.decompressAll(zipFile, true);
      * </pre>
      */
@@ -185,11 +179,11 @@ public final class ZipUtils {
      * 압축파일을 지정한 경로에 해제한다.
      * (압축파일을 삭제할지 결정할 수 있음)
      * (중첩 압축파일을 모두 해제함)
-     * 
+     *
      * <pre>
      * File zipFile = new File("C:/Program Files/Java/jdk-8.zip");
      * Path destination = Paths.get("E:/Program Files/Java/jdk");
-     * 
+     *
      * ZipUtil.decompressAll(zipFile, destination, true);
      * </pre>
      */
@@ -250,10 +244,10 @@ public final class ZipUtils {
 
     /**
      * 압축파일 내 파일명 리스트를 반환한다.
-     * 
+     *
      * <pre>
      * File zipFile = new File("C:/Program Files/Java/jdk-8.zip");
-     * 
+     *
      * ZipUtil.getEntryNames(zipFile): ["query.sql", "data.zip", "catalina.out", "dir/", "eclipse-log.log"]
      * </pre>
      */
@@ -264,10 +258,10 @@ public final class ZipUtils {
     /**
      * 압축파일 내 파일명 리스트를 반환한다.
      * (폴더를 제외할지 선택할 수 있음)
-     * 
+     *
      * <pre>
      * File zipFile = new File("C:/Program Files/Java/jdk-8.zip");
-     * 
+     *
      * ZipUtil.getEntryNames(zipFile, true): ["query.sql", "data.zip", "catalina.out", "eclipse-log.log"]
      * </pre>
      */
@@ -319,11 +313,11 @@ public final class ZipUtils {
 
     /**
      * 압축 파일인지 확인한다.
-     * 
+     *
      * <pre>
      * File file1 = new File("D:/Program Files/Java/jdk1.8.0_202/README.html");
      * File file2 = new File("D:/Program Files/Java/jdk1.8.0_202/src.zip");
-     * 
+     *
      * ZipUtil.isZip(file1): false
      * ZipUtil.isZip(file2): true
      * </pre>

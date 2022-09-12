@@ -1,14 +1,16 @@
 package io.github.imsejin.wnliext.common.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CipherUtils {
-
-    private CipherUtils() {}
 
     public static String sha256_base64(String plaintext, boolean salting) {
         return encode(sha256(plaintext, salting));

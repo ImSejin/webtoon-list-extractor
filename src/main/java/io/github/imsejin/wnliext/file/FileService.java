@@ -4,6 +4,8 @@ import io.github.imsejin.common.util.CollectionUtils;
 import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.wnliext.common.util.ZipUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -22,10 +24,8 @@ import static java.util.stream.Collectors.toList;
  * <p> Extracts the information of webtoon from archive file
  * and returns it in the form of a list.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FileService {
-
-    private FileService() {
-    }
 
     /**
      * Returns a list of files and directories in the path.
@@ -58,7 +58,7 @@ public final class FileService {
         List<File> clone = new ArrayList<>(files);
 
         // Removes non-webtoon-list from list.
-        clone.removeIf(it ->!it.isFile()
+        clone.removeIf(it -> !it.isFile()
                 || !FilenameUtils.getBaseName(it.getName()).startsWith(EXCEL_FILE_PREFIX)
                 || !FilenameUtils.getExtension(it.getName()).equals("xlsx"));
 

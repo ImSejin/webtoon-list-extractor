@@ -8,16 +8,22 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import static io.github.imsejin.wnliext.file.constant.Delimiter.*;
+import static io.github.imsejin.wnliext.file.constant.Delimiter.COMPLETED;
+import static io.github.imsejin.wnliext.file.constant.Delimiter.PLATFORM;
+import static io.github.imsejin.wnliext.file.constant.Delimiter.TITLE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FileServiceTest {
 
-    private static Map<String, Object> origin(String filename) {
-        StringBuilder sb = new StringBuilder(filename);
+    private static Map<String, Object> origin(String fileName) {
+        StringBuilder sb = new StringBuilder(fileName);
 
         // Platform
         int i = sb.indexOf(Delimiter.PLATFORM.getValue());
@@ -30,7 +36,7 @@ class FileServiceTest {
         sb.delete(0, j + Delimiter.TITLE.getValue().length());
 
         // Completed or uncompleted
-        boolean completed = filename.endsWith(COMPLETED.getValue());
+        boolean completed = fileName.endsWith(COMPLETED.getValue());
 
         // Authors
         String authors = completed
@@ -68,20 +74,20 @@ class FileServiceTest {
             "N_팀 피닉스 - 엄재경, Ze-yAv [完]",
     })
     @DisplayName("Classify webtoon information")
-    void classifyWebtoonInfo(String filename) {
+    void classifyWebtoonInfo(String fileName) {
         // when
-        boolean completed = filename.endsWith(COMPLETED.getValue());
+        boolean completed = fileName.endsWith(COMPLETED.getValue());
         String regex = completed
                 ? String.format("^(.+)%s(.+)%s(.+).{%d}?$", PLATFORM, TITLE, COMPLETED.getValue().length())
                 : String.format("^(.+)%s(.+)%s(.+)$", PLATFORM, TITLE);
-        Map<Integer, String> match = StringUtils.find(filename, regex, Pattern.MULTILINE, 1, 2, 3);
+        Map<Integer, String> match = StringUtils.find(fileName, regex, Pattern.MULTILINE, 1, 2, 3);
 
         Platform platform = Platform.fromCode(match.get(1));
         String title = match.get(2);
         List<String> authors = Arrays.asList(match.get(3).split(", "));
 
         // then
-        Map<String, Object> map = origin(filename);
+        Map<String, Object> map = origin(fileName);
         System.out.println(platform);
         assertThat(platform)
                 .as("#1 platform")

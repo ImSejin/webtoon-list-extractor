@@ -12,16 +12,16 @@ public class CenterBodyStyleConfig implements ExcelStyleConfig {
     @Override
     public void configure(Configurer configurer) {
         configurer.alignment()
-                    .horizontal(HorizontalAlignment.CENTER)
-                    .vertical(VerticalAlignment.CENTER)
-                    .and()
+                .horizontal(HorizontalAlignment.CENTER)
+                .vertical(VerticalAlignment.CENTER)
+                .and()
                 .border()
-                    .all(BorderStyle.THIN, IndexedColors.BLACK)
+                .all(BorderStyle.THIN, IndexedColors.BLACK)
                 .and()
                 .font()
-                    .name("NanumGothic")
-                    .size(10)
-                    .color(IndexedColors.BLACK);
+                .name("NanumGothic")
+                .size(10)
+                .color(IndexedColors.BLACK);
     }
 
 }

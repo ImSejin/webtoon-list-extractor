@@ -12,16 +12,16 @@ public class RightBodyStyleConfig implements ExcelStyleConfig {
     @Override
     public void configure(Configurer configurer) {
         configurer.alignment()
-                    .horizontal(HorizontalAlignment.RIGHT)
-                    .vertical(VerticalAlignment.CENTER)
-                    .and()
+                .horizontal(HorizontalAlignment.RIGHT)
+                .vertical(VerticalAlignment.CENTER)
+                .and()
                 .border()
-                    .all(BorderStyle.THIN, IndexedColors.BLACK)
+                .all(BorderStyle.THIN, IndexedColors.BLACK)
                 .and()
                 .font()
-                    .name("NanumGothic")
-                    .size(10)
-                    .color(IndexedColors.BLACK);
+                .name("NanumGothic")
+                .size(10)
+                .color(IndexedColors.BLACK);
     }
 
 }

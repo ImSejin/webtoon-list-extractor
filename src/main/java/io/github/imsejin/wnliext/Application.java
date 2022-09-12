@@ -27,6 +27,8 @@ package io.github.imsejin.wnliext;
 import io.github.imsejin.common.util.PathnameUtils;
 import io.github.imsejin.wnliext.console.ConsolePrinter;
 import io.github.imsejin.wnliext.file.model.Webtoon;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -39,10 +41,8 @@ import static io.github.imsejin.wnliext.excel.ExcelExecutor.update;
 import static io.github.imsejin.wnliext.file.FileFinder.findLatestWebtoonList;
 import static io.github.imsejin.wnliext.file.FileFinder.findWebtoons;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Application {
-
-    private Application() {
-    }
 
     public static void main(String[] args) {
         String pathname;

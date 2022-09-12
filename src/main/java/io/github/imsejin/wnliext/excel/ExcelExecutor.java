@@ -8,6 +8,8 @@ import com.github.javaxcel.out.strategy.impl.SheetName;
 import io.github.imsejin.common.constant.DateType;
 import io.github.imsejin.wnliext.common.util.GeneralUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,10 +27,8 @@ import static io.github.imsejin.wnliext.common.Constants.file.EXCEL_FILE_PREFIX;
 /**
  * Excel executor
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ExcelExecutor {
-
-    private ExcelExecutor() {
-    }
 
     public static void create(List<Webtoon> webtoons, String pathname) {
         File file = createFile(pathname, webtoons);
