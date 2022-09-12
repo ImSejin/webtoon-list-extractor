@@ -1,6 +1,10 @@
 package io.github.imsejin.wnliext.file.model;
 
-import com.github.javaxcel.annotation.*;
+import com.github.javaxcel.annotation.ExcelColumn;
+import com.github.javaxcel.annotation.ExcelDateTimeFormat;
+import com.github.javaxcel.annotation.ExcelModel;
+import com.github.javaxcel.annotation.ExcelReadExpression;
+import com.github.javaxcel.annotation.ExcelWriteExpression;
 import io.github.imsejin.common.util.FileUtils;
 import io.github.imsejin.common.util.FilenameUtils;
 import io.github.imsejin.common.util.StringUtils;
@@ -8,17 +12,26 @@ import io.github.imsejin.wnliext.excel.config.BodyStyleConfig;
 import io.github.imsejin.wnliext.excel.config.CenterBodyStyleConfig;
 import io.github.imsejin.wnliext.excel.config.HeaderStyleConfig;
 import io.github.imsejin.wnliext.excel.config.RightBodyStyleConfig;
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static io.github.imsejin.wnliext.file.constant.Delimiter.*;
+import static io.github.imsejin.wnliext.file.constant.Delimiter.AUTHOR;
+import static io.github.imsejin.wnliext.file.constant.Delimiter.COMPLETED;
+import static io.github.imsejin.wnliext.file.constant.Delimiter.PLATFORM;
+import static io.github.imsejin.wnliext.file.constant.Delimiter.TITLE;
 
 /**
  * Webtoon
@@ -36,8 +49,8 @@ public class Webtoon {
      */
     @Nonnull
     @ExcelColumn(name = "PLATFORM")
-    @ExcelWriterExpression("#platform.getCodeName()")
-    @ExcelReaderExpression("T(io.github.imsejin.wnliext.file.model.Platform).fromCodeName(#platform)")
+    @ExcelWriteExpression("#platform.getCodeName()")
+    @ExcelReadExpression("T(io.github.imsejin.wnliext.file.model.Platform).fromCodeName(#platform)")
     private Platform platform;
 
     /**
@@ -52,16 +65,17 @@ public class Webtoon {
      */
     @Nonnull
     @ExcelColumn(name = "AUTHORS")
-    @ExcelWriterExpression("#authors.toString().replaceAll('[\\[\\]]', '')")
-    @ExcelReaderExpression("T(java.util.Arrays).stream(#authors.split(', ')).collect(T(java.util.stream.Collectors).toList())")
+    @ExcelWriteExpression("#authors.toString().replaceAll('[\\[\\]]', '')")
+    @ExcelReadExpression("T(java.util.Arrays).stream(#authors.split(', '))" +
+            ".collect(T(java.util.stream.Collectors).toList())")
     private List<String> authors;
 
     /**
      * Whether webtoon is completed or not.
      */
     @ExcelColumn(name = "COMPLETED", bodyStyle = CenterBodyStyleConfig.class)
-    @ExcelWriterExpression("T(String).valueOf(#completed).toUpperCase()")
-    @ExcelReaderExpression("'true'.equalsIgnoreCase(#completed)")
+    @ExcelWriteExpression("T(String).valueOf(#completed).toUpperCase()")
+    @ExcelReadExpression("'true'.equalsIgnoreCase(#completed)")
     private boolean completed;
 
     /**
@@ -76,8 +90,8 @@ public class Webtoon {
      * File size of webtoon file
      */
     @ExcelColumn(name = "FILE_SIZE(byte)", bodyStyle = RightBodyStyleConfig.class)
-    @ExcelWriterExpression("T(io.github.imsejin.common.util.StringUtils).formatComma(#size)")
-    @ExcelReaderExpression("T(Long).parseLong(#size.replace(',', ''))")
+    @ExcelWriteExpression("T(io.github.imsejin.common.util.StringUtils).formatComma(#size)")
+    @ExcelReadExpression("T(Long).parseLong(#size.replace(',', ''))")
     private long size;
 
     @Builder
@@ -92,9 +106,9 @@ public class Webtoon {
     }
 
     public static Webtoon from(File file) {
-        String filename = FilenameUtils.baseName(file);
+        String fileBaseName = FilenameUtils.getBaseName(file.getName());
 
-        boolean completed = filename.endsWith(COMPLETED.getValue());
+        boolean completed = fileBaseName.endsWith(COMPLETED.getValue());
         String regex;
         if (completed) {
             regex = String.format("^(.+)%s(.+)%s(.+).{%d}?$", PLATFORM, TITLE, COMPLETED.getValue().length());
@@ -102,7 +116,7 @@ public class Webtoon {
             regex = String.format("^(.+)%s(.+)%s(.+)$", PLATFORM, TITLE);
         }
 
-        Map<Integer, String> match = StringUtils.find(filename, regex, Pattern.MULTILINE, 1, 2, 3);
+        Map<Integer, String> match = StringUtils.find(fileBaseName, regex, Pattern.MULTILINE, 1, 2, 3);
 
         Webtoon webtoon = new Webtoon();
         webtoon.platform = Platform.fromCode(match.get(1));
@@ -110,7 +124,8 @@ public class Webtoon {
         webtoon.authors = Arrays.asList(match.get(3).split(AUTHOR.getValue()));
         webtoon.completed = completed;
         // To compares written date time with this, removes nanoseconds.
-        webtoon.creationTime = FileUtils.getCreationTime(file).withNano(0);
+        webtoon.creationTime = LocalDateTime.ofInstant(FileUtils.getFileAttributes(file)
+                .creationTime().toInstant(), ZoneId.systemDefault()).withNano(0);
         webtoon.size = file.length();
 
         return webtoon;

@@ -1,13 +1,13 @@
 package io.github.imsejin.wnliext.excel;
 
-import com.github.javaxcel.factory.ExcelReaderFactory;
+import com.github.javaxcel.Javaxcel;
 import io.github.imsejin.wnliext.common.util.ZipUtils;
 import io.github.imsejin.wnliext.file.FileFinder;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +33,7 @@ class ExcelExecutorTest {
 
         // when
         Workbook oldWorkbook = new XSSFWorkbook(new FileInputStream(file));
-        List<Webtoon> oldList = ExcelReaderFactory.create(oldWorkbook, Webtoon.class).read();
+        List<Webtoon> oldList = Javaxcel.newInstance().reader(oldWorkbook, Webtoon.class).read();
 
         for (Webtoon oldThing : oldList) {
             Optional<Webtoon> maybeNewThing = webtoons.stream().filter(oldThing::equals).findFirst();

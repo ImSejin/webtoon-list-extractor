@@ -15,7 +15,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <javaxcel-core.version>0.7.4</javaxcel-core.version>
+        <javaxcel-core.version>0.8.2</javaxcel-core.version>
+        <apache-poi.version>5.2.2</apache-poi.version>
         <lombok.version>1.18.20</lombok.version>
         <junit5.version>5.7.2</junit5.version>
         <assertj.version>3.20.2</assertj.version>
@@ -27,6 +28,13 @@
             <groupId>com.github.javaxcel</groupId>
             <artifactId>javaxcel-core</artifactId>
             <version>${javaxcel-core.version}</version>
+        </dependency>
+
+        <!-- Apache POI -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${apache-poi.version}</version>
         </dependency>
 
         <!-- Lombok -->

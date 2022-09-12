@@ -1,8 +1,11 @@
 package io.github.imsejin.wnliext.excel;
 
-import com.github.javaxcel.factory.ExcelReaderFactory;
-import com.github.javaxcel.factory.ExcelWriterFactory;
-import io.github.imsejin.common.util.DateTimeUtils;
+import com.github.javaxcel.Javaxcel;
+import com.github.javaxcel.in.strategy.impl.Parallel;
+import com.github.javaxcel.out.strategy.impl.AutoResizedColumns;
+import com.github.javaxcel.out.strategy.impl.HiddenExtraColumns;
+import com.github.javaxcel.out.strategy.impl.SheetName;
+import io.github.imsejin.common.constant.DateType;
 import io.github.imsejin.wnliext.common.util.GeneralUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.SneakyThrows;
@@ -13,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,10 +50,10 @@ public final class ExcelExecutor {
 
     private static File createFile(String pathname, List<Webtoon> webtoons) {
         String version = GeneralUtils.calcVersion(webtoons);
-        String now = DateTimeUtils.now();
-        String filename = String.format("%s-%s-%s.xlsx", EXCEL_FILE_PREFIX, version, now);
+        String now = LocalDateTime.now().format(DateType.DATE_TIME.getFormatter());
+        String fileName = String.format("%s-%s-%s.xlsx", EXCEL_FILE_PREFIX, version, now);
 
-        return new File(pathname, filename);
+        return new File(pathname, fileName);
     }
 
     @SneakyThrows
@@ -57,18 +61,18 @@ public final class ExcelExecutor {
         OutputStream out = new FileOutputStream(file);
         Workbook newWorkbook = new XSSFWorkbook();
 
-        ExcelWriterFactory.create(newWorkbook, Webtoon.class)
-                .sheetName("Webtoons")
-                .unrotate()
-                .autoResizeColumns()
-                .hideExtraColumns()
+        Javaxcel.newInstance().writer(newWorkbook, Webtoon.class)
+                .options(new SheetName("Webtoons"), new AutoResizedColumns(), new HiddenExtraColumns())
                 .write(out, webtoons);
     }
 
     @SneakyThrows
     private static List<Webtoon> read(File file) {
         Workbook oldWorkbook = new XSSFWorkbook(new FileInputStream(file));
-        return ExcelReaderFactory.create(oldWorkbook, Webtoon.class).read();
+        return Javaxcel.newInstance()
+                .reader(oldWorkbook, Webtoon.class)
+                .options(new Parallel())
+                .read();
     }
 
     /**

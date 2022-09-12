@@ -1,8 +1,11 @@
 package io.github.imsejin.wnliext.excel;
 
-import com.github.javaxcel.factory.ExcelReaderFactory;
-import com.github.javaxcel.factory.ExcelWriterFactory;
-import io.github.imsejin.common.util.DateTimeUtils;
+import com.github.javaxcel.Javaxcel;
+import com.github.javaxcel.in.strategy.impl.Parallel;
+import com.github.javaxcel.out.strategy.impl.AutoResizedColumns;
+import com.github.javaxcel.out.strategy.impl.HiddenExtraColumns;
+import com.github.javaxcel.out.strategy.impl.SheetName;
+import io.github.imsejin.common.constant.DateType;
 import io.github.imsejin.wnliext.file.FileFinder;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.Cleanup;
@@ -18,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,13 +44,12 @@ class ExcelServiceTest {
 
         // when
         @Cleanup Workbook workbook = new SXSSFWorkbook();
-        File file = new File(path.toFile(), "webtoonList-" + DateTimeUtils.now() + ".xlsx");
+        String now = LocalDateTime.now().format(DateType.DATE_TIME.getFormatter());
+        File file = new File(path.toFile(), "webtoonList-" + now + ".xlsx");
         @Cleanup FileOutputStream out = new FileOutputStream(file);
 
-        ExcelWriterFactory.create(workbook, Webtoon.class)
-                .sheetName("List")
-                .autoResizeColumns()
-                .hideExtraColumns()
+        Javaxcel.newInstance().writer(workbook, Webtoon.class)
+                .options(new SheetName("List"), new AutoResizedColumns(), new HiddenExtraColumns())
                 .write(out, webtoons);
 
         // then
@@ -65,7 +68,10 @@ class ExcelServiceTest {
 
         // when
         @Cleanup Workbook workbook = new XSSFWorkbook(new FileInputStream(webtoonList));
-        List<Webtoon> webtoons = ExcelReaderFactory.create(workbook, Webtoon.class).parallel().read();
+        List<Webtoon> webtoons = Javaxcel.newInstance()
+                .reader(workbook, Webtoon.class)
+                .options(new Parallel())
+                .read();
 
         // then
         webtoons.forEach(System.out::println);
