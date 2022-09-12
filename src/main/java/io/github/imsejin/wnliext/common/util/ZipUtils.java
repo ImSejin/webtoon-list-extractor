@@ -1,6 +1,5 @@
 package io.github.imsejin.wnliext.common.util;
 
-import io.github.imsejin.common.util.FileUtils;
 import io.github.imsejin.common.util.FilenameUtils;
 
 import java.io.BufferedInputStream;
@@ -126,8 +125,18 @@ public final class ZipUtils {
      * </pre>
      */
     public static void decompress(File zipFile, boolean willDelete) {
-        File dir = FileUtils.mkdirAsOwnName(zipFile);
-        _decompress(zipFile, dir.toPath(), willDelete, false);
+        String dirName = FilenameUtils.getBaseName(zipFile.getName());
+        Path dest = zipFile.toPath().resolveSibling(dirName);
+
+        if (Files.notExists(dest)) {
+            try {
+                Files.createDirectory(dest);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+
+        _decompress(zipFile, dest, willDelete, false);
     }
 
     /**
@@ -158,8 +167,18 @@ public final class ZipUtils {
      */
     @Deprecated
     public static void decompressAll(File zipFile, boolean willDelete) {
-        File dir = FileUtils.mkdirAsOwnName(zipFile);
-        _decompress(zipFile, dir.toPath(), willDelete, true);
+        String dirName = FilenameUtils.getBaseName(zipFile.getName());
+        Path dest = zipFile.toPath().resolveSibling(dirName);
+
+        if (Files.notExists(dest)) {
+            try {
+                Files.createDirectory(dest);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+
+        _decompress(zipFile, dest, willDelete, true);
     }
 
     /**
@@ -313,7 +332,10 @@ public final class ZipUtils {
         if (file == null || !file.isFile()) return false;
 
         for (String extension : EXTENSIONS) {
-            if (extension.equalsIgnoreCase(FilenameUtils.extension(file))) return true;
+            String ext = FilenameUtils.getExtension(file.getName());
+            if (extension.equalsIgnoreCase(ext)) {
+                return true;
+            }
         }
 
         return false;
