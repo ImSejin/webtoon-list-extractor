@@ -207,6 +207,10 @@ public final class ZipUtils {
 
                 // 해당 엔트리를 파일로 생성한다
                 File file = new File(destPathName, entry.getName());
+
+                if (!file.toPath().normalize().startsWith(destPathName)) {
+                    throw new IOException("Bad zip entry");
+                }
                 try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
                     int len;
                     while ((len = in.read(buffer)) > 0) {
