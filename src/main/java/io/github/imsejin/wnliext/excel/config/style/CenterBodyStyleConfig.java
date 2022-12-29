@@ -1,4 +1,4 @@
-package io.github.imsejin.wnliext.excel.config;
+package io.github.imsejin.wnliext.excel.config.style;
 
 import com.github.javaxcel.styler.ExcelStyleConfig;
 import com.github.javaxcel.styler.config.Configurer;
