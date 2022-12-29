@@ -15,9 +15,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <javaxcel-core.version>0.8.2</javaxcel-core.version>
-        <apache-poi.version>5.2.2</apache-poi.version>
+        <javaxcel-core.version>0.9.0</javaxcel-core.version>
+        <apache-poi.version>5.2.3</apache-poi.version>
+        <excel-streaming-reader.version>4.0.5</excel-streaming-reader.version>
         <lombok.version>1.18.24</lombok.version>
+        <jetbrains-annotations.version>23.1.0</jetbrains-annotations.version>
         <junit5.version>5.9.1</junit5.version>
         <assertj.version>3.23.1</assertj.version>
     </properties>
@@ -37,11 +39,27 @@
             <version>${apache-poi.version}</version>
         </dependency>
 
+        <!-- Excel Streaming Reader -->
+        <dependency>
+            <groupId>com.github.pjfanning</groupId>
+            <artifactId>excel-streaming-reader</artifactId>
+            <version>${excel-streaming-reader.version}</version>
+        </dependency>
+
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Jetbrains Annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${jetbrains-annotations.version}</version>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
 
