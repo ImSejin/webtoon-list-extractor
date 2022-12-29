@@ -3,9 +3,9 @@ package io.github.imsejin.wnliext.file;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public final class FileFinder {
     /**
      * Finds the files in the specified path and converts them into webtoons.
      */
-    public static List<Webtoon> findWebtoons(@Nonnull String pathname) {
+    public static List<Webtoon> findWebtoons(@NotNull String pathname) {
         List<File> files = getFiles(pathname);
         return convert(files);
     }
@@ -34,7 +34,7 @@ public final class FileFinder {
      * Returns the latest webtoon list.
      */
     @Nullable
-    public static File findLatestWebtoonList(@Nonnull String pathname) {
+    public static File findLatestWebtoonList(@NotNull String pathname) {
         List<File> files = getFiles(pathname);
         return getLatestFile(files);
     }

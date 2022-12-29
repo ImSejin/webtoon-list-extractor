@@ -1,24 +1,23 @@
 package io.github.imsejin.wnliext.excel;
 
-import com.github.javaxcel.Javaxcel;
-import com.github.javaxcel.in.strategy.impl.Parallel;
-import com.github.javaxcel.out.strategy.impl.AutoResizedColumns;
-import com.github.javaxcel.out.strategy.impl.HiddenExtraColumns;
-import com.github.javaxcel.out.strategy.impl.SheetName;
+import com.github.javaxcel.core.in.strategy.impl.Parallel;
+import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
+import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
+import com.github.javaxcel.core.out.strategy.impl.SheetName;
+import com.github.pjfanning.xlsx.StreamingReader;
 import io.github.imsejin.common.constant.DateType;
+import io.github.imsejin.wnliext.excel.config.JavaxcelHolder;
 import io.github.imsejin.wnliext.file.FileFinder;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -48,7 +47,7 @@ class ExcelServiceTest {
         File file = new File(path.toFile(), "webtoonList-" + now + ".xlsx");
         @Cleanup FileOutputStream out = new FileOutputStream(file);
 
-        Javaxcel.newInstance().writer(workbook, Webtoon.class)
+        JavaxcelHolder.getInstance().writer(workbook, Webtoon.class)
                 .options(new SheetName("List"), new AutoResizedColumns(), new HiddenExtraColumns())
                 .write(out, webtoons);
 
@@ -67,8 +66,8 @@ class ExcelServiceTest {
         assertThat(webtoonList).isNotNull().isNotEmpty().canRead();
 
         // when
-        @Cleanup Workbook workbook = new XSSFWorkbook(new FileInputStream(webtoonList));
-        List<Webtoon> webtoons = Javaxcel.newInstance()
+        @Cleanup Workbook workbook = StreamingReader.builder().open(webtoonList);
+        List<Webtoon> webtoons = JavaxcelHolder.getInstance()
                 .reader(workbook, Webtoon.class)
                 .options(new Parallel())
                 .read();

@@ -1,12 +1,13 @@
 package io.github.imsejin.wnliext.excel;
 
-import com.github.javaxcel.Javaxcel;
-import com.github.javaxcel.in.strategy.impl.Parallel;
-import com.github.javaxcel.out.strategy.impl.AutoResizedColumns;
-import com.github.javaxcel.out.strategy.impl.HiddenExtraColumns;
-import com.github.javaxcel.out.strategy.impl.SheetName;
+import com.github.javaxcel.core.in.strategy.impl.Parallel;
+import com.github.javaxcel.core.out.strategy.impl.AutoResizedColumns;
+import com.github.javaxcel.core.out.strategy.impl.HiddenExtraColumns;
+import com.github.javaxcel.core.out.strategy.impl.SheetName;
+import com.github.pjfanning.xlsx.StreamingReader;
 import io.github.imsejin.common.constant.DateType;
 import io.github.imsejin.wnliext.common.util.GeneralUtils;
+import io.github.imsejin.wnliext.excel.config.JavaxcelHolder;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
@@ -61,15 +61,15 @@ public final class ExcelExecutor {
         OutputStream out = new FileOutputStream(file);
         Workbook newWorkbook = new XSSFWorkbook();
 
-        Javaxcel.newInstance().writer(newWorkbook, Webtoon.class)
+        JavaxcelHolder.getInstance().writer(newWorkbook, Webtoon.class)
                 .options(new SheetName("Webtoons"), new AutoResizedColumns(), new HiddenExtraColumns())
                 .write(out, webtoons);
     }
 
     @SneakyThrows
     private static List<Webtoon> read(File file) {
-        Workbook oldWorkbook = new XSSFWorkbook(new FileInputStream(file));
-        return Javaxcel.newInstance()
+        Workbook oldWorkbook = StreamingReader.builder().open(file);
+        return JavaxcelHolder.getInstance()
                 .reader(oldWorkbook, Webtoon.class)
                 .options(new Parallel())
                 .read();

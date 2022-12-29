@@ -6,8 +6,8 @@ import io.github.imsejin.wnliext.common.util.ZipUtils;
 import io.github.imsejin.wnliext.file.model.Webtoon;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
