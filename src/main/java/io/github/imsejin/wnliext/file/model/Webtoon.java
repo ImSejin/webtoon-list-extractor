@@ -51,8 +51,6 @@ public class Webtoon {
     @NotNull
     @EqualsAndHashCode.Include
     @ExcelColumn(name = "PLATFORM")
-    @ExcelWriteExpression("#platform.getCodeName()")
-    @ExcelReadExpression("T(io.github.imsejin.wnliext.file.model.Platform).fromCodeName(#platform)")
     private Platform platform;
 
     /**
@@ -78,8 +76,6 @@ public class Webtoon {
      * Whether webtoon is completed or not.
      */
     @ExcelColumn(name = "COMPLETED", bodyStyle = CenterBodyStyleConfig.class)
-    @ExcelWriteExpression("T(String).valueOf(#completed).toUpperCase()")
-    @ExcelReadExpression("'true'.equalsIgnoreCase(#completed)")
     private boolean completed;
 
     /**
